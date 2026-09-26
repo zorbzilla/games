@@ -1,18 +1,22 @@
 /* ==========================================================================
-   Detective on Duty by Quup Games: site interactions
-   Everything here is progressive: the page is complete without this file.
+   QuUp Games: site interactions (every page)
+   Everything here is progressive: each page is complete without this file.
    ========================================================================== */
 (() => {
   'use strict';
 
-  /* Store link for Detective on Duty. Every download button stays hidden until it is filled in. */
+  /* Store links for Detective on Duty; every store button on every page reads them.
+     Google Play: until it is filled in, the button stays visible and says "coming soon" when clicked.
+     App Store: until it is filled in, the button stays greyed out with a "Coming soon" tip. */
   const STORE_LINKS = {
     googleplay: '', // e.g. 'https://play.google.com/store/apps/details?id=...'
+    appstore: '', // e.g. 'https://apps.apple.com/app/id...'
   };
 
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const root = document.documentElement;
+  const page = document.body.dataset.page || 'home';
   const mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
   const hasIO = 'IntersectionObserver' in window;
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
@@ -36,84 +40,73 @@
   }
 
   /* ======================================================================
-     1. Language (TR text lives in the HTML, EN lives here)
+     1. Language (Turkish lives in the HTML, English lives here)
      ====================================================================== */
   const EN = {
-    'meta.title': 'Detective on Duty | Quup Games',
-    'meta.desc': 'Detective on Duty is the first mobile game from Quup Games. Search the crime scene, question the suspects, catch the contradiction. 50 case files are waiting for you.',
     skip: 'Skip to content',
-    'aria.home': 'Quup Games home',
+    'aria.home': 'QuUp Games home',
     'aria.mainnav': 'Main menu',
-    'aria.footnav': 'Footer menu',
+    'aria.gamesMenu': 'Games menu',
     'aria.lang': 'Change language: Turkish or English',
-    'nav.game': 'Game',
-    'nav.features': 'Features',
-    'nav.how': 'How to play',
-    'nav.cases': 'Cases',
-    'nav.studio': 'Studio',
+    'nav.home': 'Home',
+    'nav.about': 'About us',
+    'nav.games': 'Games',
+    'nav.privacy': 'Privacy',
     'nav.contact': 'Contact',
-    'nav.cta': 'Get in touch',
-    'nav.privacy': 'Privacy policy',
-    'store.gp': 'Get it on Google Play',
+    'menu.gameSub': 'Detective · Android',
+    'menu.new': 'New',
+    'tab.overview': 'Overview',
+    'tab.features': 'Features',
+    'tab.how': 'How to play',
+    'tab.cases': 'Cases',
+    'store.gpSmall': 'For Android',
+    'store.asSmall': 'For iPhone',
+    'store.soon': 'Coming soon',
+    'ft.slogan': 'Your next adventure is queued up.',
+    'ft.rights': 'All rights reserved.',
 
-    'hero.chip': 'The first game from Quup Games',
-    'hero.tagline': 'Pin on your badge. The file is on your desk.',
-    'hero.lead': 'Search the crime scene, question the suspects, catch the contradiction in their statements. You pick the culprit, and you close the file.',
-    'hero.cta1': 'Explore the game',
-    'hero.cta2': 'Meet the studio',
+    // home
+    'home.new': 'Out now',
+    'home.newText': 'Our first game is live',
+    'home.tagline': 'Pin on your badge. The file is on your desk.',
+    'home.lead': 'Search the crime scene, question the suspects, catch the contradiction in their statements. 50 case files are waiting for you.',
+    'home.explore': 'Explore the game',
     'fact.cases': 'case files',
     'fact.weekly': 'Weekly leaderboard',
     'fact.noacc': 'No account needed',
-    'hero.hintMouse': 'The flashlight follows your cursor. There are fingerprints hidden in the dark.',
-    'hero.hintTouch': 'The flashlight roams the dark. Tap to aim it.',
-
+    'phone.title': 'Case files',
+    'phone.solved': 'Solved',
     'tk.scene': 'CRIME SCENE',
     'tk.cross': 'DO NOT CROSS',
 
-    'game.eyebrow': 'The game',
-    'game.title': 'Every file hides a lie.',
-    'game.lead': 'In Detective on Duty, every case is an investigation. You gather evidence, compare statements and find the lie. The final call is yours.',
+    // game
+    'game.new': 'Out now',
+    'game.desc': 'The precinct in your pocket: 50 case files, a weekly leaderboard and a rank waiting to climb. Search the scene, question the suspects, find the lie.',
+    'game.genreL': 'Genre',
+    'game.genre': 'Detective, investigation',
+    'game.platformL': 'Platform',
+    'game.casesL': 'Cases',
+    'game.casesV': '50 files',
+    'game.devL': 'Developer',
+    'ov.hintMouse': 'Move the magnifier over the scene to find hidden clues.',
+    'ov.hintTouch': 'Tap anywhere and the magnifier follows.',
+    'game.tagline': 'Every file hides a lie.',
     'case.tape': 'DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE',
-    'case.hintMouse': 'Move the magnifier over the scene to find the clues.',
-    'case.hintTouch': 'Tap anywhere and the magnifier follows.',
-    'case.eyebrow': 'Our first game',
-    'case.desc': 'The precinct in your pocket: 50 case files, a weekly leaderboard and a rank waiting to climb.',
-    'case.casesLabel': 'Cases',
-    'case.casesVal': '50 files',
-    'case.genreLabel': 'Genre',
-    'case.genre': 'Detective, investigation',
-    'case.platformLabel': 'Platform',
-    'case.studioLabel': 'Studio',
-    'case.stamp': 'On duty',
-    'case.ask': 'Ask us about the game',
-
-    'feat.eyebrow': 'Features',
-    'feat.title': 'A real investigation, in the palm of your hand.',
-    'feat.lead': 'Every case gives you the same tools. How you use them is up to you.',
     'f1.t': 'Crime scene',
-    'f1.d': 'Search every corner. Every clue you find goes into the evidence log; you’ll learn later which ones matter.',
-    'f1.tag': 'Evidence log',
-    'f2.t': 'Interrogation room',
-    'f2.d': 'Confront statements with evidence. Strike the right balance between pressure and trust.',
-    'f2.tag': 'Pressure and trust',
+    'f1.d': 'Search every corner. Every clue you find goes into the evidence log.',
+    'f2.t': 'Interrogation',
+    'f2.d': 'Confront statements with evidence. Balance pressure and trust.',
     'f2.m1': 'PRESSURE',
     'f2.m2': 'TRUST',
     'f3.t': 'Deduction board',
-    'f3.d': 'Pin the clues to the board and connect them. The right link leads you to the right suspect.',
-    'f3.tag': 'Connections',
+    'f3.d': 'Pin the clues and connect them. The right link leads to the right suspect.',
     'f4.t': 'Contradictions',
-    'f4.d': 'Times, statements and evidence have to line up. If they don’t, someone is lying.',
-    'f4.tag': 'Timeline',
+    'f4.d': 'Times, statements and evidence must line up. If not, someone is lying.',
     'f5.t': 'Career',
     'f5.d': 'Every file you close raises your rank and grows your reputation.',
-    'f5.tag': 'Rank and reputation',
     'f6.t': 'Weekly leaderboard',
-    'f6.d': 'A new race every week. Climb past the other detectives with the experience you earn.',
-    'f6.tag': 'Fresh every week',
+    'f6.d': 'A new race every week. Climb past the other detectives.',
     'f6.you': 'YOU',
-
-    'flow.eyebrow': 'How to play',
-    'flow.title': 'One case, five steps.',
     'flow.lead': 'From the moment you open a file to the moment you close it, every step builds on the last.',
     's1.t': 'Briefing',
     's1.d': 'Open the file. Get to know the incident, the place and the people.',
@@ -125,47 +118,56 @@
     's4.d': 'Connect the clues on the board and expose the contradiction.',
     's5.t': 'Verdict',
     's5.d': 'Pick the culprit, write your report, close the file.',
-
-    'files.eyebrow': 'Case files',
-    'files.title': '50 files. All of them waiting to be solved.',
-    'files.lead': 'Here are the first eight files on the desk. There are 42 more in the archive.',
     'files.tab': 'File',
     'files.stamp': 'Classified',
     'files.more': 'more files in the archive',
     'files.moreSub': 'All of them are waiting in the game.',
 
-    'stu.eyebrow': 'Studio',
-    'stu.title': 'We are Quup Games.',
-    'stu.text': 'Quup Games is an independent mobile game studio. Detective on Duty is our first game. Every game we make follows the same three rules.',
-    'stu.v1t': 'Fun comes first',
-    'stu.v1d': 'No mechanic makes it into a game unless it’s fun in the first minute.',
-    'stu.v2t': 'Smooth on every phone',
-    'stu.v2d': 'Games that open fast and go easy on the battery, even on older phones.',
-    'stu.v3t': 'Respect for players',
-    'stu.v3d': 'We don’t ask for an account to play. Your progress stays on your own phone.',
+    // about
+    'about.eyebrow': 'About us',
+    'about.kicker': 'Independent mobile game studio',
+    'about.lead': 'We make games for your phone that stay with you. Our first game, Detective on Duty, is out now. Every game we make follows the same three rules.',
+    'v1.t': 'Fun comes first',
+    'v1.d': 'No mechanic makes it into a game unless it’s fun in the first minute.',
+    'v2.t': 'Smooth on every phone',
+    'v2.d': 'Games that open fast and go easy on the battery, even on older phones.',
+    'v3.t': 'Respect for players',
+    'v3.d': 'We don’t ask for an account to play. Your progress stays on your own phone.',
+    'about.games': 'Our games',
+    'about.write': 'Get in touch',
+    'about.cardSub': 'Out now · Detective',
+
+    // contact
+    'ct.eyebrow': 'Contact',
+    'ct.title': 'Got a lead? Write to us.',
+    'ct.lead': 'Support, feedback, press or partnerships. Pick the right address and we’ll get back to you faster.',
+    'ct.supportT': 'Support',
+    'ct.supportD': 'Problems with the game, account deletion and purchases.',
+    'ct.helloT': 'General and partnerships',
+    'ct.helloD': 'Press, partnerships and any kind of hello.',
+    'ct.copy': 'Copy address',
+    'ct.send': 'Send an email',
+    'ct.shareT': 'Share this page',
+    'ct.shareD': 'Send the link to a friend.',
+    'ct.shareBtn': 'Share',
+    'ct.stores': 'Get the game',
+
+    // privacy
     'priv.eyebrow': 'Privacy',
-    'priv.title': 'Privacy, in short.',
+    'priv.title': 'Privacy policy',
     'priv.1': 'No account, email or ID needed.',
     'priv.2': 'Your save and progress are stored on your phone.',
     'priv.3': 'The leaderboard only shows your handle, score, rank and avatar.',
     'priv.4': 'You can delete your account and data from the Settings screen in the game.',
-    'priv.cta': 'Read the full privacy policy',
+    'priv.note': 'The full, official policy is written in English.',
+  };
 
-    'ct.eyebrow': 'Contact',
-    'ct.title': 'Got a lead? Write to us.',
-    'ct.lead': 'Support, feedback, press or partnerships. It all comes to the same address.',
-    'ct.copy': 'Copy address',
-    'ct.send': 'Send an email',
-    'links.title': 'Links',
-    'link.gp': 'Download Detective on Duty',
-    'link.privT': 'Privacy policy',
-    'link.privD': 'What the game does with data, on one page',
-    'link.shareT': 'Share this page',
-    'link.shareD': 'Send the link to a friend',
-
-    'ft.tag': 'Pin on your badge. The file is on your desk.',
-    'ft.rights': 'All rights reserved.',
-    'ft.top': 'Back to top',
+  const META_EN = {
+    home: ['QuUp Games | Detective on Duty is out', 'Detective on Duty, the first game from QuUp Games, is out. Search the crime scene, question the suspects, catch the contradiction.'],
+    game: ['Detective on Duty | QuUp Games', 'Detective on Duty: 50 case files, an interrogation room, a deduction board and a weekly leaderboard. The new detective game from QuUp Games.'],
+    about: ['About us | QuUp Games', 'QuUp Games is an independent mobile game studio. Our first game is Detective on Duty.'],
+    contact: ['Contact | QuUp Games', 'Write to QuUp Games: support@quupgames.com for support, hello@quupgames.com for everything else.'],
+    privacy: ['Privacy Policy | QuUp Games', 'What Detective on Duty by QuUp Games does with data: no account needed, your save stays on your device.'],
   };
 
   // Strings that only exist at runtime.
@@ -173,18 +175,20 @@
     tr: {
       'aria.menuOpen': 'Menüyü aç',
       'aria.menuClose': 'Menüyü kapat',
-      'ct.copied': 'E-posta adresi kopyalandı',
-      'ct.select': 'Adres seçildi, şimdi kopyalayabilirsin',
-      'share.text': 'Detective on Duty: Quup Games’in ilk oyunu.',
+      'toast.copied': 'Adres kopyalandı',
+      'toast.select': 'Adres seçildi, şimdi kopyalayabilirsin',
+      'toast.gpSoon': 'Google Play bağlantısı çok yakında burada.',
+      'share.text': 'Detective on Duty: QuUp Games’in ilk oyunu.',
       'share.copied': 'Sayfa bağlantısı kopyalandı',
       'share.fail': 'Bağlantı: ',
     },
     en: {
       'aria.menuOpen': 'Open menu',
       'aria.menuClose': 'Close menu',
-      'ct.copied': 'Email address copied',
-      'ct.select': 'Address selected, ready to copy',
-      'share.text': 'Detective on Duty: the first game from Quup Games.',
+      'toast.copied': 'Address copied',
+      'toast.select': 'Address selected, ready to copy',
+      'toast.gpSoon': 'The Google Play link is coming very soon.',
+      'share.text': 'Detective on Duty: the first game from QuUp Games.',
       'share.copied': 'Page link copied',
       'share.fail': 'Link: ',
     },
@@ -199,9 +203,12 @@
     const k = el.dataset.i18nAria;
     if (!(k in TR)) TR[k] = el.getAttribute('aria-label') || '';
   });
+  $$('[data-i18n-tip]').forEach((el) => {
+    const k = el.dataset.i18nTip;
+    if (!(k in TR)) TR[k] = el.dataset.tip || '';
+  });
   const metaDesc = $('meta[name="description"]');
-  TR['meta.title'] = document.title;
-  TR['meta.desc'] = metaDesc ? metaDesc.content : '';
+  const META_TR = [document.title, metaDesc ? metaDesc.content : ''];
 
   const DICT = { tr: Object.assign(TR, EXTRA.tr), en: Object.assign({}, EXTRA.en, EN) };
   let lang = 'tr';
@@ -209,10 +216,11 @@
     const v = DICT[lang][k];
     return v != null ? v : DICT.tr[k];
   };
-  window.ZG = {
+  const onLang = [];
+  window.QG = {
     t,
     get lang() { return lang; },
-    // handy when checking a real device from the console: ZG.fx
+    // handy when checking a real device from the console: QG.fx
     get fx() { return shader ? shader.state : 'css-fallback'; },
   };
 
@@ -228,71 +236,54 @@
       const v = d[el.dataset.i18nAria];
       if (typeof v === 'string') el.setAttribute('aria-label', v);
     });
-    if (d['meta.title']) document.title = d['meta.title'];
-    if (metaDesc && d['meta.desc']) metaDesc.content = d['meta.desc'];
+    $$('[data-i18n-tip]').forEach((el) => {
+      const v = d[el.dataset.i18nTip];
+      if (typeof v === 'string') el.dataset.tip = v;
+    });
+    const meta = lang === 'en' ? META_EN[page] || META_TR : META_TR;
+    document.title = meta[0];
+    if (metaDesc) metaDesc.content = meta[1];
     syncBurgerLabel();
     if (remember) store.set('qg-lang', lang);
-    if (map) requestAnimationFrame(map.layout);
+    onLang.forEach((fn) => requestAnimationFrame(fn));
   }
 
   /* ======================================================================
-     2. Header: scrolled state, hide on scroll down, progress bar, active link
+     2. Header: games menu (hover or the arrow button) and the mobile menu
      ====================================================================== */
-  const hud = $('#hud');
-  const xpFill = $('#xpFill');
   const burger = $('#burger');
   const mnav = $('#mnav');
   let menuOpen = false;
-  let lastY = window.scrollY;
-  let scrollQueued = false;
 
   function syncBurgerLabel() {
     if (burger) burger.setAttribute('aria-label', t(menuOpen ? 'aria.menuClose' : 'aria.menuOpen'));
   }
 
-  function onScroll() {
-    if (scrollQueued) return;
-    scrollQueued = true;
-    requestAnimationFrame(scrollFrame);
+  function initGamesMenu() {
+    const item = $('.has-menu');
+    const caret = item && $('.nav__caret', item);
+    if (!item || !caret) return;
+    let closeTimer = 0;
+    const open = (v) => {
+      clearTimeout(closeTimer);
+      item.classList.toggle('is-open', v);
+      caret.setAttribute('aria-expanded', String(v));
+    };
+    item.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') open(true); });
+    item.addEventListener('pointerleave', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      closeTimer = setTimeout(() => open(false), 200);
+    });
+    caret.addEventListener('click', () => open(!item.classList.contains('is-open')));
+    item.addEventListener('focusout', (e) => { if (!item.contains(e.relatedTarget)) open(false); });
+    document.addEventListener('pointerdown', (e) => { if (!item.contains(e.target)) open(false); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape' || !item.classList.contains('is-open')) return;
+      open(false);
+      caret.focus();
+    });
   }
 
-  function scrollFrame() {
-    scrollQueued = false;
-    // reads first
-    const y = window.scrollY;
-    const max = root.scrollHeight - window.innerHeight;
-    const mapBox = map ? map.measure() : null;
-    // then writes
-    hud.classList.toggle('is-scrolled', y > 8);
-    if (!menuOpen) {
-      if (y > lastY + 6 && y > 520) hud.classList.add('is-hidden');
-      else if (y < lastY - 6 || y <= 520) hud.classList.remove('is-hidden');
-    }
-    if (Math.abs(y - lastY) > 6) lastY = y;
-    if (xpFill) xpFill.style.transform = `scaleX(${max > 0 ? clamp(y / max, 0, 1).toFixed(4) : 0})`;
-    if (mapBox) map.paint(mapBox);
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  hud.addEventListener('focusin', () => hud.classList.remove('is-hidden'));
-
-  function initScrollSpy() {
-    const links = $$('.nav__link');
-    const targets = [$('#top')].concat(links.map((a) => $(a.getAttribute('href')))).filter(Boolean);
-    if (!hasIO || !links.length) return;
-    const spy = new IntersectionObserver((entries) => {
-      entries.forEach((en) => {
-        if (!en.isIntersecting) return;
-        const id = '#' + en.target.id;
-        links.forEach((a) => a.setAttribute('aria-current', a.getAttribute('href') === id ? 'true' : 'false'));
-      });
-    }, { rootMargin: '-45% 0px -50% 0px' });
-    targets.forEach((s) => spy.observe(s));
-  }
-
-  /* ======================================================================
-     3. Mobile menu
-     ====================================================================== */
   function setMenu(open) {
     if (!burger || !mnav) return;
     menuOpen = open;
@@ -301,7 +292,6 @@
     root.classList.toggle('menu-open', open);
     if (open) {
       mnav.hidden = false;
-      hud.classList.remove('is-hidden');
       requestAnimationFrame(() => mnav.classList.add('is-open'));
       const first = $('a', mnav);
       if (first) first.focus({ preventScroll: true });
@@ -320,25 +310,136 @@
         burger.focus();
       }
     });
-    const wide = window.matchMedia('(min-width: 1041px)');
+    const wide = window.matchMedia('(min-width: 981px)');
     const onWide = (e) => { if (e.matches && menuOpen) setMenu(false); };
     if (wide.addEventListener) wide.addEventListener('change', onWide);
   }
 
   /* ======================================================================
-     4. Hero background: a flashlight in a smoky dark room that reveals
+     3. Small things: toast, store buttons, copy, share, year
+     ====================================================================== */
+  const toastEl = $('#toast');
+  let toastTimer = 0;
+  function toast(msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add('is-show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => toastEl.classList.remove('is-show'), 2600);
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    return Promise.reject(new Error('no clipboard'));
+  }
+
+  function initStores() {
+    $$('[data-store="googleplay"]').forEach((a) => {
+      if (STORE_LINKS.googleplay) {
+        a.href = STORE_LINKS.googleplay;
+        a.target = '_blank';
+        a.rel = 'noopener';
+      } else {
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          toast(t('toast.gpSoon'));
+        });
+      }
+    });
+    $$('.store--soon').forEach((b) => {
+      // once the iPhone version is out, the greyed-out button becomes a real link
+      if (STORE_LINKS.appstore) {
+        const a = document.createElement('a');
+        a.className = 'store';
+        a.dataset.store = 'appstore';
+        a.href = STORE_LINKS.appstore;
+        a.target = '_blank';
+        a.rel = 'noopener';
+        $$('.sr-only', b).forEach((el) => el.remove());
+        a.append(...b.childNodes);
+        b.replaceWith(a);
+        return;
+      }
+      // not out yet: the button only explains itself
+      let timer = 0;
+      b.addEventListener('click', (e) => {
+        e.preventDefault();
+        b.classList.add('is-tip');
+        clearTimeout(timer);
+        timer = setTimeout(() => b.classList.remove('is-tip'), 1800);
+      });
+    });
+  }
+
+  function initCopy() {
+    $$('[data-copy]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const text = btn.dataset.copy;
+        copyText(text).then(() => toast(`${t('toast.copied')}: ${text}`), () => {
+          const target = btn.closest('.mail-card');
+          const addr = target && $('.mail-card__addr', target);
+          if (addr) {
+            const range = document.createRange();
+            range.selectNodeContents(addr);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+          }
+          toast(t('toast.select'));
+        });
+      });
+    });
+  }
+
+  function initShare() {
+    $$('[data-share]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const canonical = $('link[rel="canonical"]');
+        const url = canonical ? canonical.href : window.location.href.split('#')[0];
+        const data = { title: document.title, text: t('share.text'), url };
+        if (navigator.share) {
+          navigator.share(data).catch(() => { /* closed by the visitor */ });
+          return;
+        }
+        copyText(url).then(() => toast(t('share.copied')), () => toast(t('share.fail') + url));
+      });
+    });
+  }
+
+  /* ======================================================================
+     4. Pointer parallax: writes two custom properties, eased in rAF
+     ====================================================================== */
+  function parallax(stage) {
+    let tx = 0;
+    let ty = 0;
+    let x = 0;
+    let y = 0;
+    let raf = 0;
+    const tick = () => {
+      raf = 0;
+      x += (tx - x) * 0.08;
+      y += (ty - y) * 0.08;
+      stage.style.setProperty('--px', x.toFixed(4));
+      stage.style.setProperty('--py', y.toFixed(4));
+      if (Math.abs(tx - x) > 0.0005 || Math.abs(ty - y) > 0.0005) raf = requestAnimationFrame(tick);
+    };
+    return (nx, ny) => {
+      tx = nx;
+      ty = ny;
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+  }
+
+  /* ======================================================================
+     5. Home: an ultraviolet flashlight over the whole screen that shows
         fingerprints. WebGL with adaptive quality: it refuses software
         rendering, lowers resolution and frame rate on slow devices, pauses
-        off-screen and falls back to the CSS background.
+        with the tab and falls back to the CSS background.
      ====================================================================== */
-  const hero = $('.hero');
-  let heroVisible = true;
-  let heroBottom = 0; // cached so pointer handlers never force a layout
-
   const shader = (() => {
     const canvas = $('#heroBg');
-    const badge = $('#heroBadge');
-    if (!canvas || !hero || !window.WebGLRenderingContext) return null;
+    const phone = $('#phone');
+    if (!canvas || !window.WebGLRenderingContext) return null;
     const force = /[?&]gl=force\b/.test(window.location.search);
     let gl = null;
     try {
@@ -356,6 +457,8 @@
       gl = null;
     }
     if (!gl) return null;
+    // hardware WebGL means the GPU composites the page too: the big glowing CSS loops may run
+    root.classList.add('fx-gpu');
 
     const vsSrc = 'attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}';
     const fsSrc = `
@@ -389,25 +492,24 @@ void main(){
   vec2 asp = uRes / min(uRes.x, uRes.y);
   vec2 p = uv * asp;
   float t = uTime;
-  vec3 bg = vec3(0.035, 0.035, 0.043);
+  vec3 bg = vec3(0.027, 0.031, 0.047);
   float smoke = fbm(p * 1.7 + vec2(t * 0.03, t * 0.012));
-  vec3 col = bg * 0.75 + vec3(0.055, 0.055, 0.068) * smoke;
+  vec3 col = bg * 0.8 + vec3(0.04, 0.05, 0.085) * smoke;
   vec2 f = uFocus * asp;
-  col += vec3(1.0, 0.8, 0.35) * 0.06 * exp(-dot(p - f, p - f) * 6.0);
+  col += vec3(0.3, 0.45, 1.0) * 0.09 * exp(-dot(p - f, p - f) * 5.0);
   vec2 L = uLight * asp;
   float d = length(p - L);
   float light = exp(-d * d * 16.0) * 0.8 + smoothstep(0.32, 0.28, d) * 0.2;
-  col += vec3(1.0, 0.92, 0.76) * light * (0.06 + 0.14 * smoke);
+  col += vec3(0.75, 0.84, 1.0) * light * (0.05 + 0.13 * smoke);
   float s = 120.0 * uUnit;
-  float clues = fprint(p, vec2(0.16, 0.30) * asp, s, 0.4)
-              + fprint(p, vec2(0.60, 0.84) * asp, s * 0.85, -0.7)
-              + fprint(p, vec2(0.90, 0.20) * asp, s * 1.05, 1.2)
-              + fprint(p, vec2(0.40, 0.58) * asp, s * 0.8, 2.3)
-              + fprint(p, vec2(0.78, 0.55) * asp, s * 0.9, -2.0);
-  col += vec3(1.0, 0.84, 0.3) * clues * light * 0.42;
+  float clues = fprint(p, vec2(0.12, 0.28) * asp, s, 0.4)
+              + fprint(p, vec2(0.46, 0.14) * asp, s * 0.85, -0.7)
+              + fprint(p, vec2(0.92, 0.82) * asp, s * 1.05, 1.2)
+              + fprint(p, vec2(0.34, 0.72) * asp, s * 0.8, 2.3)
+              + fprint(p, vec2(0.62, 0.9) * asp, s * 0.9, -2.0);
+  col += vec3(0.42, 0.72, 1.0) * clues * light * 0.5;
   vec2 q = uv - 0.5;
-  col *= 1.0 - 0.6 * dot(q, q);
-  col = mix(col, bg, smoothstep(0.18, 0.0, uv.y));
+  col *= 1.0 - 0.55 * dot(q, q);
   col += (hash(gl_FragCoord.xy + fract(t)) - 0.5) / 255.0;
   gl_FragColor = vec4(col, 1.0);
 }`;
@@ -454,30 +556,24 @@ void main(){
     let strikes = 0;
     let startedAt = 0;
     let winStart = 0;
-    let heroTop = 0;
-    let heroH = 1;
-    let cssMin = 1;
+    let W = 1;
+    let H = 1;
     let shown = false;
     const t0 = performance.now();
     const focus = [0.72, 0.5];
     // the flashlight wanders on its own until a mouse or a tap takes over
-    const light = { x: 0.66, y: 0.5, tx: 0.66, ty: 0.5, mouse: false, until: 0 };
+    const light = { x: 0.3, y: 0.62, tx: 0.3, ty: 0.62, mouse: false, until: 0 };
 
     function measure() {
-      const w = hero.clientWidth;
-      const h = hero.clientHeight;
-      if (!w || !h) return;
-      heroTop = hero.getBoundingClientRect().top + window.scrollY;
-      heroH = h;
-      cssMin = Math.min(w, h);
-      canvas.width = Math.max(2, Math.round(w * scale));
-      canvas.height = Math.max(2, Math.round(h * scale));
+      W = window.innerWidth;
+      H = window.innerHeight;
+      canvas.width = Math.max(2, Math.round(W * scale));
+      canvas.height = Math.max(2, Math.round(H * scale));
       gl.viewport(0, 0, canvas.width, canvas.height);
-      if (badge) {
-        const hr = hero.getBoundingClientRect();
-        const br = badge.getBoundingClientRect();
-        focus[0] = (br.left + br.width / 2 - hr.left) / hr.width;
-        focus[1] = 1 - (br.top + br.height / 2 - hr.top) / hr.height;
+      if (phone) {
+        const r = phone.getBoundingClientRect();
+        focus[0] = (r.left + r.width / 2) / W;
+        focus[1] = 1 - (r.top + r.height / 2) / H;
       }
       // resizing clears the drawing buffer, so paint right away to avoid a blank frame
       render(performance.now());
@@ -487,11 +583,11 @@ void main(){
       const still = mqReduce.matches;
       const time = still ? 14 : (now - t0) / 1000;
       if (still) {
-        light.tx = 0.7;
-        light.ty = 0.42;
+        light.tx = 0.3;
+        light.ty = 0.62;
       } else if (!light.mouse && now > light.until) {
-        light.tx = 0.5 + 0.32 * Math.sin(time * 0.23) + 0.1 * Math.sin(time * 0.61);
-        light.ty = 0.5 + 0.26 * Math.sin(time * 0.31 + 1.2);
+        light.tx = 0.45 + 0.34 * Math.sin(time * 0.23) + 0.1 * Math.sin(time * 0.61);
+        light.ty = 0.5 + 0.3 * Math.sin(time * 0.31 + 1.2);
       }
       const k = still ? 1 : light.mouse ? 0.16 : 0.035;
       light.x += (light.tx - light.x) * k;
@@ -500,7 +596,7 @@ void main(){
       gl.uniform1f(U.time, time);
       gl.uniform2f(U.light, light.x, light.y);
       gl.uniform2f(U.focus, focus[0], focus[1]);
-      gl.uniform1f(U.unit, 1 / cssMin);
+      gl.uniform1f(U.unit, 1 / Math.min(W, H));
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       if (!shown) {
         shown = true;
@@ -521,6 +617,7 @@ void main(){
         halfRate = true;
       } else {
         frozen = true;
+        root.classList.remove('fx-gpu');
         stop();
       }
     }
@@ -556,7 +653,7 @@ void main(){
     }
 
     function start() {
-      if (running || frozen || document.hidden || !heroVisible) return;
+      if (running || frozen || document.hidden) return;
       if (mqReduce.matches) { render(performance.now()); return; }
       running = true;
       lastT = 0;
@@ -573,8 +670,8 @@ void main(){
     }
 
     function aim(x, y, mode) {
-      light.tx = clamp(x / window.innerWidth, 0, 1);
-      light.ty = clamp(1 - (y + window.scrollY - heroTop) / heroH, 0, 1);
+      light.tx = clamp(x / W, 0, 1);
+      light.ty = clamp(1 - y / H, 0, 1);
       if (mode === 'mouse') light.mouse = true;
       else light.until = performance.now() + 3200;
       if (!running) render(performance.now());
@@ -584,6 +681,7 @@ void main(){
       e.preventDefault();
       stop();
       frozen = true;
+      root.classList.remove('fx-gpu');
       canvas.classList.remove('is-ready');
     });
 
@@ -598,86 +696,105 @@ void main(){
     };
   })();
 
-  /* ======================================================================
-     5. Pointer parallax: the hero badge and props, the studio emblem.
-        Eased in rAF; writes two custom properties and nothing else.
-     ====================================================================== */
-  function parallax(stage) {
-    let tx = 0;
-    let ty = 0;
-    let x = 0;
-    let y = 0;
-    let raf = 0;
-    const tick = () => {
-      raf = 0;
-      x += (tx - x) * 0.08;
-      y += (ty - y) * 0.08;
-      stage.style.setProperty('--px', x.toFixed(4));
-      stage.style.setProperty('--py', y.toFixed(4));
-      if (Math.abs(tx - x) > 0.0005 || Math.abs(ty - y) > 0.0005) raf = requestAnimationFrame(tick);
-    };
-    return (nx, ny) => {
-      tx = nx;
-      ty = ny;
-      if (!raf) raf = requestAnimationFrame(tick);
-    };
-  }
-
-  function initHeroPointer() {
+  function initHome() {
     const stage = $('#heroStage');
-    if (!stage || !hero) return;
+    if (!stage) return;
     const aimAt = parallax(stage);
-
     window.addEventListener('pointermove', (e) => {
-      if (!heroVisible || e.pointerType !== 'mouse') return;
-      const inside = e.clientY + window.scrollY < heroBottom;
-      if (shader) {
-        if (inside) shader.aim(e.clientX, e.clientY, 'mouse');
-        else shader.release();
-      }
-      if (mqReduce.matches) return;
-      aimAt((e.clientX / window.innerWidth) * 2 - 1, (e.clientY / window.innerHeight) * 2 - 1);
+      if (e.pointerType !== 'mouse') return;
+      if (shader) shader.aim(e.clientX, e.clientY, 'mouse');
+      if (!mqReduce.matches) aimAt((e.clientX / window.innerWidth) * 2 - 1, (e.clientY / window.innerHeight) * 2 - 1);
     }, { passive: true });
-
-    hero.addEventListener('pointerdown', (e) => {
+    document.addEventListener('pointerdown', (e) => {
       if (e.pointerType !== 'mouse' && shader) shader.aim(e.clientX, e.clientY, 'touch');
     }, { passive: true });
-
     document.addEventListener('pointerleave', () => {
       aimAt(0, 0);
       if (shader) shader.release();
     });
+    if (shader) {
+      shader.start();
+      document.addEventListener('visibilitychange', () => (document.hidden ? shader.stop() : shader.start()));
+    }
   }
 
-  // The stage box is measured on relayout (page coordinates), so pointer moves never force a layout.
-  const studioTilt = (() => {
-    const stage = $('#studioStage');
-    const zone = $('#studyo');
-    if (!stage || !zone) return null;
-    const aimAt = parallax(stage);
-    const box = { x: 0, y: 0, w: 1, h: 1 };
-    zone.addEventListener('pointermove', (e) => {
-      if (e.pointerType !== 'mouse' || mqReduce.matches) return;
-      aimAt(clamp((e.pageX - box.x) / box.w, -1, 1), clamp((e.pageY - box.y) / box.h, -1, 1));
-    }, { passive: true });
-    zone.addEventListener('pointerleave', () => aimAt(0, 0));
+  /* ======================================================================
+     6. Game page: tabs (linked to the address, e.g. #vakalar)
+     ====================================================================== */
+  function initTabs() {
+    const list = $('.tabs');
+    if (!list) return null;
+    const tabs = $$('[role="tab"]', list);
+    const panels = tabs.map((tab) => document.getElementById(tab.getAttribute('aria-controls')));
+    const ink = $('.tabs__ink', list);
+    const hooks = [];
+    let current = -1;
+
+    const placeInk = () => {
+      const tab = tabs[current];
+      if (!tab || !ink) return;
+      ink.style.width = `${tab.offsetWidth}px`;
+      ink.style.height = `${tab.offsetHeight}px`;
+      ink.style.translate = `${tab.offsetLeft}px ${tab.offsetTop}px`;
+    };
+
+    function select(i, opts = {}) {
+      if (i === current || !panels[i]) return;
+      current = i;
+      tabs.forEach((tab, k) => {
+        const on = k === i;
+        tab.setAttribute('aria-selected', String(on));
+        tab.tabIndex = on ? 0 : -1;
+        panels[k].hidden = !on;
+      });
+      const panel = panels[i];
+      if (opts.animate !== false && !mqReduce.matches) {
+        panel.classList.remove('is-entering');
+        void panel.offsetWidth;
+        panel.classList.add('is-entering');
+      }
+      placeInk();
+      list.scrollTo({ left: tabs[i].offsetLeft - 24, behavior: opts.animate === false ? 'auto' : 'smooth' });
+      if (opts.focus) tabs[i].focus();
+      if (opts.hash !== false) {
+        try { history.replaceState(null, '', `#${panel.id}`); } catch (e) { /* sandboxed frame: the tab still works */ }
+      }
+      hooks.forEach((fn) => fn(panel.id));
+    }
+
+    tabs.forEach((tab, i) => tab.addEventListener('click', () => select(i)));
+    list.addEventListener('keydown', (e) => {
+      const keys = { ArrowRight: 1, ArrowLeft: -1, Home: 'first', End: 'last' };
+      if (!(e.key in keys)) return;
+      e.preventDefault();
+      const step = keys[e.key];
+      const next = step === 'first' ? 0 : step === 'last' ? tabs.length - 1 : (current + step + tabs.length) % tabs.length;
+      select(next, { focus: true });
+    });
+    const fromHash = () => panels.findIndex((p) => p && `#${p.id}` === window.location.hash);
+    window.addEventListener('hashchange', () => {
+      const i = fromHash();
+      if (i >= 0) select(i, { hash: false });
+    });
+
+    root.classList.add('tabs-on');
+    select(Math.max(0, fromHash()), { hash: false, animate: false });
+    onLang.push(placeInk);
+    if ('ResizeObserver' in window) new ResizeObserver(placeInk).observe(list);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(placeInk);
+
     return {
-      measure() {
-        const r = stage.getBoundingClientRect();
-        box.x = r.left + window.scrollX + r.width / 2;
-        box.y = r.top + window.scrollY + r.height / 2;
-        box.w = Math.max(1, r.width * 0.9);
-        box.h = Math.max(1, r.height * 0.9);
+      onChange(fn) {
+        hooks.push(fn);
+        fn(panels[current].id);
       },
     };
-  })();
+  }
 
-  /* ======================================================================
-     6. The noir scene: rain + a magnifier that reveals hidden clues
-     ====================================================================== */
+  /* Rain over the noir scene */
   function initRain() {
-    const canvas = $('#caseRain');
-    const host = $('#caseArt');
+    const canvas = $('#sceneRain');
+    const host = $('#scene');
     if (!canvas || !host || !canvas.getContext) return;
     const ctx = canvas.getContext('2d');
     let W = 0;
@@ -712,7 +829,7 @@ void main(){
           ctx.moveTo(d.x, d.y);
           ctx.lineTo(d.x - d.l * 0.16, d.y - d.l);
         }
-        ctx.strokeStyle = far ? 'rgba(170, 178, 215, 0.2)' : 'rgba(214, 218, 240, 0.36)';
+        ctx.strokeStyle = far ? 'rgba(150, 175, 235, 0.2)' : 'rgba(205, 220, 255, 0.36)';
         ctx.lineWidth = far ? 1 : 1.5;
         ctx.stroke();
       }
@@ -722,10 +839,11 @@ void main(){
       W = host.clientWidth;
       H = host.clientHeight;
       if (!W || !H) return;
-      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width = Math.round(W * dpr);
-      canvas.height = Math.round(H * dpr);
-      const n = Math.round(Math.min(170, (W * H) / 4000));
+      // thin streaks look the same at 1x, and it keeps the canvas small on sharp screens
+      dpr = 1;
+      canvas.width = W;
+      canvas.height = H;
+      const n = Math.round(Math.min(120, (W * H) / 5200));
       drops = Array.from({ length: n }, () => make(true));
       draw(0);
     }
@@ -751,10 +869,11 @@ void main(){
     });
   }
 
+  /* A magnifier that reveals clues only visible through the lens */
   function initLens() {
-    const art = $('#caseArt');
-    const clues = $('#caseClues');
-    const lens = $('#caseLens');
+    const art = $('#scene');
+    const clues = $('#sceneClues');
+    const lens = $('#sceneLens');
     if (!art || !clues || !lens) return;
     let W = 0;
     let H = 0;
@@ -768,19 +887,20 @@ void main(){
     let visible = false;
     const t0 = performance.now();
 
+    let R = 0;
     const apply = () => {
-      clues.style.setProperty('--lx', `${x.toFixed(1)}px`);
-      clues.style.setProperty('--ly', `${y.toFixed(1)}px`);
-      lens.style.setProperty('--lxp', `${x.toFixed(1)}px`);
-      lens.style.setProperty('--lyp', `${y.toFixed(1)}px`);
+      const lx = (x - R).toFixed(1);
+      const ly = (y - R).toFixed(1);
+      lens.style.transform = `translate3d(${lx}px, ${ly}px, 0)`;
+      clues.style.transform = `translate3d(${-lx}px, ${-ly}px, 0)`;
     };
     const tick = (now) => {
       raf = 0;
       const still = mqReduce.matches;
       if (!hover && now > until && !still) {
         const s = (now - t0) / 1000;
-        tx = W * (0.52 + 0.3 * Math.sin(s * 0.33));
-        ty = H * (0.64 + 0.14 * Math.sin(s * 0.57 + 1));
+        tx = W * (0.46 + 0.3 * Math.sin(s * 0.33));
+        ty = H * (0.62 + 0.14 * Math.sin(s * 0.57 + 1));
       }
       const k = hover ? 0.3 : 0.07;
       x += (tx - x) * k;
@@ -794,13 +914,18 @@ void main(){
     const size = () => {
       W = art.clientWidth;
       H = art.clientHeight;
+      if (!W || !H) return;
+      R = lens.offsetWidth / 2;
+      clues.style.width = `${W}px`;
+      clues.style.height = `${H}px`;
       if (!x) {
-        x = tx = W * 0.62;
-        y = ty = H * 0.72;
+        x = tx = W * 0.58;
+        y = ty = H * 0.7;
       }
       x = clamp(x, 0, W);
       y = clamp(y, 0, H);
       apply();
+      lens.classList.add('is-ready');
     };
     const point = (e) => {
       const r = art.getBoundingClientRect();
@@ -831,118 +956,8 @@ void main(){
     });
   }
 
-  /* ======================================================================
-     7. How to play: a winding level-map path that fills as you scroll
-     ====================================================================== */
-  const map = (() => {
-    const el = $('#map');
-    if (!el) return null;
-    const svg = $('.map__svg', el);
-    const track = $('.map__track', el);
-    const prog = $('.map__progress', el);
-    const steps = $$('.step', el);
-    const nodes = $$('.step__node', el);
-    let len = 0;
-    let fracs = [];
-    let ready = false;
-
-    const cubicLen = (a, b, c, d) => {
-      let L = 0;
-      let px = a[0];
-      let py = a[1];
-      for (let i = 1; i <= 20; i++) {
-        const s = i / 20;
-        const m = 1 - s;
-        const x = m * m * m * a[0] + 3 * m * m * s * b[0] + 3 * m * s * s * c[0] + s * s * s * d[0];
-        const y = m * m * m * a[1] + 3 * m * m * s * b[1] + 3 * m * s * s * c[1] + s * s * s * d[1];
-        L += Math.hypot(x - px, y - py);
-        px = x;
-        py = y;
-      }
-      return L;
-    };
-    const quadLen = (a, c, b) => cubicLen(a, [a[0] + (2 / 3) * (c[0] - a[0]), a[1] + (2 / 3) * (c[1] - a[1])], [b[0] + (2 / 3) * (c[0] - b[0]), b[1] + (2 / 3) * (c[1] - b[1])], b);
-    const pt = (p) => `${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
-
-    function layout() {
-      const mr = el.getBoundingClientRect();
-      if (!mr.width || nodes.length < 2) return;
-      const pts = nodes.map((n) => {
-        const r = n.getBoundingClientRect();
-        return [r.left + r.width / 2 - mr.left, r.top + r.height / 2 - mr.top];
-      });
-      const boxes = steps.map((s) => s.getBoundingClientRect());
-      const vertical = Math.abs(pts[1][1] - pts[0][1]) > Math.abs(pts[1][0] - pts[0][0]);
-      let d = `M${pt(pts[0])}`;
-      const cum = [0];
-      for (let i = 1; i < pts.length; i++) {
-        const a = pts[i - 1];
-        const b = pts[i];
-        let seg;
-        let segLen;
-        if (vertical) {
-          // a soft S-curve that stays inside the node column
-          const c1 = [a[0], (a[1] + b[1]) / 2];
-          const c2 = [b[0], (a[1] + b[1]) / 2];
-          seg = ` C${pt(c1)} ${pt(c2)} ${pt(b)}`;
-          segLen = cubicLen(a, c1, c2, b);
-        } else {
-          // side by side: run along the node row and turn in the gap between columns
-          const gx = (boxes[i - 1].right + boxes[i].left) / 2 - mr.left;
-          const dy = b[1] - a[1];
-          const dir = Math.sign(dy) || 1;
-          const r = Math.max(0, Math.min(26, Math.abs(dy) / 2, gx - a[0] - 2, b[0] - gx - 2));
-          const p1 = [gx - r, a[1]];
-          const k1 = [gx, a[1]];
-          const p2 = [gx, a[1] + dir * r];
-          const p3 = [gx, b[1] - dir * r];
-          const k2 = [gx, b[1]];
-          const p4 = [gx + r, b[1]];
-          seg = ` L${pt(p1)} Q${pt(k1)} ${pt(p2)} L${pt(p3)} Q${pt(k2)} ${pt(p4)} L${pt(b)}`;
-          segLen = (p1[0] - a[0]) + quadLen(p1, k1, p2) + Math.abs(p3[1] - p2[1]) + quadLen(p3, k2, p4) + (b[0] - p4[0]);
-        }
-        d += seg;
-        cum.push(cum[i - 1] + segLen);
-      }
-      const total = cum[cum.length - 1] || 1;
-      fracs = cum.map((v) => v / total);
-      svg.setAttribute('viewBox', `0 0 ${mr.width.toFixed(1)} ${mr.height.toFixed(1)}`);
-      track.setAttribute('d', d);
-      prog.setAttribute('d', d);
-      len = prog.getTotalLength ? prog.getTotalLength() : total;
-      prog.style.strokeDasharray = `${len} ${len}`;
-      ready = true;
-      if (mqReduce.matches) {
-        prog.style.strokeDashoffset = '0';
-        el.classList.remove('is-live');
-        return;
-      }
-      el.classList.add('is-live');
-      paint(measure());
-    }
-
-    function measure() {
-      if (!ready) return null;
-      const r = el.getBoundingClientRect();
-      return { top: r.top, height: r.height, vh: window.innerHeight };
-    }
-
-    function paint(box) {
-      if (!box || mqReduce.matches) return;
-      const raw = (box.vh * 0.74 - box.top) / box.height;
-      const p = clamp(raw, 0, 1);
-      prog.style.strokeDashoffset = String(len * (1 - p));
-      steps.forEach((s, i) => s.classList.toggle('is-on', raw >= fracs[i] - 0.001));
-    }
-
-    return { layout, measure, paint };
-  })();
-
-  /* ======================================================================
-     8. Feature cards: one illustration plays at a time on desktop (the
-        hovered card, otherwise each card in turn); touch screens play the
-        one or two cards that are on screen. Everything else stays paused.
-     ====================================================================== */
+  /* Feature cards: one drawing plays at a time on desktop (the hovered card,
+     otherwise each card in turn); touch screens play the cards on screen. */
   function initFeats() {
     const cards = $$('.feat');
     if (!cards.length) return;
@@ -997,79 +1012,161 @@ void main(){
     if (fine.addEventListener) fine.addEventListener('change', sync);
   }
 
-  /* ======================================================================
-     9. Pause looping CSS animations while their part of the page is off-screen
-     ====================================================================== */
-  function initPausing() {
-    if (!hasIO) return;
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => en.target.classList.toggle('fx-paused', !en.isIntersecting));
-    }, { rootMargin: '120px 0px' });
-    [$('.hero'), $('.ticker'), $('#studioStage')].filter(Boolean).forEach((el) => io.observe(el));
-  }
+  /* How to play: a winding level-map path that draws itself when the tab opens */
+  const map = (() => {
+    const el = $('#map');
+    if (!el) return null;
+    const svg = $('.map__svg', el);
+    const track = $('.map__track', el);
+    const prog = $('.map__progress', el);
+    const steps = $$('.step', el);
+    const nodes = $$('.step__node', el);
+    let len = 0;
+    let fracs = [];
+    let timers = [];
+    let played = false;
 
-  /* ======================================================================
-     10. Small things: store links, copy e-mail, share, footer year
-     ====================================================================== */
-  const toastEl = $('#toast');
-  let toastTimer = 0;
-  function toast(msg) {
-    if (!toastEl) return;
-    toastEl.textContent = msg;
-    toastEl.classList.add('is-show');
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => toastEl.classList.remove('is-show'), 2400);
-  }
-
-  function copyText(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
-    return Promise.reject(new Error('no clipboard'));
-  }
-
-  function initCopy() {
-    const btn = $('#copyMail');
-    const addr = $('#mailAddr');
-    if (!btn || !addr) return;
-    const selectAddr = () => {
-      const sel = window.getSelection();
-      const range = document.createRange();
-      range.selectNodeContents(addr);
-      sel.removeAllRanges();
-      sel.addRange(range);
-      toast(t('ct.select'));
+    const cubicLen = (a, b, c, d) => {
+      let L = 0;
+      let px = a[0];
+      let py = a[1];
+      for (let i = 1; i <= 20; i++) {
+        const s = i / 20;
+        const m = 1 - s;
+        const x = m * m * m * a[0] + 3 * m * m * s * b[0] + 3 * m * s * s * c[0] + s * s * s * d[0];
+        const y = m * m * m * a[1] + 3 * m * m * s * b[1] + 3 * m * s * s * c[1] + s * s * s * d[1];
+        L += Math.hypot(x - px, y - py);
+        px = x;
+        py = y;
+      }
+      return L;
     };
-    btn.addEventListener('click', () => {
-      copyText(addr.textContent.trim()).then(() => toast(t('ct.copied')), selectAddr);
-    });
-  }
+    const quadLen = (a, c, b) => cubicLen(a, [a[0] + (2 / 3) * (c[0] - a[0]), a[1] + (2 / 3) * (c[1] - a[1])], [b[0] + (2 / 3) * (c[0] - b[0]), b[1] + (2 / 3) * (c[1] - b[1])], b);
+    const pt = (p) => `${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
 
-  function initShare() {
-    const btn = $('#shareBtn');
-    if (!btn) return;
-    const canonical = $('link[rel="canonical"]');
-    btn.addEventListener('click', () => {
-      const url = canonical ? canonical.href : window.location.href.split('#')[0];
-      const data = { title: document.title, text: t('share.text'), url };
-      if (navigator.share) {
-        navigator.share(data).catch(() => { /* closed by the visitor */ });
+    function layout() {
+      const mr = el.getBoundingClientRect();
+      if (!mr.width || nodes.length < 2) return false;
+      const pts = nodes.map((n) => {
+        const r = n.getBoundingClientRect();
+        return [r.left + r.width / 2 - mr.left, r.top + r.height / 2 - mr.top];
+      });
+      const boxes = steps.map((s) => s.getBoundingClientRect());
+      const vertical = Math.abs(pts[1][1] - pts[0][1]) > Math.abs(pts[1][0] - pts[0][0]);
+      let d = `M${pt(pts[0])}`;
+      const cum = [0];
+      for (let i = 1; i < pts.length; i++) {
+        const a = pts[i - 1];
+        const b = pts[i];
+        let seg;
+        let segLen;
+        if (vertical) {
+          const c1 = [a[0], (a[1] + b[1]) / 2];
+          const c2 = [b[0], (a[1] + b[1]) / 2];
+          seg = ` C${pt(c1)} ${pt(c2)} ${pt(b)}`;
+          segLen = cubicLen(a, c1, c2, b);
+        } else {
+          // side by side: run along the node row and turn in the gap between columns
+          const gx = (boxes[i - 1].right + boxes[i].left) / 2 - mr.left;
+          const dy = b[1] - a[1];
+          const dir = Math.sign(dy) || 1;
+          const r = Math.max(0, Math.min(24, Math.abs(dy) / 2, gx - a[0] - 2, b[0] - gx - 2));
+          const p1 = [gx - r, a[1]];
+          const k1 = [gx, a[1]];
+          const p2 = [gx, a[1] + dir * r];
+          const p3 = [gx, b[1] - dir * r];
+          const k2 = [gx, b[1]];
+          const p4 = [gx + r, b[1]];
+          seg = ` L${pt(p1)} Q${pt(k1)} ${pt(p2)} L${pt(p3)} Q${pt(k2)} ${pt(p4)} L${pt(b)}`;
+          segLen = (p1[0] - a[0]) + quadLen(p1, k1, p2) + Math.abs(p3[1] - p2[1]) + quadLen(p3, k2, p4) + (b[0] - p4[0]);
+        }
+        d += seg;
+        cum.push(cum[i - 1] + segLen);
+      }
+      const total = cum[cum.length - 1] || 1;
+      fracs = cum.map((v) => v / total);
+      svg.setAttribute('viewBox', `0 0 ${mr.width.toFixed(1)} ${mr.height.toFixed(1)}`);
+      track.setAttribute('d', d);
+      prog.setAttribute('d', d);
+      len = prog.getTotalLength ? prog.getTotalLength() : total;
+      prog.style.strokeDasharray = `${len} ${len}`;
+      if (played || mqReduce.matches) {
+        prog.style.transition = 'none';
+        prog.style.strokeDashoffset = '0';
+      }
+      return true;
+    }
+
+    function play() {
+      timers.forEach(clearTimeout);
+      timers = [];
+      if (!layout()) return;
+      played = true;
+      if (mqReduce.matches) {
+        el.classList.remove('is-live');
         return;
       }
-      copyText(url).then(() => toast(t('share.copied')), () => toast(t('share.fail') + url));
-    });
+      const dur = 1800;
+      el.classList.add('is-live');
+      steps.forEach((s) => s.classList.remove('is-on'));
+      prog.style.transition = 'none';
+      prog.style.strokeDashoffset = String(len);
+      void prog.getBoundingClientRect();
+      prog.style.transition = `stroke-dashoffset ${dur}ms cubic-bezier(0.45, 0, 0.25, 1)`;
+      prog.style.strokeDashoffset = '0';
+      steps.forEach((s, i) => {
+        timers.push(setTimeout(() => s.classList.add('is-on'), Math.max(0, fracs[i] * dur - 60)));
+      });
+    }
+
+    if ('ResizeObserver' in window) {
+      let pending = false;
+      new ResizeObserver(() => {
+        if (pending || !played) return;
+        pending = true;
+        requestAnimationFrame(() => { pending = false; layout(); });
+      }).observe(el);
+    }
+    onLang.push(() => { if (played) layout(); });
+    return { play };
+  })();
+
+  function initGame() {
+    const tabs = initTabs();
+    initRain();
+    initLens();
+    initFeats();
+    if (tabs && map) {
+      tabs.onChange((id) => {
+        if (id === 'nasil-oynanir') requestAnimationFrame(() => map.play());
+      });
+    }
   }
 
-  function initStoreLinks() {
-    let any = false;
-    $$('[data-store]').forEach((a) => {
-      const url = STORE_LINKS[a.dataset.store];
-      if (!url) return;
-      any = true;
-      a.href = url;
-      a.hidden = false;
-      const wrap = a.closest('[data-store-wrap]');
-      if (wrap) wrap.hidden = false;
-    });
-    root.classList.toggle('has-store', any);
+  /* ======================================================================
+     7. About: the emblem leans towards the pointer
+     ====================================================================== */
+  function initAbout() {
+    const stage = $('#aboutStage');
+    const zone = $('.about__grid');
+    if (!stage || !zone) return;
+    const aimAt = parallax(stage);
+    const box = { x: 0, y: 0, w: 1, h: 1 };
+    const measure = () => {
+      const r = stage.getBoundingClientRect();
+      box.x = r.left + r.width / 2;
+      box.y = r.top + r.height / 2;
+      box.w = Math.max(1, r.width * 0.9);
+      box.h = Math.max(1, r.height * 0.9);
+    };
+    measure();
+    window.addEventListener('resize', measure);
+    $('.page').addEventListener('scroll', measure, { passive: true });
+    zone.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse' || mqReduce.matches) return;
+      aimAt(clamp((e.clientX - box.x) / box.w, -1, 1), clamp((e.clientY - box.y) / box.h, -1, 1));
+    }, { passive: true });
+    zone.addEventListener('pointerleave', () => aimAt(0, 0));
   }
 
   /* ======================================================================
@@ -1088,54 +1185,25 @@ void main(){
 
   $$('[data-year]').forEach((el) => { el.textContent = String(new Date().getFullYear()); });
 
-  initStoreLinks();
-  initScrollSpy();
-  initHeroPointer();
-  initRain();
-  initLens();
+  initGamesMenu();
+  initStores();
   initCopy();
   initShare();
-  initFeats();
-  initPausing();
+  if (page === 'home') initHome();
+  if (page === 'game') initGame();
+  if (page === 'about') initAbout();
 
-  if (hasIO && hero) {
-    new IntersectionObserver((entries) => {
-      heroVisible = entries[entries.length - 1].isIntersecting;
-      if (!shader) return;
-      if (heroVisible) shader.start();
-      else shader.stop();
-    }).observe(hero);
-  } else if (shader) {
-    shader.start();
-  }
-
-  document.addEventListener('visibilitychange', () => {
-    if (!shader) return;
-    if (document.hidden) shader.stop();
-    else shader.start();
-  });
-
-  const relayout = () => {
-    if (hero) heroBottom = hero.getBoundingClientRect().bottom + window.scrollY;
-    if (shader) shader.measure();
-    if (studioTilt) studioTilt.measure();
-    if (map) map.layout();
-    scrollFrame();
-  };
-  if ('ResizeObserver' in window) {
+  if (shader) {
     let pending = false;
-    new ResizeObserver(() => {
+    const relayout = () => {
       if (pending) return;
       pending = true;
       requestAnimationFrame(() => {
         pending = false;
-        relayout();
+        shader.measure();
       });
-    }).observe(document.body);
-  } else {
+    };
     window.addEventListener('resize', relayout);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
   }
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(relayout);
-
-  relayout();
 })();
