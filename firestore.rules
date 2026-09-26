@@ -1,0 +1,202 @@
+rules_version = '2';
+
+// Detective on Duty — Firestore güvenlik kuralları
+//
+// Firebase Console ▸ Firestore Database ▸ Rules ekranına bu dosyanın içeriğini yapıştır ve
+// "Publish" de. Kurallar yayımlanana kadar veritabanı ya herkese açıktır ya da hiç kimseye —
+// ikisi de yanlıştır.
+//
+// ---------------------------------------------------------------------------------------------
+// Sunucuda ne var
+// ---------------------------------------------------------------------------------------------
+//
+// Kayıt cihazda durur. Sunucuya çıkan tek şey oyuncunun kim olduğu ve bu haftaki puanı:
+//
+//   users/{uid}                    Oyuncu kartı. Authentication'daki anonim kaydın karşılığı.
+//   handles/{ad}                   Kullanıcı adı rezervasyonu. Sahibinin uid'si içinde.
+//   boards/{hafta}/players/{uid}   Haftalık tablo satırı.
+//
+// Üçü de aynı uid ile anahtarlanır — Authentication ekranında gördüğün o anonim kimlik. Bu
+// bilerek böyle: Authentication'da bir satır görüp "bu kim?" diyebilmek için users/{uid}'ye
+// bakman yeterli, elinde ad varsa handles/{ad} sana uid'yi verir. İki yön de tek okumada çalışır.
+//
+// ---------------------------------------------------------------------------------------------
+// Yönetici alanları
+// ---------------------------------------------------------------------------------------------
+//
+// users/{uid} içinde iki alana oyuncu ASLA dokunamaz — Console'dan ya da Admin SDK'dan yazılır:
+//
+//   blocked   true ise oyuncu tabloya yazamaz ve ad alamaz. Kural motoru bunu kendisi denetler,
+//             yani engel istemciye güvenmez: APK'yı sökse de yazamaz.
+//   gift      {"id": "...", "gems": 50} gibi. İstemci okur, elması verir ve id'yi giftClaimed'a
+//             yazar. gift'i silemez — silmesi de gerekmez, id değişmedikçe bir daha vermez.
+//
+// Yönetici olarak bir oyuncuya hediye vermek: users/{uid} belgesine
+//   gift: { id: "2026-09-yilbasi", gems: 50 }
+// yaz. Aynı hediyeyi tekrar vermek için id'yi değiştir. Engellemek: blocked: true.
+//
+// ---------------------------------------------------------------------------------------------
+// Kural yazarken dikkat
+// ---------------------------------------------------------------------------------------------
+//
+// Her koleksiyonda alan listesi, tip ve aralık denetlenir. Puan cihazda hesaplandığı için bu
+// kurallar hileyi tamamen kapatmaz — üst sınırı ve şekli tutar. Tablo bir gün ödül dağıtırsa
+// hesabın sunucuya taşınması gereken ilk yer orasıdır.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Bu oyuncu engellenmiş mi. Tek belge okuması; sadece yazma yollarında çağrılır, okuma
+    // yollarında değil — engelli bir oyuncu tabloyu görmeye devam eder, sadece giremez.
+    // Bu oyuncu engellenmiş mi.
+    //
+    // .data.get('blocked', false) — düz .data.blocked DEĞİL. Kural dilinde var olmayan bir alana
+    // nokta ile erişmek null döndürmez, kuralı hataya düşürür; hataya düşen kural da reddeder.
+    // blocked alanı yalnızca engellediğin oyuncularda bulunduğu için, düz erişim yazıldığında
+    // kartı olan HER normal oyuncunun ad alması ve tabloya yazması reddediliyordu — "bu ad
+    // alınmış" hatasının kaynağı buydu. get(...) ikinci parametresiyle varsayılan verir ve
+    // alanın yokluğu doğal olarak "engelli değil" anlamına gelir.
+    function notBlocked() {
+      return !exists(/databases/$(database)/documents/users/$(request.auth.uid))
+          || get(/databases/$(database)/documents/users/$(request.auth.uid))
+               .data.get('blocked', false) != true;
+    }
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function isMe(uid) {
+      return signedIn() && request.auth.uid == uid;
+    }
+
+    // -----------------------------------------------------------------------------------------
+    // users/{uid} — Authentication'daki anonim kaydın insan tarafı
+    // -----------------------------------------------------------------------------------------
+    //
+    // Oyuncu yalnızca kendi kartını görür ve yazar. Başkasının kartını okumak yok: sıralamada
+    // görünmesi gereken ne varsa zaten boards altında, herkese açık. Burası kimlik bilgisi.
+    match /users/{uid} {
+
+      allow read: if isMe(uid);
+
+      // İlk yazımda oyuncunun yazabileceği alanlar. blocked ve gift listede yok, yani oyuncu
+      // kendini engelsiz ilan edemez ve kendine hediye yazamaz.
+      allow create: if isMe(uid)
+                   && request.resource.data.keys().hasOnly(
+                        ['handle', 'name', 'rank', 'face', 'badge', 'created', 'seen',
+                         'giftClaimed'])
+                   && request.resource.data.handle is string
+                   && request.resource.data.handle.size() >= 3
+                   && request.resource.data.handle.size() <= 20
+                   && request.resource.data.rank is int
+                   && request.resource.data.rank >= 1
+                   && request.resource.data.rank <= 1000
+                   && request.resource.data.face is int
+                   && request.resource.data.face >= 0
+                   && request.resource.data.face <= 200;
+
+      // Sonraki yazımlarda yalnızca değişmesi meşru olan alanlar değişebilir.
+      //
+      // diff().affectedKeys() bu kuralın tamamı: oyuncu belgeyi baştan yazsa bile, dokunduğu
+      // alan listesi bu değilse yazma reddedilir. blocked ve gift bu listede olmadığı için
+      // istemci onlara asla dokunamaz — ne yazabilir ne de silebilir. created de listede yok,
+      // yani hesabın açılış tarihi geriye çekilemez.
+      allow update: if isMe(uid)
+                   && request.resource.data.diff(resource.data).affectedKeys().hasOnly(
+                        ['handle', 'name', 'rank', 'face', 'badge', 'seen', 'giftClaimed'])
+                   && request.resource.data.handle is string
+                   && request.resource.data.handle.size() >= 3
+                   && request.resource.data.handle.size() <= 20
+                   && request.resource.data.rank is int
+                   && request.resource.data.rank >= 1
+                   && request.resource.data.rank <= 1000
+                   && request.resource.data.face is int
+                   && request.resource.data.face >= 0
+                   && request.resource.data.face <= 200;
+
+      // Hesabını silen oyuncu kartını da götürür. KVKK/GDPR tarafı burada: oyuncu sunucudaki
+      // kendi kaydını kendi silebiliyor.
+      allow delete: if isMe(uid);
+    }
+
+    // -----------------------------------------------------------------------------------------
+    // handles/{ad} — kullanıcı adı rezervasyonu
+    // -----------------------------------------------------------------------------------------
+    //
+    // Buradaki bütün mekanizma tek satırda: create var, update yok. Firestore var olan bir
+    // belgeye create'i reddeder, dolayısıyla aynı adı aynı anda yazan iki oyuncudan ikincisi
+    // sunucu tarafından geri çevrilir. Önce oku sonra yaz yarışı yok, transaction gerekmiyor —
+    // hakemlik sunucunun kendisinde.
+    //
+    // Silme yalnızca sahibine: hesabını silen oyuncu adını da geri bırakır, yoksa o ad sonsuza
+    // kadar — kendisi dâhil kimsenin alamayacağı şekilde — kilitli kalır.
+    match /handles/{handle} {
+
+      // Ad müsait mi sorusunu giriş yapmış herkes sorabilir. Zaten sıralamada görünen bir bilgi.
+      allow read: if signedIn();
+
+      allow create: if signedIn()
+                   && notBlocked()
+                   && request.resource.data.keys().hasOnly(['uid', 'claimed'])
+                   && request.resource.data.uid is string
+                   && request.resource.data.uid == request.auth.uid;
+
+      allow delete: if signedIn() && resource.data.uid == request.auth.uid;
+    }
+
+    // -----------------------------------------------------------------------------------------
+    // boards/{hafta}/players/{uid} — haftalık tablo
+    // -----------------------------------------------------------------------------------------
+    match /boards/{week}/players/{uid} {
+
+      // Tabloyu giriş yapmış herkes okur. Sıralama zaten herkese gösterilen bir şey.
+      allow read: if signedIn();
+
+      // Yazma yalnızca kendi satırına, ve yalnızca engellenmemişse.
+      //
+      // Engel kontrolü burada, kuralda: istemcide de var ama istemciye güvenilmez. Bir yazma
+      // başına bir belge okuması eder — dosya kapanınca bir kez olan bir şey için kabul
+      // edilebilir bir maliyet, ve engelin gerçekten engel olmasının tek yolu.
+      allow create, update: if isMe(uid)
+                   && notBlocked()
+                   && request.resource.data.keys().hasOnly(
+                        ['name', 'score', 'level', 'face', 'updated'])
+                   && request.resource.data.name is string
+                   && request.resource.data.name.size() >= 3
+                   && request.resource.data.name.size() <= 20
+                   && request.resource.data.score is int
+                   && request.resource.data.score >= 0
+                   && request.resource.data.score <= 40000
+                   && request.resource.data.level is int
+                   && request.resource.data.level >= 1
+                   && request.resource.data.level <= 1000
+                   && request.resource.data.face is int
+                   && request.resource.data.face >= 0
+                   && request.resource.data.face <= 200
+
+                   // Zaman damgası sunucunun kendi saati olmak zorunda.
+                   //
+                   // İstemci burayı serbestçe yazabilseydi satırını geleceğe ya da geçmişe
+                   // tarihleyebilirdi; tablo puana göre sıralanıyor olsa da "en son ne zaman
+                   // oynadı" alanı bir gün eşitlik bozmak ya da eski satırları temizlemek için
+                   // kullanılacak, ve o gün yalan söylenebilen bir alan olmamalı.
+                   && request.resource.data.updated == request.time;
+
+      // Silme tek bir durumda: oyuncu hesabını siler ve satırı da gitmelidir. Yalnızca kendi
+      // satırını silebilir — başkasını tablodan düşürmek mümkün değil.
+      //
+      // Engel kontrolü yok: engellenmiş bir oyuncunun tablodan çekilmesi istenen şeydir.
+      //
+      // İstemci hesabı silinirken bu haftanın VE geçen haftanın satırını siler; geçen hafta da
+      // silinir çünkü skor ekranında "geçen haftanın birincisi" kartı o haftayı okur ve silinmiş
+      // bir hesabın orada şampiyon olarak durması istenmez. Bkz. FirebaseLeaderboard.Withdraw.
+      allow delete: if isMe(uid);
+    }
+
+    // Başka hiçbir yol yok. Yeni bir koleksiyon eklenirse kuralı da buraya yazılır; varsayılan
+    // her şeyin kapalı olmasıdır.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

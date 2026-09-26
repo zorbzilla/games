@@ -1,0 +1,53 @@
+# Unity'nin kendi ürettikleri. Hiçbiri kaynak değildir; silinse yeniden üretilir.
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+/[Rr]ecordings/
+
+# IL2CPP ve Burst derlemesinden artan klasörler. İkisinin de adı ne olduklarını söylüyor.
+/*_BackUpThisFolder_ButDontShipItWithYourGame/
+/*_BurstDebugInformation_DoNotShip/
+
+# Visual Studio / Rider / VS Code
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb.meta
+*.opendb
+*.VC.db
+
+# Araçların çıktıları. Hepsi bir menü komutuyla yeniden üretilir.
+/ScreenShots/
+/music-waveform.png
+/portrait-sheet.png
+*.log
+run.out
+
+# Crashlytics
+crashlytics-build.properties
+
+# İmzalama. Keystore ve parolalar asla depoya girmez — ReleaseBuild bunları
+# ortam değişkeninden okur (DOD_KEYSTORE, DOD_KEYSTORE_PASS, DOD_KEY_ALIAS,
+# DOD_KEY_PASS), tam da bu yüzden.
+*.keystore
+*.jks
+/keystore.properties
+
+# İşletim sistemi
+.DS_Store
+Thumbs.db
+desktop.ini
