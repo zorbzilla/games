@@ -1,9 +1,12 @@
-# İşletim sistemi dosyaları
+# Operating system files
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# İmzalama anahtarları bu depoya asla girmez (site herkese açık yayınlanıyor)
+# Signing keys never go into this repository (the site is published publicly)
 *.keystore
 *.jks
 keystore.properties
+
+# Build tools
+node_modules/

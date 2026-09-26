@@ -1,0 +1,13 @@
+{
+  "name": "quup-games-site",
+  "private": true,
+  "description": "QuUp Games website. Readable sources live in src/; the built, compressed site is written to the repository root.",
+  "scripts": {
+    "build": "python3 src/build.py && node src/tools/minify.mjs"
+  },
+  "devDependencies": {
+    "html-minifier-terser": "^7.2.0",
+    "javascript-obfuscator": "^5.0.0",
+    "lightningcss": "^1.30.0"
+  }
+}

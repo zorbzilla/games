@@ -1,0 +1,8 @@
+# GitHub Pages publishes only the built site. The readable sources and the
+# build tooling stay in the repository but are never served.
+exclude:
+  - src
+  - README.md
+  - package.json
+  - package-lock.json
+  - node_modules
