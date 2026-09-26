@@ -48,80 +48,90 @@
     'aria.mainnav': 'Main menu',
     'aria.gamesMenu': 'Games menu',
     'aria.lang': 'Change language: Turkish or English',
+    'aria.crumbs': 'You are here',
     'nav.home': 'Home',
     'nav.about': 'About us',
     'nav.games': 'Games',
-    'nav.privacy': 'Privacy',
     'nav.contact': 'Contact',
-    'menu.gameSub': 'Detective · Android',
     'menu.new': 'New',
-    'tab.overview': 'Overview',
-    'tab.features': 'Features',
-    'tab.how': 'How to play',
-    'tab.cases': 'Cases',
+    'menu.all': 'All games',
     'store.gpSmall': 'For Android',
     'store.asSmall': 'For iPhone',
     'store.soon': 'Coming soon',
-    'ft.slogan': 'Your next adventure is queued up.',
     'ft.rights': 'All rights reserved.',
+    'dod.genre': 'Detective · Investigation',
+    'dod.blurb': 'Search the crime scene, question the suspects, connect the evidence on the board and make your call.',
 
     // home
     'home.new': 'Out now',
     'home.newText': 'Our first game is live',
     'home.tagline': 'Pin on your badge. The file is on your desk.',
-    'home.lead': 'Search the crime scene, question the suspects, catch the contradiction in their statements. 50 case files are waiting for you.',
+    'home.lead': 'Search the crime scene, question the suspects, catch the contradiction in their statements. The final call is yours.',
     'home.explore': 'Explore the game',
-    'fact.cases': 'case files',
     'fact.weekly': 'Weekly leaderboard',
+    'fact.rank': 'Climb the ranks',
     'fact.noacc': 'No account needed',
-    'phone.title': 'Case files',
-    'phone.solved': 'Solved',
     'tk.scene': 'CRIME SCENE',
     'tk.cross': 'DO NOT CROSS',
 
-    // game
+    // games list
+    'games.eyebrow': 'Games',
+    'games.title': 'Our games',
+    'games.lead': 'Games for your phone that stay with you. Every game we have released is here.',
+    'games.new': 'Out now',
+    'games.open': 'View the game',
+
+    // game page
     'game.new': 'Out now',
-    'game.desc': 'The precinct in your pocket: 50 case files, a weekly leaderboard and a rank waiting to climb. Search the scene, question the suspects, find the lie.',
+    'game.tagline': 'Every file hides a lie.',
+    'game.desc': 'The files are piling up at the precinct. Search the scene, question the suspects, connect the evidence on the board and make the final call.',
     'game.genreL': 'Genre',
     'game.genre': 'Detective, investigation',
-    'game.platformL': 'Platform',
-    'game.casesL': 'Cases',
-    'game.casesV': '50 files',
-    'game.devL': 'Developer',
-    'ov.hintMouse': 'Move the magnifier over the scene to find hidden clues.',
-    'ov.hintTouch': 'Tap anywhere and the magnifier follows.',
-    'game.tagline': 'Every file hides a lie.',
-    'case.tape': 'DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE',
-    'f1.t': 'Crime scene',
-    'f1.d': 'Search every corner. Every clue you find goes into the evidence log.',
-    'f2.t': 'Interrogation',
-    'f2.d': 'Confront statements with evidence. Balance pressure and trust.',
-    'f2.m1': 'PRESSURE',
-    'f2.m2': 'TRUST',
-    'f3.t': 'Deduction board',
-    'f3.d': 'Pin the clues and connect them. The right link leads to the right suspect.',
-    'f4.t': 'Contradictions',
-    'f4.d': 'Times, statements and evidence must line up. If not, someone is lying.',
-    'f5.t': 'Career',
-    'f5.d': 'Every file you close raises your rank and grows your reputation.',
-    'f6.t': 'Weekly leaderboard',
-    'f6.d': 'A new race every week. Climb past the other detectives.',
-    'f6.you': 'YOU',
-    'flow.lead': 'From the moment you open a file to the moment you close it, every step builds on the last.',
-    's1.t': 'Briefing',
-    's1.d': 'Open the file. Get to know the incident, the place and the people.',
-    's2.t': 'Crime scene',
-    's2.d': 'Gather the evidence. One small detail can change everything.',
-    's3.t': 'Interrogation',
-    's3.d': 'Hear the suspects out and confront their statements with evidence.',
-    's4.t': 'Deduction',
-    's4.d': 'Connect the clues on the board and expose the contradiction.',
-    's5.t': 'Verdict',
-    's5.d': 'Pick the culprit, write your report, close the file.',
+    'game.boardL': 'Leaderboard',
+    'game.board': 'Weekly',
+    'game.rankL': 'Career',
+    'game.rank': 'From Candidate Detective to Special Unit Chief',
+    'tab.play': 'Gameplay',
+    'tab.cases': 'Cases',
+    'tab.privacy': 'Privacy',
+    'p1.t': 'Precinct',
+    'p1.d': 'Open files are waiting for you. Pick one and close it before the deadline runs out.',
+    'p1.alt': 'Screenshot from the game: the case list',
+    'p2.t': 'Briefing',
+    'p2.d': 'Open the file and learn what happened: suspects, witnesses, locations.',
+    'p2.alt': 'Screenshot from the game: a case briefing',
+    'p3.t': 'Crime scene',
+    'p3.d': 'Search the spots one by one. Every piece of evidence you find goes into the file.',
+    'p3.alt': 'Screenshot from the game: searching the crime scene',
+    'p4.t': 'People',
+    'p4.d': 'The suspects and the witnesses. You choose who to talk to.',
+    'p4.alt': 'Screenshot from the game: suspects and witnesses',
+    'p5.t': 'Interrogation',
+    'p5.d': 'Keep pressure and trust in balance. Be direct, kind or tough, and show the evidence when the time is right.',
+    'p5.alt': 'Screenshot from the game: an interrogation',
+    'p6.t': 'Board',
+    'p6.d': 'Lay out the evidence and events. Pick two cards; if they are connected, it goes into the file.',
+    'p6.alt': 'Screenshot from the game: the deduction board',
+    'p7.t': 'Decision',
+    'p7.d': 'Arrest, keep under watch or widen the investigation. If your evidence is thin, the prosecutor will see it too.',
+    'p7.alt': 'Screenshot from the game: the decision',
+    'p8.t': 'Career',
+    'p8.d': 'Every file you solve raises your rank, from Candidate Detective to Special Unit Chief.',
+    'p8.alt': 'Screenshot from the game: the career screen',
+    'case.1': 'The Missing Man',
+    'case.2': 'Broken Window',
+    'case.3': 'The Last Message',
+    'case.5': 'The Missing Bag',
+    'case.6': 'Room 307',
+    'case.7': 'Two Witnesses',
+    'case.8': 'The Crow',
     'files.tab': 'File',
     'files.stamp': 'Classified',
-    'files.more': 'more files in the archive',
-    'files.moreSub': 'All of them are waiting in the game.',
+    'files.more': 'New files on the way',
+    'files.moreSub': 'The archive keeps growing. New cases will be added to the game.',
+    'gp.title': 'Privacy in short',
+    'gp.sub': 'What Detective on Duty does with your data, and what it doesn’t.',
+    'gp.full': 'Full policy',
 
     // about
     'about.eyebrow': 'About us',
@@ -139,35 +149,35 @@
 
     // contact
     'ct.eyebrow': 'Contact',
-    'ct.title': 'Got a lead? Write to us.',
+    'ct.title': 'Write to us',
     'ct.lead': 'Support, feedback, press or partnerships. Pick the right address and we’ll get back to you faster.',
     'ct.supportT': 'Support',
-    'ct.supportD': 'Problems with the game, account deletion and purchases.',
+    'ct.supportD': 'Problems with our games, account deletion and purchases.',
     'ct.helloT': 'General and partnerships',
     'ct.helloD': 'Press, partnerships and any kind of hello.',
     'ct.copy': 'Copy address',
     'ct.send': 'Send an email',
-    'ct.shareT': 'Share this page',
-    'ct.shareD': 'Send the link to a friend.',
+    'ct.shareT': 'Share the site',
+    'ct.shareD': 'Send QuUp Games to a friend.',
     'ct.shareBtn': 'Share',
-    'ct.stores': 'Get the game',
 
-    // privacy
-    'priv.eyebrow': 'Privacy',
+    // privacy (Detective on Duty)
     'priv.title': 'Privacy policy',
     'priv.1': 'No account, email or ID needed.',
     'priv.2': 'Your save and progress are stored on your phone.',
     'priv.3': 'The leaderboard only shows your handle, score, rank and avatar.',
     'priv.4': 'You can delete your account and data from the Settings screen in the game.',
     'priv.note': 'The full, official policy is written in English.',
+    'priv.back': 'Back to the game',
   };
 
   const META_EN = {
     home: ['QuUp Games | Detective on Duty is out', 'Detective on Duty, the first game from QuUp Games, is out. Search the crime scene, question the suspects, catch the contradiction.'],
-    game: ['Detective on Duty | QuUp Games', 'Detective on Duty: 50 case files, an interrogation room, a deduction board and a weekly leaderboard. The new detective game from QuUp Games.'],
+    games: ['Games | QuUp Games', 'The games from QuUp Games. Our first game, Detective on Duty, is out now.'],
+    game: ['Detective on Duty | QuUp Games', 'Detective on Duty: crime scenes, interrogations, a deduction board and your final call. The new detective game from QuUp Games.'],
     about: ['About us | QuUp Games', 'QuUp Games is an independent mobile game studio. Our first game is Detective on Duty.'],
     contact: ['Contact | QuUp Games', 'Write to QuUp Games: support@quupgames.com for support, hello@quupgames.com for everything else.'],
-    privacy: ['Privacy Policy | QuUp Games', 'What Detective on Duty by QuUp Games does with data: no account needed, your save stays on your device.'],
+    privacy: ['Detective on Duty Privacy Policy | QuUp Games', 'What Detective on Duty by QuUp Games does with data: no account needed, your save stays on your device.'],
   };
 
   // Strings that only exist at runtime.
@@ -178,8 +188,8 @@
       'toast.copied': 'Adres kopyalandı',
       'toast.select': 'Adres seçildi, şimdi kopyalayabilirsin',
       'toast.gpSoon': 'Google Play bağlantısı çok yakında burada.',
-      'share.text': 'Detective on Duty: QuUp Games’in ilk oyunu.',
-      'share.copied': 'Sayfa bağlantısı kopyalandı',
+      'share.text': 'QuUp Games: telefonda oynanan, akılda kalan oyunlar.',
+      'share.copied': 'Bağlantı kopyalandı',
       'share.fail': 'Bağlantı: ',
     },
     en: {
@@ -188,8 +198,8 @@
       'toast.copied': 'Address copied',
       'toast.select': 'Address selected, ready to copy',
       'toast.gpSoon': 'The Google Play link is coming very soon.',
-      'share.text': 'Detective on Duty: the first game from QuUp Games.',
-      'share.copied': 'Page link copied',
+      'share.text': 'QuUp Games: games for your phone that stay with you.',
+      'share.copied': 'Link copied',
       'share.fail': 'Link: ',
     },
   };
@@ -206,6 +216,10 @@
   $$('[data-i18n-tip]').forEach((el) => {
     const k = el.dataset.i18nTip;
     if (!(k in TR)) TR[k] = el.dataset.tip || '';
+  });
+  $$('[data-i18n-alt]').forEach((el) => {
+    const k = el.dataset.i18nAlt;
+    if (!(k in TR)) TR[k] = el.getAttribute('alt') || '';
   });
   const metaDesc = $('meta[name="description"]');
   const META_TR = [document.title, metaDesc ? metaDesc.content : ''];
@@ -239,6 +253,10 @@
     $$('[data-i18n-tip]').forEach((el) => {
       const v = d[el.dataset.i18nTip];
       if (typeof v === 'string') el.dataset.tip = v;
+    });
+    $$('[data-i18n-alt]').forEach((el) => {
+      const v = d[el.dataset.i18nAlt];
+      if (typeof v === 'string') el.setAttribute('alt', v);
     });
     const meta = lang === 'en' ? META_EN[page] || META_TR : META_TR;
     document.title = meta[0];
@@ -395,7 +413,7 @@
     $$('[data-share]').forEach((btn) => {
       btn.addEventListener('click', () => {
         const canonical = $('link[rel="canonical"]');
-        const url = canonical ? canonical.href : window.location.href.split('#')[0];
+        const url = btn.dataset.share || (canonical ? canonical.href : window.location.href.split('#')[0]);
         const data = { title: document.title, text: t('share.text'), url };
         if (navigator.share) {
           navigator.share(data).catch(() => { /* closed by the visitor */ });
@@ -696,6 +714,31 @@ void main(){
     };
   })();
 
+  /* A phone that shows real screens from the game, one after another (only while it is on screen) */
+  function slideshow(box, every) {
+    const imgs = $$('img', box);
+    if (imgs.length < 2) return null;
+    let i = 0;
+    let timer = 0;
+    const show = (n) => {
+      imgs[i].classList.remove('is-on');
+      i = (n + imgs.length) % imgs.length;
+      const img = imgs[i];
+      // lazy images get fetched a step ahead, so the next screen is ready when its turn comes
+      const next = imgs[(i + 1) % imgs.length];
+      if (next.loading === 'lazy') next.loading = 'eager';
+      img.classList.add('is-on');
+    };
+    const run = (on) => {
+      clearInterval(timer);
+      timer = 0;
+      if (on && !mqReduce.matches) timer = setInterval(() => show(i + 1), every);
+    };
+    if (imgs[1].loading === 'lazy') imgs[1].loading = 'eager';
+    whileVisible(box, () => run(true), () => run(false));
+    return { show };
+  }
+
   function initHome() {
     const stage = $('#heroStage');
     if (!stage) return;
@@ -716,6 +759,8 @@ void main(){
       shader.start();
       document.addEventListener('visibilitychange', () => (document.hidden ? shader.stop() : shader.start()));
     }
+    const shots = $('#phone .shots');
+    if (shots) slideshow(shots, 3200);
   }
 
   /* ======================================================================
@@ -771,7 +816,11 @@ void main(){
       const next = step === 'first' ? 0 : step === 'last' ? tabs.length - 1 : (current + step + tabs.length) % tabs.length;
       select(next, { focus: true });
     });
-    const fromHash = () => panels.findIndex((p) => p && `#${p.id}` === window.location.hash);
+    const OLD = { '#genel': '#oynanis', '#ozellikler': '#oynanis', '#nasil-oynanir': '#oynanis' };
+    const fromHash = () => {
+      const h = OLD[window.location.hash] || window.location.hash;
+      return panels.findIndex((p) => p && `#${p.id}` === h);
+    };
     window.addEventListener('hashchange', () => {
       const i = fromHash();
       if (i >= 0) select(i, { hash: false });
@@ -791,356 +840,68 @@ void main(){
     };
   }
 
-  /* Rain over the noir scene */
-  function initRain() {
-    const canvas = $('#sceneRain');
-    const host = $('#scene');
-    if (!canvas || !host || !canvas.getContext) return;
-    const ctx = canvas.getContext('2d');
-    let W = 0;
-    let H = 0;
-    let dpr = 1;
-    let drops = [];
-    let running = false;
-    let raf = 0;
-    let last = 0;
-
-    const make = (anywhere) => ({
-      x: Math.random() * (W + 160) - 80,
-      y: anywhere ? Math.random() * H : -Math.random() * 120,
-      l: 12 + Math.random() * 22,
-      v: 720 + Math.random() * 520,
-      far: Math.random() < 0.55,
-    });
-
-    function draw(dt) {
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, W, H);
-      ctx.lineCap = 'round';
-      for (let pass = 0; pass < 2; pass++) {
-        const far = pass === 0;
-        ctx.beginPath();
-        for (const d of drops) {
-          if (d.far !== far) continue;
-          const v = d.v * (far ? 0.72 : 1);
-          d.y += v * dt;
-          d.x += v * dt * 0.16;
-          if (d.y - d.l > H) Object.assign(d, make(false));
-          ctx.moveTo(d.x, d.y);
-          ctx.lineTo(d.x - d.l * 0.16, d.y - d.l);
-        }
-        ctx.strokeStyle = far ? 'rgba(150, 175, 235, 0.2)' : 'rgba(205, 220, 255, 0.36)';
-        ctx.lineWidth = far ? 1 : 1.5;
-        ctx.stroke();
-      }
-    }
-
-    function resize() {
-      W = host.clientWidth;
-      H = host.clientHeight;
-      if (!W || !H) return;
-      // thin streaks look the same at 1x, and it keeps the canvas small on sharp screens
-      dpr = 1;
-      canvas.width = W;
-      canvas.height = H;
-      const n = Math.round(Math.min(120, (W * H) / 5200));
-      drops = Array.from({ length: n }, () => make(true));
-      draw(0);
-    }
-
-    function frame(now) {
-      if (!running) return;
-      const dt = Math.min((now - last) / 1000, 1 / 30);
-      last = now;
-      draw(dt);
-      raf = requestAnimationFrame(frame);
-    }
-
-    if ('ResizeObserver' in window) new ResizeObserver(resize).observe(host);
-    resize();
-    whileVisible(host, () => {
-      if (running || mqReduce.matches) return;
-      running = true;
-      last = performance.now();
-      raf = requestAnimationFrame(frame);
-    }, () => {
-      running = false;
-      cancelAnimationFrame(raf);
-    });
-  }
-
-  /* A magnifier that reveals clues only visible through the lens */
-  function initLens() {
-    const art = $('#scene');
-    const clues = $('#sceneClues');
-    const lens = $('#sceneLens');
-    if (!art || !clues || !lens) return;
-    let W = 0;
-    let H = 0;
-    let x = 0;
-    let y = 0;
-    let tx = 0;
-    let ty = 0;
-    let raf = 0;
-    let hover = false;
-    let until = 0;
-    let visible = false;
-    const t0 = performance.now();
-
-    let R = 0;
-    const apply = () => {
-      const lx = (x - R).toFixed(1);
-      const ly = (y - R).toFixed(1);
-      lens.style.transform = `translate3d(${lx}px, ${ly}px, 0)`;
-      clues.style.transform = `translate3d(${-lx}px, ${-ly}px, 0)`;
-    };
-    const tick = (now) => {
-      raf = 0;
-      const still = mqReduce.matches;
-      if (!hover && now > until && !still) {
-        const s = (now - t0) / 1000;
-        tx = W * (0.46 + 0.3 * Math.sin(s * 0.33));
-        ty = H * (0.62 + 0.14 * Math.sin(s * 0.57 + 1));
-      }
-      const k = hover ? 0.3 : 0.07;
-      x += (tx - x) * k;
-      y += (ty - y) * k;
-      apply();
-      const moving = Math.abs(tx - x) + Math.abs(ty - y) > 0.4;
-      if (visible && (!still || moving)) raf = requestAnimationFrame(tick);
-    };
-    const kick = () => { if (!raf && visible) raf = requestAnimationFrame(tick); };
-
-    const size = () => {
-      W = art.clientWidth;
-      H = art.clientHeight;
-      if (!W || !H) return;
-      R = lens.offsetWidth / 2;
-      clues.style.width = `${W}px`;
-      clues.style.height = `${H}px`;
-      if (!x) {
-        x = tx = W * 0.58;
-        y = ty = H * 0.7;
-      }
-      x = clamp(x, 0, W);
-      y = clamp(y, 0, H);
-      apply();
-      lens.classList.add('is-ready');
-    };
-    const point = (e) => {
-      const r = art.getBoundingClientRect();
-      tx = clamp(e.clientX - r.left, 0, r.width);
-      ty = clamp(e.clientY - r.top, 0, r.height);
-    };
-
-    art.addEventListener('pointermove', (e) => {
-      if (e.pointerType !== 'mouse') return;
-      point(e);
-      hover = true;
-      kick();
-    });
-    art.addEventListener('pointerleave', () => { hover = false; });
-    art.addEventListener('pointerdown', (e) => {
-      if (e.pointerType === 'mouse') return;
-      point(e);
-      until = performance.now() + 3500;
-      kick();
-    });
-
-    if ('ResizeObserver' in window) new ResizeObserver(size).observe(art);
-    size();
-    whileVisible(art, () => { visible = true; kick(); }, () => {
-      visible = false;
-      cancelAnimationFrame(raf);
-      raf = 0;
-    });
-  }
-
-  /* Feature cards: one drawing plays at a time on desktop (the hovered card,
-     otherwise each card in turn); touch screens play the cards on screen. */
-  function initFeats() {
-    const cards = $$('.feat');
-    if (!cards.length) return;
-    if (!hasIO) { cards.forEach((c) => c.classList.add('is-live')); return; }
-    const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
-    const seen = new Set();
-    let hovered = null;
-    let auto = null;
+  /* Gameplay: eight steps, each with its real screen in the phone. It moves on by
+     itself while the tab is open; a click (or hover) takes over. */
+  function initPlay() {
+    const box = $('#play');
+    if (!box) return null;
+    const steps = $$('.pstep', box);
+    const imgs = $$('.shots img', box);
+    if (!steps.length || steps.length !== imgs.length) return null;
+    let i = 0;
     let timer = 0;
+    let active = false; // the tab is open and the page is visible
+    let held = false;   // pointer or keyboard focus is inside
+    let userAt = 0;
 
-    const apply = () => {
-      const live = new Set();
-      if (!document.hidden && !mqReduce.matches) {
-        if (!fine.matches) seen.forEach((c) => live.add(c));
-        else if (hovered) live.add(hovered);
-        else if (auto) live.add(auto);
-      }
-      cards.forEach((c) => c.classList.toggle('is-live', live.has(c)));
-    };
-    const step = () => {
-      const vis = cards.filter((c) => seen.has(c));
-      auto = vis.length ? vis[(vis.indexOf(auto) + 1) % vis.length] : null;
-      apply();
+    const show = (n, fromUser) => {
+      n = (n + steps.length) % steps.length;
+      if (fromUser) userAt = performance.now();
+      if (n === i) return;
+      steps[i].classList.remove('is-on');
+      steps[i].setAttribute('aria-pressed', 'false');
+      imgs[i].classList.remove('is-on');
+      i = n;
+      steps[i].classList.add('is-on');
+      steps[i].setAttribute('aria-pressed', 'true');
+      imgs[i].classList.add('is-on');
+      const next = imgs[(i + 1) % imgs.length];
+      if (next.loading === 'lazy') next.loading = 'eager';
     };
     const sync = () => {
-      const cycle = fine.matches && seen.size > 0 && !document.hidden && !mqReduce.matches;
-      if (cycle && !timer) timer = setInterval(() => { if (!hovered) step(); }, 5200);
-      if (!cycle && timer) { clearInterval(timer); timer = 0; }
-      if (cycle && (!auto || !seen.has(auto))) step();
-      else apply();
+      const run = active && !held && !document.hidden && !mqReduce.matches;
+      if (run && !timer) {
+        timer = setInterval(() => {
+          // after a click, give the reader time before moving on again
+          if (performance.now() - userAt > 9000) show(i + 1);
+        }, 4200);
+      }
+      if (!run && timer) { clearInterval(timer); timer = 0; }
     };
 
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => { if (en.isIntersecting) seen.add(en.target); else seen.delete(en.target); });
-      sync();
-    }, { threshold: 0.35 });
-    cards.forEach((c) => {
-      io.observe(c);
-      c.addEventListener('pointerenter', (e) => {
-        if (e.pointerType !== 'mouse') return;
-        hovered = c;
-        apply();
-      });
-      c.addEventListener('pointerleave', () => {
-        if (hovered !== c) return;
-        hovered = null;
-        auto = c; // carry on from here
-        apply();
-      });
+    steps.forEach((btn, k) => btn.addEventListener('click', () => show(k, true)));
+    box.addEventListener('keydown', (e) => {
+      const d = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[e.key];
+      if (!d || !e.target.closest('.pstep')) return;
+      e.preventDefault();
+      show(i + d, true);
+      steps[i].focus();
     });
+    box.addEventListener('pointerenter', (e) => { if (e.pointerType === 'mouse') { held = true; sync(); } });
+    box.addEventListener('pointerleave', () => { held = false; sync(); });
+    box.addEventListener('focusin', () => { held = true; sync(); });
+    box.addEventListener('focusout', (e) => { if (!box.contains(e.relatedTarget)) { held = false; sync(); } });
     document.addEventListener('visibilitychange', sync);
-    if (fine.addEventListener) fine.addEventListener('change', sync);
-  }
-
-  /* How to play: a winding level-map path that draws itself when the tab opens */
-  const map = (() => {
-    const el = $('#map');
-    if (!el) return null;
-    const svg = $('.map__svg', el);
-    const track = $('.map__track', el);
-    const prog = $('.map__progress', el);
-    const steps = $$('.step', el);
-    const nodes = $$('.step__node', el);
-    let len = 0;
-    let fracs = [];
-    let timers = [];
-    let played = false;
-
-    const cubicLen = (a, b, c, d) => {
-      let L = 0;
-      let px = a[0];
-      let py = a[1];
-      for (let i = 1; i <= 20; i++) {
-        const s = i / 20;
-        const m = 1 - s;
-        const x = m * m * m * a[0] + 3 * m * m * s * b[0] + 3 * m * s * s * c[0] + s * s * s * d[0];
-        const y = m * m * m * a[1] + 3 * m * m * s * b[1] + 3 * m * s * s * c[1] + s * s * s * d[1];
-        L += Math.hypot(x - px, y - py);
-        px = x;
-        py = y;
-      }
-      return L;
+    if (imgs[1] && imgs[1].loading === 'lazy') imgs[1].loading = 'eager';
+    return {
+      setActive(on) { active = on; sync(); },
     };
-    const quadLen = (a, c, b) => cubicLen(a, [a[0] + (2 / 3) * (c[0] - a[0]), a[1] + (2 / 3) * (c[1] - a[1])], [b[0] + (2 / 3) * (c[0] - b[0]), b[1] + (2 / 3) * (c[1] - b[1])], b);
-    const pt = (p) => `${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
-
-    function layout() {
-      const mr = el.getBoundingClientRect();
-      if (!mr.width || nodes.length < 2) return false;
-      const pts = nodes.map((n) => {
-        const r = n.getBoundingClientRect();
-        return [r.left + r.width / 2 - mr.left, r.top + r.height / 2 - mr.top];
-      });
-      const boxes = steps.map((s) => s.getBoundingClientRect());
-      const vertical = Math.abs(pts[1][1] - pts[0][1]) > Math.abs(pts[1][0] - pts[0][0]);
-      let d = `M${pt(pts[0])}`;
-      const cum = [0];
-      for (let i = 1; i < pts.length; i++) {
-        const a = pts[i - 1];
-        const b = pts[i];
-        let seg;
-        let segLen;
-        if (vertical) {
-          const c1 = [a[0], (a[1] + b[1]) / 2];
-          const c2 = [b[0], (a[1] + b[1]) / 2];
-          seg = ` C${pt(c1)} ${pt(c2)} ${pt(b)}`;
-          segLen = cubicLen(a, c1, c2, b);
-        } else {
-          // side by side: run along the node row and turn in the gap between columns
-          const gx = (boxes[i - 1].right + boxes[i].left) / 2 - mr.left;
-          const dy = b[1] - a[1];
-          const dir = Math.sign(dy) || 1;
-          const r = Math.max(0, Math.min(24, Math.abs(dy) / 2, gx - a[0] - 2, b[0] - gx - 2));
-          const p1 = [gx - r, a[1]];
-          const k1 = [gx, a[1]];
-          const p2 = [gx, a[1] + dir * r];
-          const p3 = [gx, b[1] - dir * r];
-          const k2 = [gx, b[1]];
-          const p4 = [gx + r, b[1]];
-          seg = ` L${pt(p1)} Q${pt(k1)} ${pt(p2)} L${pt(p3)} Q${pt(k2)} ${pt(p4)} L${pt(b)}`;
-          segLen = (p1[0] - a[0]) + quadLen(p1, k1, p2) + Math.abs(p3[1] - p2[1]) + quadLen(p3, k2, p4) + (b[0] - p4[0]);
-        }
-        d += seg;
-        cum.push(cum[i - 1] + segLen);
-      }
-      const total = cum[cum.length - 1] || 1;
-      fracs = cum.map((v) => v / total);
-      svg.setAttribute('viewBox', `0 0 ${mr.width.toFixed(1)} ${mr.height.toFixed(1)}`);
-      track.setAttribute('d', d);
-      prog.setAttribute('d', d);
-      len = prog.getTotalLength ? prog.getTotalLength() : total;
-      prog.style.strokeDasharray = `${len} ${len}`;
-      if (played || mqReduce.matches) {
-        prog.style.transition = 'none';
-        prog.style.strokeDashoffset = '0';
-      }
-      return true;
-    }
-
-    function play() {
-      timers.forEach(clearTimeout);
-      timers = [];
-      if (!layout()) return;
-      played = true;
-      if (mqReduce.matches) {
-        el.classList.remove('is-live');
-        return;
-      }
-      const dur = 1800;
-      el.classList.add('is-live');
-      steps.forEach((s) => s.classList.remove('is-on'));
-      prog.style.transition = 'none';
-      prog.style.strokeDashoffset = String(len);
-      void prog.getBoundingClientRect();
-      prog.style.transition = `stroke-dashoffset ${dur}ms cubic-bezier(0.45, 0, 0.25, 1)`;
-      prog.style.strokeDashoffset = '0';
-      steps.forEach((s, i) => {
-        timers.push(setTimeout(() => s.classList.add('is-on'), Math.max(0, fracs[i] * dur - 60)));
-      });
-    }
-
-    if ('ResizeObserver' in window) {
-      let pending = false;
-      new ResizeObserver(() => {
-        if (pending || !played) return;
-        pending = true;
-        requestAnimationFrame(() => { pending = false; layout(); });
-      }).observe(el);
-    }
-    onLang.push(() => { if (played) layout(); });
-    return { play };
-  })();
+  }
 
   function initGame() {
     const tabs = initTabs();
-    initRain();
-    initLens();
-    initFeats();
-    if (tabs && map) {
-      tabs.onChange((id) => {
-        if (id === 'nasil-oynanir') requestAnimationFrame(() => map.play());
-      });
-    }
+    const play = initPlay();
+    if (tabs && play) tabs.onChange((id) => play.setActive(id === 'oynanis'));
   }
 
   /* ======================================================================

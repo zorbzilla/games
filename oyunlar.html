@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>Biz kimiz? | QuUp Games</title>
-  <meta name="description" content="QuUp Games bağımsız bir mobil oyun stüdyosu. İlk oyunumuz Detective on Duty yeni çıktı.">
+  <title>Oyunlar | QuUp Games</title>
+  <meta name="description" content="QuUp Games'in oyunları. İlk oyunumuz Detective on Duty yeni çıktı.">
   <meta name="theme-color" content="#07080c">
   <meta name="color-scheme" content="dark">
-  <link rel="canonical" href="https://zorbzilla.github.io/games/biz-kimiz.html">
+  <link rel="canonical" href="https://zorbzilla.github.io/games/oyunlar.html">
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/img/icon-180.png">
   <link rel="manifest" href="site.webmanifest">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="QuUp Games">
-  <meta property="og:title" content="Biz kimiz? | QuUp Games">
-  <meta property="og:description" content="QuUp Games bağımsız bir mobil oyun stüdyosu. İlk oyunumuz Detective on Duty yeni çıktı.">
-  <meta property="og:url" content="https://zorbzilla.github.io/games/biz-kimiz.html">
+  <meta property="og:title" content="Oyunlar | QuUp Games">
+  <meta property="og:description" content="QuUp Games'in oyunları. İlk oyunumuz Detective on Duty yeni çıktı.">
+  <meta property="og:url" content="https://zorbzilla.github.io/games/oyunlar.html">
   <meta property="og:image" content="https://zorbzilla.github.io/games/assets/img/og.jpg">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -29,7 +29,7 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <script defer src="assets/js/main.js"></script>
 </head>
-<body data-page="about">
+<body data-page="games">
   <div class="backdrop" aria-hidden="true"><svg class="backdrop__q"><use href="#q-mark"/></svg></div>
   <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
     <defs>
@@ -87,9 +87,9 @@
       <a class="logo" href="./" aria-label="QuUp Games ana sayfa" data-i18n-aria="aria.home"><svg class="logo__q" aria-hidden="true"><use href="#q-mark"/></svg><span class="logo__word" aria-hidden="true">uUp<em>Games</em></span></a>
       <nav class="nav" aria-label="Ana menü" data-i18n-aria="aria.mainnav">
         <ul class="nav__list">
-          <li><a class="nav__link" href="biz-kimiz.html" aria-current="page" data-i18n="nav.about">Biz kimiz?</a></li>
+          <li><a class="nav__link" href="biz-kimiz.html" data-i18n="nav.about">Biz kimiz?</a></li>
           <li class="has-menu">
-            <a class="nav__link" href="oyunlar.html" data-i18n="nav.games">Oyunlar</a>
+            <a class="nav__link" href="oyunlar.html" aria-current="page" data-i18n="nav.games">Oyunlar</a>
             <button class="nav__caret" type="button" aria-expanded="false" aria-controls="gamesMenu" aria-label="Oyunlar menüsü" data-i18n-aria="aria.gamesMenu"><svg aria-hidden="true"><use href="#i-chevron"/></svg></button>
             <div class="menu" id="gamesMenu">
               <ul class="menu__list">
@@ -111,9 +111,9 @@
   <div class="mnav" id="mnav" hidden>
     <ul class="mnav__list">
       <li style="--i:0"><a class="mnav__link" href="./"><span data-i18n="nav.home">Ana sayfa</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
-      <li style="--i:1"><a class="mnav__link" href="biz-kimiz.html" aria-current="page"><span data-i18n="nav.about">Biz kimiz?</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      <li style="--i:1"><a class="mnav__link" href="biz-kimiz.html"><span data-i18n="nav.about">Biz kimiz?</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
       <li style="--i:2">
-        <a class="mnav__link" href="oyunlar.html"><span data-i18n="nav.games">Oyunlar</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        <a class="mnav__link" href="oyunlar.html" aria-current="page"><span data-i18n="nav.games">Oyunlar</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         <ul class="mnav__games">
           <li><a class="mnav__game" href="detective-on-duty.html"><img class="mnav__icon" src="assets/img/games/detective-on-duty/icon-128.webp" alt="" width="48" height="48" decoding="async"><span class="mnav__text"><b lang="en">Detective on Duty</b><span data-i18n="dod.genre">Dedektif · Soruşturma</span></span><span class="new-tag" data-i18n="menu.new">Yeni</span></a></li>
         </ul>
@@ -122,63 +122,41 @@
     </ul>
   </div>
 
-  <main class="page page--about" id="main" tabindex="-1">
+  <main class="page page--games" id="main" tabindex="-1">
     <div class="page__inner">
-      <div class="about__grid wrap">
-        <div class="about__copy">
-          <p class="eyebrow" data-i18n="about.eyebrow">Biz kimiz?</p>
-          <h1 class="about__logo"><span class="sr-only">QuUp Games</span><span class="logo logo--xl" aria-hidden="true"><svg class="logo__q" aria-hidden="true"><use href="#q-mark"/></svg><span class="logo__word" aria-hidden="true">uUp<em>Games</em></span></span></h1>
-          <p class="about__kicker" data-i18n="about.kicker">Bağımsız mobil oyun stüdyosu</p>
-          <p class="lead" data-i18n="about.lead">Telefonda oynanan, akılda kalan oyunlar yapıyoruz. İlk oyunumuz Detective on Duty yeni çıktı. Her oyunda aynı üç kurala bağlı kalıyoruz.</p>
-          <ul class="values">
-            <li class="value"><span class="value__icon" aria-hidden="true"><svg><use href="#i-smile"/></svg></span><h2 data-i18n="v1.t">Önce eğlence</h2><p data-i18n="v1.d">İlk dakikada keyif vermeyen hiçbir mekanik oyuna giremez.</p></li>
-            <li class="value"><span class="value__icon" aria-hidden="true"><svg><use href="#i-gauge"/></svg></span><h2 data-i18n="v2.t">Her telefonda akıcı</h2><p data-i18n="v2.d">Eski telefonlarda bile hızlı açılan, pil dostu oyunlar.</p></li>
-            <li class="value"><span class="value__icon" aria-hidden="true"><svg><use href="#i-shield"/></svg></span><h2 data-i18n="v3.t">Oyuncuya saygı</h2><p data-i18n="v3.d">Oynamak için hesap istemiyoruz. İlerlemen kendi telefonunda kalır.</p></li>
-          </ul>
-          <div class="about__cta">
-            <a class="btn" href="oyunlar.html"><span data-i18n="about.games">Oyunlarımız</span><svg class="btn__icon btn__icon--go" aria-hidden="true"><use href="#i-arrow"/></svg></a>
-            <a class="btn btn--ghost" href="iletisim.html"><svg class="btn__icon" aria-hidden="true"><use href="#i-mail"/></svg><span data-i18n="about.write">Bize yaz</span></a>
-          </div>
+      <div class="games wrap">
+        <div class="games__head">
+          <p class="eyebrow" data-i18n="games.eyebrow">Oyunlar</p>
+          <h1 class="h1" data-i18n="games.title">Oyunlarımız</h1>
+          <p class="lead" data-i18n="games.lead">Telefonda oynanan, akılda kalan oyunlar. Yayındaki her oyunumuz burada.</p>
         </div>
-
-        <div class="about__stage" id="aboutStage">
-          <div class="about__glow" aria-hidden="true"></div>
-          <div class="emblem-float">
-            <div class="emblem">
-              <div class="emblem__orbit" aria-hidden="true"><span></span></div>
-              <svg class="emblem__q" viewBox="0 0 638 619" aria-hidden="true">
-                <defs>
-                  <linearGradient id="qFace" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0" stop-color="#ffffff"/>
-                    <stop offset=".38" stop-color="#e6e9f2"/>
-                    <stop offset=".56" stop-color="#a6adc2"/>
-                    <stop offset=".74" stop-color="#eceff7"/>
-                    <stop offset="1" stop-color="#8b93aa"/>
-                  </linearGradient>
-                </defs>
-                <g>
-                  <use href="#q-path" fill="#0a0c12" transform="translate(18 21)"/>
-                  <use href="#q-path" fill="#0f121a" transform="translate(16 18.7)"/>
-                  <use href="#q-path" fill="#141823" transform="translate(14 16.3)"/>
-                  <use href="#q-path" fill="#191e2b" transform="translate(12 14)"/>
-                  <use href="#q-path" fill="#1f2534" transform="translate(10 11.7)"/>
-                  <use href="#q-path" fill="#252c3e" transform="translate(8 9.3)"/>
-                  <use href="#q-path" fill="#2c3448" transform="translate(6 7)"/>
-                  <use href="#q-path" fill="#353e55" transform="translate(4 4.7)"/>
-                  <use href="#q-path" fill="#3f4963" transform="translate(2 2.3)"/>
-                </g>
-                <use href="#q-path" fill="url(#qFace)"/>
-                <use href="#q-path" fill="none" stroke="#ffffff" stroke-opacity=".75" stroke-width="3"/>
-              </svg>
-              <div class="emblem__shine" aria-hidden="true"></div>
+        <ul class="gcards">
+          <li class="gcard" data-theme="dod">
+            <a class="gcard__media" href="detective-on-duty.html" tabindex="-1" aria-hidden="true">
+              <img class="gcard__icon" src="assets/img/games/detective-on-duty/icon-512.webp" alt="" width="256" height="256" decoding="async">
+            </a>
+            <div class="gcard__body">
+              <span class="new-tag" data-i18n="games.new">Yeni çıktı</span>
+              <h2 class="gcard__title"><a href="detective-on-duty.html" lang="en">Detective on Duty</a></h2>
+              <p class="gcard__genre" data-i18n="dod.genre">Dedektif · Soruşturma</p>
+              <p class="gcard__desc" data-i18n="dod.blurb">Olay yerini ara, şüphelileri sorgula, delilleri panoda bağla ve kararını ver.</p>
+              <div class="gcard__actions">
+                <a class="btn" href="detective-on-duty.html"><span data-i18n="games.open">Oyunu incele</span><svg class="btn__icon btn__icon--go" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+                <div class="stores">
+              <a class="store" data-store="googleplay" href="#">
+                <svg class="store__logo" aria-hidden="true"><use href="#logo-gplay"/></svg>
+                <span class="store__text"><small data-i18n="store.gpSmall">Android için</small><b>Google Play</b></span>
+              </a>
+              <button class="store store--soon" type="button" aria-disabled="true" data-tip="Yakında" data-i18n-tip="store.soon">
+                <svg class="store__logo" aria-hidden="true"><use href="#logo-apple"/></svg>
+                <span class="store__text"><small data-i18n="store.asSmall">iPhone için</small><b>App Store</b></span>
+                <span class="sr-only" data-i18n="store.soon">Yakında</span>
+              </button>
             </div>
-          </div>
-          <a class="game-card" href="detective-on-duty.html" data-theme="dod">
-            <img class="game-card__icon" src="assets/img/games/detective-on-duty/icon-128.webp" alt="" width="52" height="52" decoding="async">
-            <span><b lang="en">Detective on Duty</b><span data-i18n="about.cardSub">Yeni çıktı · Dedektif</span></span>
-            <svg class="game-card__go" aria-hidden="true"><use href="#i-arrow"/></svg>
-          </a>
-        </div>
+              </div>
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   </main>
