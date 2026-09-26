@@ -1,15 +1,20 @@
 /* ==========================================================================
-   Zorbzilla Games: site interactions
+   QuUp Games: site interactions
    Everything here is progressive: the page is complete without this file.
    ========================================================================== */
 (() => {
   'use strict';
 
+  /* Store links for Detective on Duty. The buttons stay hidden until a link is filled in. */
+  const STORE_LINKS = {
+    appstore: '', // e.g. 'https://apps.apple.com/app/id0000000000'
+    googleplay: '', // e.g. 'https://play.google.com/store/apps/details?id=com.quupgames.detectiveonduty'
+  };
+
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const root = document.documentElement;
   const mqReduce = window.matchMedia('(prefers-reduced-motion: reduce)');
-  const mqFine = window.matchMedia('(hover: hover) and (pointer: fine)');
   const hasIO = 'IntersectionObserver' in window;
   const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
   const store = {
@@ -17,136 +22,92 @@
     set(k, v) { try { window.localStorage.setItem(k, v); } catch (e) { /* storage blocked */ } },
   };
 
+  /* Runs a render function only while `el` is on screen and the tab is visible. */
+  function whileVisible(el, onStart, onStop) {
+    let seen = !hasIO;
+    const sync = () => (seen && !document.hidden ? onStart() : onStop());
+    if (hasIO) {
+      new IntersectionObserver((entries) => {
+        seen = entries[entries.length - 1].isIntersecting;
+        sync();
+      }, { rootMargin: '80px 0px' }).observe(el);
+    }
+    document.addEventListener('visibilitychange', sync);
+    sync();
+  }
+
   /* ======================================================================
      1. Language (TR text lives in the HTML, EN lives here)
      ====================================================================== */
   const EN = {
-    'meta.title': 'Zorbzilla Games | Mobile Game Studio',
-    'meta.desc': 'Zorbzilla Games is an independent studio making smooth, colorful, hard-to-put-down mobile games for iOS and Android.',
+    'meta.title': 'QuUp Games | Mobile Game Studio',
+    'meta.desc': 'QuUp Games is an independent mobile game studio. Our first game is Detective on Duty, and The Ascendants is next.',
     skip: 'Skip to content',
-    'aria.home': 'Zorbzilla Games home',
+    'aria.home': 'QuUp Games home',
     'aria.mainnav': 'Main menu',
     'aria.footnav': 'Footer menu',
     'aria.lang': 'Change language: Turkish or English',
-    'nav.games': 'Games',
-    'nav.services': 'Services',
-    'nav.process': 'Process',
     'nav.studio': 'Studio',
     'nav.contact': 'Contact',
     'nav.cta': 'Get in touch',
 
     'hero.badge': 'Independent mobile game studio',
-    'hero.t1': 'We build',
-    'hero.t2': 'worlds',
-    'hero.t3': 'that fit your pocket.',
-    'hero.lead': 'We design, build and ship smooth, colorful games for iOS and Android that are hard to put down once you start.',
-    'hero.cta1': 'Explore games',
-    'hero.cta2': 'Play now',
-    'hero.perk1': 'Smooth 60 FPS',
-    'hero.perk2': 'iOS and Android',
-    'hero.perk3': 'Player-first design',
+    'hero.t1': 'Your next',
+    'hero.t2': 'adventure',
+    'hero.t3': 'is queued up.',
+    'hero.lead': 'QuUp Games is an independent mobile game studio. Our first game is Detective on Duty, and The Ascendants is next in line.',
+    'hero.cta1': 'See our games',
+    'hero.cta2': 'Coming soon',
+    'hero.hintMouse': 'The flashlight follows your cursor. There are clues hidden in the dark.',
+    'hero.hintTouch': 'The flashlight roams the dark. Tap to aim it.',
 
-    'game.aria': 'Neon Stack mini game. Tap or press Space to drop a block.',
-    'game.best': 'Best',
-    'game.perfect': 'Perfect!',
-    'game.tap': 'Tap to play',
-    'game.score': 'Score',
-    'game.record': 'New best!',
-    'game.retry': 'Tap to retry',
-    'game.caption': 'Live demo: tap the phone and stack the blocks.',
-
-    'tb.1': 'PLAY',
-    'tb.2': 'DESIGN',
-    'tb.3': 'BUILD',
-    'tb.4': 'LAUNCH',
-    'tb.5': 'GROW',
-    'tk.2': 'PUZZLE',
-    'tk.5': 'ACTION',
-    'tk.6': 'STRATEGY',
-    'tk.7': 'RACING',
+    'tb.soon': 'COMING SOON',
+    'tk.scene': 'CRIME SCENE',
+    'tk.cross': 'DO NOT CROSS',
 
     'games.eyebrow': 'Games',
-    'games.title': 'Made for your thumbs.',
-    'games.lead': 'Every game starts with a single tap and gets deeper as you play. You can play the first one right here on this page.',
-    'f1.tag2': 'One-tap',
-    'st.live': 'Web demo live',
-    'f1.desc': 'Drop each block at the right moment and raise a neon tower into the sky. Overhangs get sliced off; land a streak of perfect drops and the block grows back.',
-    'spec.genre': 'Genre',
-    'spec.platform': 'Platforms',
-    'spec.control': 'Controls',
-    'f1.control': 'One tap',
-    'f1.cta': 'Play in browser',
-    'f1.soon': 'Coming soon to the App Store and Google Play',
-    'st.soon': 'Coming soon',
-    'st.dev': 'In development',
-    'st.proto': 'Prototype',
-    'st.concept': 'Concept',
-    'g2.tag1': 'Runner',
-    'g2.desc': 'Squish your jelly hero past obstacles, grab the coins and beat your record.',
-    'g3.tag1': 'Puzzle',
-    'g3.tag2': 'Merge',
-    'g3.desc': 'Merge planets, grow stars and build your own galaxy one step at a time.',
-    'g4.tag1': 'Strategy',
-    'g4.desc': 'Build a kingdom on your tiny island, manage resources and challenge the islands next door.',
-    'g5.tag1': 'Racing',
-    'g5.tag2': 'One-finger',
-    'g5.desc': 'Drift with one finger and paint every corner with neon trails.',
+    'games.title': 'Every game is a new case.',
+    'games.lead': 'We set off with our first game, Detective on Duty. Our next game, The Ascendants, is coming very soon.',
+    'case.tape': 'DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE',
+    'case.hintMouse': 'Move the magnifier over the scene to find the clues.',
+    'case.hintTouch': 'Tap anywhere and the magnifier follows.',
+    'case.eyebrow': 'Our first game',
+    'case.desc': 'Pin on your badge and grab your flashlight: the case file is open. Detective on Duty is QuUp Games’ first game.',
+    'case.fileLabel': 'File no.',
+    'case.studioLabel': 'Studio',
+    'case.genreLabel': 'Genre',
+    'case.genre': 'Detective',
+    'case.platformLabel': 'Platform',
+    'case.platform': 'Mobile',
+    'case.stamp': 'On duty',
+    'case.ask': 'Ask us about the game',
 
-    'sv.eyebrow': 'Services',
-    'sv.title': 'From first idea to the app store.',
-    'sv.lead': 'The same team and tools behind our own games are available for partner projects.',
-    'sv.1t': 'Game design',
-    'sv.1d': 'Core loops that are easy to learn and hard to master, plus levels people remember.',
-    'sv.2t': 'Development',
-    'sv.2d': 'Unity and native tech that hit 60 FPS, even on entry-level phones.',
-    'sv.3t': 'Art and animation',
-    'sv.3d': 'Vivid 2D and 3D art, fluid animation and effects that feel great to touch.',
-    'sv.4t': 'Monetization',
-    'sv.4d': 'Ads and in-app purchases balanced so players never feel squeezed.',
-    'sv.5t': 'LiveOps and analytics',
-    'sv.5d': 'A/B tests, live events and data that make every update better.',
-    'sv.6t': 'Launch and ASO',
-    'sv.6d': 'Store optimization, launch planning and community management.',
-
-    'pr.eyebrow': 'Process',
-    'pr.title': 'How is a game born?',
-    'pr.lead': 'Every idea goes through the same five levels. An idea that can’t clear a level doesn’t move on.',
-    'pr.1t': 'Idea',
-    'pr.1d': 'We sketch dozens of ideas fast and keep the most fun core.',
-    'pr.2t': 'Prototype',
-    'pr.2d': 'A playable build within days. If it isn’t fun, it goes back on the shelf.',
-    'pr.3t': 'Playtest',
-    'pr.3d': 'We test with real players, read the metrics and improve every round.',
-    'pr.4t': 'Launch',
-    'pr.4d': 'A polished, optimized release on the App Store and Google Play.',
-    'pr.5t': 'Live ops',
-    'pr.5d': 'Updates, events and community keep the game alive for years.',
+    'soon.ghost': 'SOON',
+    'soon.badge': 'Coming soon',
+    'soon.text': 'Our next game is on its way. The ascent begins soon, so stay close and don’t miss the first look.',
+    'soon.cta': 'Keep me posted',
 
     'stu.eyebrow': 'Studio',
-    'stu.title': 'A small monster that loves making games.',
-    'stu.text': 'Zorbzilla was founded to make mobile games that leave players smiling. Every project follows the same three rules.',
+    'stu.title': 'There’s always a new game in the queue.',
+    'stu.text': 'QuUp Games is an independent mobile game studio. We set off with our first game, Detective on Duty, and The Ascendants is next in line. Every project follows the same three rules.',
     'stu.v1t': 'Fun comes first',
     'stu.v1d': 'No mechanic makes it into a game unless it’s fun in the first ten seconds.',
     'stu.v2t': 'Obsessed with performance',
     'stu.v2d': 'Smooth, battery-friendly games that open fast, even on older phones.',
     'stu.v3t': 'Respect for players',
     'stu.v3d': 'No dark patterns. Fair economies and honest design.',
-    'zorb.hi': 'Hi! I’m Zorb. Give me a tap.',
-    'zorb.aria': 'Talk to Zorb the mascot',
-    'stat.1': 'FPS target',
-    'stat.2': 'platforms',
-    'stat.3': 'game projects',
-    'stat.4': 'ideas in the notebook',
+    'queue.title': 'Game queue',
+    'queue.1': 'Our first game. The studio’s first case.',
+    'queue.2': 'Coming soon. The ascent is next.',
+    'queue.3': 'Locked level. It opens when the time comes.',
 
     'ct.eyebrow': 'Contact',
-    'ct.title': 'Got a game in mind?',
-    'ct.lead': 'Publishing, co-development or just saying hello. We’re open to all of it, so drop us a line.',
+    'ct.title': 'Got a case for us? Write to us.',
+    'ct.lead': 'Press, partnerships, player feedback or just a hello. We’re open to all of it.',
     'ct.copy': 'Copy address',
     'ct.send': 'Send an email',
-    'ct.appstore': 'App Store · soon',
-    'ct.play': 'Google Play · soon',
 
-    'ft.tag': 'Worlds that fit your pocket.',
+    'ft.tag': 'Your next adventure is queued up.',
     'ft.rights': 'All rights reserved.',
     'ft.top': 'Back to top',
   };
@@ -158,30 +119,12 @@
       'aria.menuClose': 'Menüyü kapat',
       'ct.copied': 'E-posta adresi kopyalandı',
       'ct.select': 'Adres seçildi, şimdi kopyalayabilirsin',
-      'game.over': 'Oyun bitti. Skor: {n}',
-      'zorb.best': 'Neon Stack rekorun {n}. Geçebilir misin?',
-      'zorb.lines': [
-        'Neon Stack’te üst üste üç mükemmel yaparsan blok yeniden büyür!',
-        'Bu sayfadaki her piksel 60 FPS için çalışıyor.',
-        'Yeni oyunlar yolda. Gözün bizde olsun!',
-        'Bir fikrin mi var? Aşağıdan bize yaz.',
-        'Hey, gıdıklanıyorum!',
-      ],
     },
     en: {
       'aria.menuOpen': 'Open menu',
       'aria.menuClose': 'Close menu',
       'ct.copied': 'Email address copied',
       'ct.select': 'Address selected, ready to copy',
-      'game.over': 'Game over. Score: {n}',
-      'zorb.best': 'Your Neon Stack best is {n}. Can you beat it?',
-      'zorb.lines': [
-        'Land three perfect drops in a row in Neon Stack and the block grows back!',
-        'Every pixel on this page works hard for 60 FPS.',
-        'New games are on the way. Keep an eye on us!',
-        'Got an idea? Drop us a line below.',
-        'Hey, that tickles!',
-      ],
     },
   };
 
@@ -226,12 +169,12 @@
     if (d['meta.title']) document.title = d['meta.title'];
     if (metaDesc && d['meta.desc']) metaDesc.content = d['meta.desc'];
     syncBurgerLabel();
-    if (remember) store.set('zg-lang', lang);
+    if (remember) store.set('qg-lang', lang);
     if (map) requestAnimationFrame(map.layout);
   }
 
   /* ======================================================================
-     2. Header: scrolled state, hide on scroll down, XP bar, active link
+     2. Header: scrolled state, hide on scroll down, progress bar, active link
      ====================================================================== */
   const hud = $('#hud');
   const xpFill = $('#xpFill');
@@ -315,15 +258,16 @@
         burger.focus();
       }
     });
-    const wide = window.matchMedia('(min-width: 981px)');
+    const wide = window.matchMedia('(min-width: 1041px)');
     const onWide = (e) => { if (e.matches && menuOpen) setMenu(false); };
     if (wide.addEventListener) wide.addEventListener('change', onWide);
   }
 
   /* ======================================================================
-     4. Hero background: a small WebGL shader with adaptive quality.
-        It refuses software rendering, drops resolution and frame rate on
-        slow devices, pauses off-screen and falls back to the CSS gradient.
+     4. Hero background: a flashlight in a smoky dark room that reveals
+        fingerprints. WebGL with adaptive quality: it refuses software
+        rendering, lowers resolution and frame rate on slow devices, pauses
+        off-screen and falls back to the CSS background.
      ====================================================================== */
   const hero = $('.hero');
   let heroVisible = true;
@@ -331,7 +275,7 @@
 
   const shader = (() => {
     const canvas = $('#heroBg');
-    const phone = $('#phone');
+    const emblem = $('#emblem');
     if (!canvas || !hero || !window.WebGLRenderingContext) return null;
     const force = /[?&]gl=force\b/.test(window.location.search);
     let gl = null;
@@ -356,33 +300,53 @@
 precision mediump float;
 uniform vec2 uRes;
 uniform float uTime;
-uniform vec2 uMouse;
-uniform float uMouseOn;
+uniform vec2 uLight;
 uniform vec2 uFocus;
-float blob(vec2 p, vec2 c, float r){ vec2 d = p - c; return exp(-dot(d, d) / (r * r)); }
+uniform float uUnit;
+float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
+float noise(vec2 p){
+  vec2 i = floor(p); vec2 f = fract(p); vec2 u = f * f * (3.0 - 2.0 * f);
+  return mix(mix(hash(i), hash(i + vec2(1.0, 0.0)), u.x), mix(hash(i + vec2(0.0, 1.0)), hash(i + vec2(1.0, 1.0)), u.x), u.y);
+}
+float fbm(vec2 p){
+  float v = 0.0; float a = 0.5;
+  for (int i = 0; i < 4; i++) { v += a * noise(p); p = p * 2.03 + 17.1; a *= 0.5; }
+  return v;
+}
+float fprint(vec2 p, vec2 c, float s, float rot){
+  vec2 q = p - c;
+  float cs = cos(rot); float sn = sin(rot);
+  q = vec2(cs * q.x - sn * q.y, sn * q.x + cs * q.y) / s;
+  q.y *= 0.8;
+  float r = length(q);
+  float ridge = abs(sin((r + noise(q * 5.0) * 0.07) * 26.0));
+  return smoothstep(0.62, 0.18, ridge) * smoothstep(1.0, 0.65, r);
+}
 void main(){
   vec2 uv = gl_FragCoord.xy / uRes;
-  float m = min(uRes.x, uRes.y);
-  vec2 p = gl_FragCoord.xy / m;
-  vec2 f = uFocus * uRes / m;
+  vec2 asp = uRes / min(uRes.x, uRes.y);
+  vec2 p = uv * asp;
   float t = uTime;
-  vec2 w = p + 0.05 * vec2(sin(p.y * 3.7 + t * 0.55), cos(p.x * 3.1 - t * 0.47));
-  vec3 bg = vec3(0.078, 0.047, 0.169);
-  vec3 col = bg;
-  col += vec3(0.42, 0.28, 1.00) * 0.62 * blob(w, f + vec2(0.07 * sin(t * 0.31), 0.06 * cos(t * 0.27)), 0.46);
-  col += vec3(1.00, 0.31, 0.60) * 0.52 * blob(w, f + vec2(0.20 + 0.14 * cos(t * 0.23 + 1.3), 0.22 + 0.10 * sin(t * 0.29 + 0.4)), 0.27);
-  col += vec3(0.22, 0.78, 1.00) * 0.44 * blob(w, f + vec2(-0.22 + 0.13 * sin(t * 0.19 + 2.1), -0.26 + 0.09 * cos(t * 0.25 + 1.7)), 0.29);
-  col += vec3(1.00, 0.77, 0.24) * 0.26 * blob(w, f + vec2(0.30 + 0.10 * cos(t * 0.17 + 4.0), -0.14 + 0.12 * sin(t * 0.21 + 3.0)), 0.18);
-  col += vec3(0.24, 0.86, 0.59) * 0.12 * blob(w, vec2(0.08, 0.95) * uRes / m + 0.04 * vec2(sin(t * 0.2), cos(t * 0.25)), 0.34);
-  col += vec3(0.48, 0.36, 1.00) * 0.16 * blob(w, vec2(0.92, 0.90) * uRes / m + 0.05 * vec2(cos(t * 0.18), sin(t * 0.22)), 0.36);
-  col += vec3(0.62, 0.48, 1.00) * 0.26 * uMouseOn * blob(p, uMouse * uRes / m, 0.17);
-  float band = sin((w.x - w.y * 0.6) * 5.0 - t * 0.35) * 0.5 + 0.5;
-  col += vec3(0.55, 0.40, 1.00) * 0.05 * band * blob(p, f, 0.7);
+  vec3 bg = vec3(0.035, 0.035, 0.043);
+  float smoke = fbm(p * 1.7 + vec2(t * 0.03, t * 0.012));
+  vec3 col = bg * 0.75 + vec3(0.055, 0.055, 0.068) * smoke;
+  vec2 f = uFocus * asp;
+  col += vec3(1.0, 0.8, 0.35) * 0.06 * exp(-dot(p - f, p - f) * 6.0);
+  vec2 L = uLight * asp;
+  float d = length(p - L);
+  float light = exp(-d * d * 16.0) * 0.8 + smoothstep(0.32, 0.28, d) * 0.2;
+  col += vec3(1.0, 0.92, 0.76) * light * (0.06 + 0.14 * smoke);
+  float s = 120.0 * uUnit;
+  float clues = fprint(p, vec2(0.16, 0.30) * asp, s, 0.4)
+              + fprint(p, vec2(0.60, 0.84) * asp, s * 0.85, -0.7)
+              + fprint(p, vec2(0.90, 0.20) * asp, s * 1.05, 1.2)
+              + fprint(p, vec2(0.40, 0.58) * asp, s * 0.8, 2.3)
+              + fprint(p, vec2(0.78, 0.55) * asp, s * 0.9, -2.0);
+  col += vec3(1.0, 0.84, 0.3) * clues * light * 0.42;
   vec2 q = uv - 0.5;
-  col *= 1.0 - 0.55 * dot(q, q);
-  col = mix(col, bg, smoothstep(0.16, 0.0, uv.y));
-  float n = fract(sin(dot(gl_FragCoord.xy, vec2(12.9898, 78.233))) * 43758.5453);
-  col += (n - 0.5) / 255.0;
+  col *= 1.0 - 0.6 * dot(q, q);
+  col = mix(col, bg, smoothstep(0.18, 0.0, uv.y));
+  col += (hash(gl_FragCoord.xy + fract(t)) - 0.5) / 255.0;
   gl_FragColor = vec4(col, 1.0);
 }`;
 
@@ -411,9 +375,9 @@ void main(){
     const U = {
       res: gl.getUniformLocation(prog, 'uRes'),
       time: gl.getUniformLocation(prog, 'uTime'),
-      mouse: gl.getUniformLocation(prog, 'uMouse'),
-      mouseOn: gl.getUniformLocation(prog, 'uMouseOn'),
+      light: gl.getUniformLocation(prog, 'uLight'),
       focus: gl.getUniformLocation(prog, 'uFocus'),
+      unit: gl.getUniformLocation(prog, 'uUnit'),
     };
 
     let scale = window.innerWidth < 700 ? 0.5 : 0.42;
@@ -430,10 +394,12 @@ void main(){
     let winStart = 0;
     let heroTop = 0;
     let heroH = 1;
+    let cssMin = 1;
     let shown = false;
     const t0 = performance.now();
     const focus = [0.72, 0.5];
-    const mouse = { x: 0.7, y: 0.5, tx: 0.7, ty: 0.5, on: 0, ton: 0 };
+    // the flashlight wanders on its own until a mouse or a tap takes over
+    const light = { x: 0.66, y: 0.5, tx: 0.66, ty: 0.5, mouse: false, until: 0 };
 
     function measure() {
       const w = hero.clientWidth;
@@ -441,29 +407,38 @@ void main(){
       if (!w || !h) return;
       heroTop = hero.getBoundingClientRect().top + window.scrollY;
       heroH = h;
+      cssMin = Math.min(w, h);
       canvas.width = Math.max(2, Math.round(w * scale));
       canvas.height = Math.max(2, Math.round(h * scale));
       gl.viewport(0, 0, canvas.width, canvas.height);
-      if (phone) {
+      if (emblem) {
         const hr = hero.getBoundingClientRect();
-        const pr = phone.getBoundingClientRect();
-        focus[0] = (pr.left + pr.width / 2 - hr.left) / hr.width;
-        focus[1] = 1 - (pr.top + pr.height / 2 - hr.top) / hr.height;
+        const er = emblem.getBoundingClientRect();
+        focus[0] = (er.left + er.width / 2 - hr.left) / hr.width;
+        focus[1] = 1 - (er.top + er.height / 2 - hr.top) / hr.height;
       }
       // resizing clears the drawing buffer, so paint right away to avoid a blank frame
       render(performance.now());
     }
 
     function render(now) {
-      const time = mqReduce.matches ? 14 : (now - t0) / 1000;
-      mouse.x += (mouse.tx - mouse.x) * 0.06;
-      mouse.y += (mouse.ty - mouse.y) * 0.06;
-      mouse.on += (mouse.ton - mouse.on) * 0.05;
+      const still = mqReduce.matches;
+      const time = still ? 14 : (now - t0) / 1000;
+      if (still) {
+        light.tx = 0.7;
+        light.ty = 0.42;
+      } else if (!light.mouse && now > light.until) {
+        light.tx = 0.5 + 0.32 * Math.sin(time * 0.23) + 0.1 * Math.sin(time * 0.61);
+        light.ty = 0.5 + 0.26 * Math.sin(time * 0.31 + 1.2);
+      }
+      const k = still ? 1 : light.mouse ? 0.16 : 0.035;
+      light.x += (light.tx - light.x) * k;
+      light.y += (light.ty - light.y) * k;
       gl.uniform2f(U.res, canvas.width, canvas.height);
       gl.uniform1f(U.time, time);
-      gl.uniform2f(U.mouse, mouse.x, mouse.y);
-      gl.uniform1f(U.mouseOn, mouse.on);
+      gl.uniform2f(U.light, light.x, light.y);
       gl.uniform2f(U.focus, focus[0], focus[1]);
+      gl.uniform1f(U.unit, 1 / cssMin);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
       if (!shown) {
         shown = true;
@@ -535,10 +510,12 @@ void main(){
       cancelAnimationFrame(raf);
     }
 
-    function pointer(x, y, inside) {
-      mouse.tx = x / window.innerWidth;
-      mouse.ty = 1 - (y + window.scrollY - heroTop) / heroH;
-      mouse.ton = inside ? 1 : 0;
+    function aim(x, y, mode) {
+      light.tx = clamp(x / window.innerWidth, 0, 1);
+      light.ty = clamp(1 - (y + window.scrollY - heroTop) / heroH, 0, 1);
+      if (mode === 'mouse') light.mouse = true;
+      else light.until = performance.now() + 3200;
+      if (!running) render(performance.now());
     }
 
     canvas.addEventListener('webglcontextlost', (e) => {
@@ -553,15 +530,16 @@ void main(){
       start,
       stop,
       measure,
-      pointer,
+      aim,
+      release() { light.mouse = false; },
       get state() { return frozen ? 'frozen' : `${halfRate ? 'half-rate' : 'full-rate'} @${scale.toFixed(2)}`; },
     };
   })();
 
   /* ======================================================================
-     5. Hero parallax: phone tilt + floating items follow the pointer
+     5. Hero parallax (mouse) + flashlight aiming (mouse and touch)
      ====================================================================== */
-  function initParallax() {
+  function initHeroPointer() {
     const stage = $('#heroStage');
     if (!stage || !hero) return;
     let tx = 0;
@@ -582,58 +560,272 @@ void main(){
     window.addEventListener('pointermove', (e) => {
       if (!heroVisible || e.pointerType !== 'mouse') return;
       const inside = e.clientY + window.scrollY < heroBottom;
-      if (shader) shader.pointer(e.clientX, e.clientY, inside);
+      if (shader) {
+        if (inside) shader.aim(e.clientX, e.clientY, 'mouse');
+        else shader.release();
+      }
       if (mqReduce.matches) return;
       tx = (e.clientX / window.innerWidth) * 2 - 1;
       ty = (e.clientY / window.innerHeight) * 2 - 1;
       kick();
     }, { passive: true });
 
+    hero.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'mouse' && shader) shader.aim(e.clientX, e.clientY, 'touch');
+    }, { passive: true });
+
     document.addEventListener('pointerleave', () => {
       tx = 0;
       ty = 0;
-      if (shader) shader.pointer(window.innerWidth * 0.7, 0, false);
+      if (shader) shader.release();
       kick();
     });
   }
 
   /* ======================================================================
-     6. Game cards: 3D tilt with a moving glare (mouse only)
+     6. Detective on Duty: rain + a magnifier that reveals hidden clues
      ====================================================================== */
-  function initTilt() {
-    if (!mqFine.matches || mqReduce.matches) return;
-    $$('[data-tilt]').forEach((card) => {
-      let px = 0.5;
-      let py = 0.5;
-      let raf = 0;
-      const paint = () => {
-        raf = 0;
-        const r = card.getBoundingClientRect();
-        const nx = clamp((px - r.left) / r.width, 0, 1);
-        const ny = clamp((py - r.top) / r.height, 0, 1);
-        card.style.setProperty('--ry', `${((nx - 0.5) * 12).toFixed(2)}deg`);
-        card.style.setProperty('--rx', `${((0.5 - ny) * 9).toFixed(2)}deg`);
-        card.style.setProperty('--gx', `${(nx * 100).toFixed(1)}%`);
-        card.style.setProperty('--gy', `${(ny * 100).toFixed(1)}%`);
-      };
-      card.addEventListener('pointerenter', () => card.classList.add('is-tilting'));
-      card.addEventListener('pointermove', (e) => {
-        px = e.clientX;
-        py = e.clientY;
-        if (!raf) raf = requestAnimationFrame(paint);
-      });
-      card.addEventListener('pointerleave', () => {
-        cancelAnimationFrame(raf);
-        raf = 0;
-        card.classList.remove('is-tilting');
-        card.style.setProperty('--rx', '0deg');
-        card.style.setProperty('--ry', '0deg');
-      });
+  function initRain() {
+    const canvas = $('#caseRain');
+    const host = $('#caseArt');
+    if (!canvas || !host || !canvas.getContext) return;
+    const ctx = canvas.getContext('2d');
+    let W = 0;
+    let H = 0;
+    let dpr = 1;
+    let drops = [];
+    let running = false;
+    let raf = 0;
+    let last = 0;
+
+    const make = (anywhere) => ({
+      x: Math.random() * (W + 160) - 80,
+      y: anywhere ? Math.random() * H : -Math.random() * 120,
+      l: 12 + Math.random() * 22,
+      v: 720 + Math.random() * 520,
+      far: Math.random() < 0.55,
+    });
+
+    function draw(dt) {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      ctx.lineCap = 'round';
+      for (let pass = 0; pass < 2; pass++) {
+        const far = pass === 0;
+        ctx.beginPath();
+        for (const d of drops) {
+          if (d.far !== far) continue;
+          const v = d.v * (far ? 0.72 : 1);
+          d.y += v * dt;
+          d.x += v * dt * 0.16;
+          if (d.y - d.l > H) Object.assign(d, make(false));
+          ctx.moveTo(d.x, d.y);
+          ctx.lineTo(d.x - d.l * 0.16, d.y - d.l);
+        }
+        ctx.strokeStyle = far ? 'rgba(170, 178, 215, 0.2)' : 'rgba(214, 218, 240, 0.36)';
+        ctx.lineWidth = far ? 1 : 1.5;
+        ctx.stroke();
+      }
+    }
+
+    function resize() {
+      W = host.clientWidth;
+      H = host.clientHeight;
+      if (!W || !H) return;
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      const n = Math.round(Math.min(170, (W * H) / 4000));
+      drops = Array.from({ length: n }, () => make(true));
+      draw(0);
+    }
+
+    function frame(now) {
+      if (!running) return;
+      const dt = Math.min((now - last) / 1000, 1 / 30);
+      last = now;
+      draw(dt);
+      raf = requestAnimationFrame(frame);
+    }
+
+    if ('ResizeObserver' in window) new ResizeObserver(resize).observe(host);
+    resize();
+    whileVisible(host, () => {
+      if (running || mqReduce.matches) return;
+      running = true;
+      last = performance.now();
+      raf = requestAnimationFrame(frame);
+    }, () => {
+      running = false;
+      cancelAnimationFrame(raf);
+    });
+  }
+
+  function initLens() {
+    const art = $('#caseArt');
+    const clues = $('#caseClues');
+    const lens = $('#caseLens');
+    if (!art || !clues || !lens) return;
+    let W = 0;
+    let H = 0;
+    let x = 0;
+    let y = 0;
+    let tx = 0;
+    let ty = 0;
+    let raf = 0;
+    let hover = false;
+    let until = 0;
+    let visible = false;
+    const t0 = performance.now();
+
+    const apply = () => {
+      clues.style.setProperty('--lx', `${x.toFixed(1)}px`);
+      clues.style.setProperty('--ly', `${y.toFixed(1)}px`);
+      lens.style.setProperty('--lxp', `${x.toFixed(1)}px`);
+      lens.style.setProperty('--lyp', `${y.toFixed(1)}px`);
+    };
+    const tick = (now) => {
+      raf = 0;
+      const still = mqReduce.matches;
+      if (!hover && now > until && !still) {
+        const s = (now - t0) / 1000;
+        tx = W * (0.52 + 0.3 * Math.sin(s * 0.33));
+        ty = H * (0.64 + 0.14 * Math.sin(s * 0.57 + 1));
+      }
+      const k = hover ? 0.3 : 0.07;
+      x += (tx - x) * k;
+      y += (ty - y) * k;
+      apply();
+      const moving = Math.abs(tx - x) + Math.abs(ty - y) > 0.4;
+      if (visible && (!still || moving)) raf = requestAnimationFrame(tick);
+    };
+    const kick = () => { if (!raf && visible) raf = requestAnimationFrame(tick); };
+
+    const size = () => {
+      W = art.clientWidth;
+      H = art.clientHeight;
+      if (!x) {
+        x = tx = W * 0.62;
+        y = ty = H * 0.72;
+      }
+      x = clamp(x, 0, W);
+      y = clamp(y, 0, H);
+      apply();
+    };
+    const point = (e) => {
+      const r = art.getBoundingClientRect();
+      tx = clamp(e.clientX - r.left, 0, r.width);
+      ty = clamp(e.clientY - r.top, 0, r.height);
+    };
+
+    art.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse') return;
+      point(e);
+      hover = true;
+      kick();
+    });
+    art.addEventListener('pointerleave', () => { hover = false; });
+    art.addEventListener('pointerdown', (e) => {
+      if (e.pointerType === 'mouse') return;
+      point(e);
+      until = performance.now() + 3500;
+      kick();
+    });
+
+    if ('ResizeObserver' in window) new ResizeObserver(size).observe(art);
+    size();
+    whileVisible(art, () => { visible = true; kick(); }, () => {
+      visible = false;
+      cancelAnimationFrame(raf);
+      raf = 0;
     });
   }
 
   /* ======================================================================
-     7. Process: a winding level-map path that fills as you scroll
+     7. The Ascendants: embers rising towards the light
+     ====================================================================== */
+  function initEmbers() {
+    const canvas = $('#soonCanvas');
+    const host = canvas && canvas.parentElement;
+    if (!canvas || !host || !canvas.getContext) return;
+    const ctx = canvas.getContext('2d');
+    let W = 0;
+    let H = 0;
+    let dpr = 1;
+    let parts = [];
+    let running = false;
+    let raf = 0;
+    let last = 0;
+
+    const make = (anywhere) => ({
+      x: Math.random() * W,
+      y: anywhere ? Math.random() * H : H + Math.random() * 40,
+      r: 0.6 + Math.random() * 1.9,
+      v: 18 + Math.random() * 46,
+      sway: 6 + Math.random() * 18,
+      ph: Math.random() * Math.PI * 2,
+      c: Math.random(),
+    });
+
+    function draw(dt, time) {
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalCompositeOperation = 'lighter';
+      for (const p of parts) {
+        p.y -= p.v * dt;
+        if (p.y < -10) Object.assign(p, make(false));
+        const x = p.x + Math.sin(time * 0.8 + p.ph) * p.sway;
+        const fade = clamp(p.y / H, 0, 1);
+        const a = (0.25 + 0.55 * fade) * (0.6 + 0.4 * Math.sin(time * 3 + p.ph));
+        const r = Math.round(143 + (90 - 143) * p.c);
+        const g = Math.round(123 + (216 - 123) * p.c);
+        ctx.fillStyle = `rgba(${r},${g},255,${(a * 0.18).toFixed(3)})`;
+        ctx.beginPath();
+        ctx.arc(x, p.y, p.r * 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = `rgba(${Math.min(255, r + 60)},${Math.min(255, g + 40)},255,${a.toFixed(3)})`;
+        ctx.beginPath();
+        ctx.arc(x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalCompositeOperation = 'source-over';
+    }
+
+    function resize() {
+      W = host.clientWidth;
+      H = host.clientHeight;
+      if (!W || !H) return;
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      const n = Math.round(Math.min(90, (W * H) / 9000));
+      parts = Array.from({ length: n }, () => make(true));
+      draw(0, 0);
+    }
+
+    function frame(now) {
+      if (!running) return;
+      const dt = Math.min((now - last) / 1000, 1 / 30);
+      last = now;
+      draw(dt, now / 1000);
+      raf = requestAnimationFrame(frame);
+    }
+
+    if ('ResizeObserver' in window) new ResizeObserver(resize).observe(host);
+    resize();
+    whileVisible(host, () => {
+      if (running || mqReduce.matches) return;
+      running = true;
+      last = performance.now();
+      raf = requestAnimationFrame(frame);
+    }, () => {
+      running = false;
+      cancelAnimationFrame(raf);
+    });
+  }
+
+  /* ======================================================================
+     8. Game queue: a winding level-map path that fills as you scroll
      ====================================================================== */
   const map = (() => {
     const el = $('#map');
@@ -662,7 +854,6 @@ void main(){
       }
       return L;
     };
-
     const quadLen = (a, c, b) => cubicLen(a, [a[0] + (2 / 3) * (c[0] - a[0]), a[1] + (2 / 3) * (c[1] - a[1])], [b[0] + (2 / 3) * (c[0] - b[0]), b[1] + (2 / 3) * (c[1] - b[1])], b);
     const pt = (p) => `${p[0].toFixed(1)} ${p[1].toFixed(1)}`;
 
@@ -683,14 +874,13 @@ void main(){
         let seg;
         let segLen;
         if (vertical) {
-          // phones: a soft S-curve that stays inside the node column
+          // a soft S-curve that stays inside the node column
           const c1 = [a[0], (a[1] + b[1]) / 2];
           const c2 = [b[0], (a[1] + b[1]) / 2];
           seg = ` C${pt(c1)} ${pt(c2)} ${pt(b)}`;
           segLen = cubicLen(a, c1, c2, b);
         } else {
-          // wide screens: run along the node row, turn down/up in the gap between columns
-          // (never across the step text), then continue into the next node
+          // side by side: run along the node row and turn in the gap between columns
           const gx = (boxes[i - 1].right + boxes[i].left) / 2 - mr.left;
           const dy = b[1] - a[1];
           const dir = Math.sign(dy) || 1;
@@ -742,142 +932,18 @@ void main(){
   })();
 
   /* ======================================================================
-     8. Stat counters
-     ====================================================================== */
-  function initCounters() {
-    const els = $$('[data-count]');
-    if (!hasIO || !els.length || mqReduce.matches) return;
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((en) => {
-        if (!en.isIntersecting) return;
-        io.unobserve(en.target);
-        const el = en.target;
-        const to = parseInt(el.dataset.count, 10) || 0;
-        const t0 = performance.now();
-        const dur = 1100;
-        const step = (now) => {
-          const k = Math.min(1, (now - t0) / dur);
-          el.textContent = String(Math.round(to * (1 - Math.pow(1 - k, 3))));
-          if (k < 1) requestAnimationFrame(step);
-        };
-        requestAnimationFrame(step);
-      });
-    }, { threshold: 0.6 });
-    els.forEach((el) => io.observe(el));
-  }
-
-  /* ======================================================================
-     9. Zorb the mascot: eye follows the pointer, taps get a reply
-     ====================================================================== */
-  function initZorb() {
-    const btn = $('#zorbBtn');
-    const bubble = $('#zorbBubble');
-    const eye = $('#zorbEye');
-    const pupil = $('#zorbPupil');
-    const body = $('.zb-body');
-    if (!btn || !bubble || !eye || !pupil) return;
-    let active = false;
-    let px = null;
-    let py = null;
-    let tx = 0;
-    let ty = 0;
-    let x = 0;
-    let y = 0;
-    let raf = 0;
-    let idle = 0;
-    let lineIdx = 0;
-
-    const tick = () => {
-      raf = 0;
-      if (px != null) {
-        const r = eye.getBoundingClientRect();
-        const dx = px - (r.left + r.width / 2);
-        const dy = py - (r.top + r.height / 2);
-        const dist = Math.hypot(dx, dy) || 1;
-        const k = Math.min(1, dist / 240);
-        tx = (dx / dist) * k;
-        ty = (dy / dist) * k;
-      }
-      x += (tx - x) * 0.2;
-      y += (ty - y) * 0.2;
-      pupil.setAttribute('transform', `translate(${(x * 13).toFixed(2)} ${(y * 13).toFixed(2)})`);
-      if (Math.abs(tx - x) + Math.abs(ty - y) > 0.002) raf = requestAnimationFrame(tick);
-    };
-    const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
-
-    const lookAround = () => {
-      if (!active) return;
-      px = null;
-      const a = Math.random() * Math.PI * 2;
-      const k = 0.35 + Math.random() * 0.6;
-      tx = Math.cos(a) * k;
-      ty = Math.sin(a) * k * 0.7;
-      kick();
-      idle = setTimeout(lookAround, 1600 + Math.random() * 1800);
-    };
-    const wake = () => {
-      clearTimeout(idle);
-      idle = setTimeout(lookAround, 2600);
-    };
-
-    window.addEventListener('pointermove', (e) => {
-      if (!active || mqReduce.matches) return;
-      px = e.clientX;
-      py = e.clientY;
-      kick();
-      wake();
-    }, { passive: true });
-
-    if (hasIO) {
-      new IntersectionObserver((entries) => {
-        active = entries[entries.length - 1].isIntersecting;
-        if (active && !mqReduce.matches) wake();
-        else clearTimeout(idle);
-      }).observe(btn);
-    }
-
-    btn.addEventListener('click', () => {
-      const lines = t('zorb.lines');
-      const best = window.NeonStack ? window.NeonStack.best : 0;
-      let text;
-      if (best > 0 && lineIdx % 3 === 2) text = t('zorb.best').replace('{n}', best);
-      else text = lines[lineIdx % lines.length];
-      lineIdx += 1;
-      bubble.textContent = text;
-      if (mqReduce.matches) return;
-      if (body && body.animate) {
-        body.animate(
-          [
-            { transform: 'translateY(0) scale(1, 1)' },
-            { transform: 'translateY(-18px) scale(.96, 1.05)', offset: 0.35 },
-            { transform: 'translateY(0) scale(1.06, .94)', offset: 0.7 },
-            { transform: 'translateY(0) scale(1, 1)' },
-          ],
-          { duration: 520, easing: 'ease-out' }
-        );
-      }
-      if (bubble.animate) {
-        bubble.animate(
-          [{ transform: 'translateX(-50%) scale(.85)' }, { transform: 'translateX(-50%) scale(1)' }],
-          { duration: 320, easing: 'cubic-bezier(.34,1.56,.64,1)' }
-        );
-      }
-    });
-  }
-
-  /* ======================================================================
-     10. Pause looping CSS animations while their section is off-screen
+     9. Pause looping CSS animations while their section is off-screen
      ====================================================================== */
   function initPausing() {
     if (!hasIO) return;
     const io = new IntersectionObserver((entries) => {
       entries.forEach((en) => en.target.classList.toggle('fx-paused', !en.isIntersecting));
     }, { rootMargin: '120px 0px' });
-    [$('.hero'), $('.ticker'), $('.zorb-stage')].filter(Boolean).forEach((el) => io.observe(el));
+    [$('.hero'), $('.ticker'), $('.soon')].filter(Boolean).forEach((el) => io.observe(el));
   }
 
   /* ======================================================================
-     11. Small things: copy e-mail, play buttons, footer year
+     10. Small things: store links, copy e-mail, footer year
      ====================================================================== */
   const toastEl = $('#toast');
   let toastTimer = 0;
@@ -911,18 +977,13 @@ void main(){
     });
   }
 
-  function initPlayButtons() {
-    const phone = $('#phone');
-    $$('[data-play]').forEach((b) => {
-      b.addEventListener('click', () => {
-        if (phone) {
-          const r = phone.getBoundingClientRect();
-          if (r.top < 70 || r.bottom > window.innerHeight) {
-            phone.scrollIntoView({ behavior: mqReduce.matches ? 'auto' : 'smooth', block: 'center' });
-          }
-        }
-        if (window.NeonStack) window.NeonStack.play();
-      });
+  function initStoreLinks() {
+    $$('.store-btn').forEach((a) => {
+      const url = STORE_LINKS[a.dataset.store];
+      if (url) {
+        a.href = url;
+        a.hidden = false;
+      }
     });
   }
 
@@ -930,7 +991,7 @@ void main(){
      Boot
      ====================================================================== */
   const params = new URLSearchParams(window.location.search);
-  const wanted = params.get('lang') || store.get('zg-lang');
+  const wanted = params.get('lang') || store.get('qg-lang');
   if (wanted === 'en') setLang('en', false);
   else syncBurgerLabel();
 
@@ -939,14 +1000,14 @@ void main(){
 
   $$('[data-year]').forEach((el) => { el.textContent = String(new Date().getFullYear()); });
 
+  initStoreLinks();
   initScrollSpy();
-  initParallax();
-  initTilt();
-  initCounters();
-  initZorb();
-  initPausing();
+  initHeroPointer();
+  initRain();
+  initLens();
+  initEmbers();
   initCopy();
-  initPlayButtons();
+  initPausing();
 
   if (hasIO && hero) {
     new IntersectionObserver((entries) => {

@@ -1,13 +1,13 @@
 {
-  "name": "Zorbzilla Games",
-  "short_name": "Zorbzilla",
-  "description": "iOS ve Android için mobil oyunlar geliştiren bağımsız oyun stüdyosu.",
+  "name": "QuUp Games",
+  "short_name": "QuUp Games",
+  "description": "Bağımsız mobil oyun stüdyosu. İlk oyun: Detective on Duty. Yakında: The Ascendants.",
   "lang": "tr",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#140c2b",
-  "theme_color": "#140c2b",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
   "icons": [
     { "src": "assets/img/icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "assets/img/icon-512.png", "sizes": "512x512", "type": "image/png" },
