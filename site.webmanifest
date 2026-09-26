@@ -1,7 +1,7 @@
 {
-  "name": "QuUp Games",
-  "short_name": "QuUp Games",
-  "description": "Bağımsız mobil oyun stüdyosu. İlk oyun: Detective on Duty. Yakında: The Ascendants.",
+  "name": "Detective on Duty · Quup Games",
+  "short_name": "Quup Games",
+  "description": "Quup Games'in ilk oyunu Detective on Duty: olay yerini incele, şüphelileri sorgula, çelişkiyi yakala.",
   "lang": "tr",
   "start_url": "./",
   "scope": "./",

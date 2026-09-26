@@ -1,46 +1,57 @@
-# QuUp Games: web sitesi
+# Detective on Duty · Quup Games: web sitesi
 
-QuUp Games için tek sayfalık, hızlı ve her cihazda çalışan tanıtım sitesi.
+Quup Games'in ilk oyunu **Detective on Duty** için tanıtım sitesi. Stüdyoyu da tanıtır.
 Hiçbir framework ya da derleme adımı yok: düz HTML, CSS ve JavaScript.
 
-## Neler var?
+Yayındaki adres: https://zorbzilla.github.io/games/
 
-- **Q amblemi:** Logodaki Q harfi vektöre çevrildi (`#q-path`). Favicon, uygulama simgeleri,
-  menü ve dekorlar bu tek şekli kullanır.
-- **El feneri efekti:** Giriş bölümünde fener imleci takip eder ve karanlıkta gizli parmak izlerini
-  aydınlatır. Dokunmatik ekranlarda fener kendi kendine gezinir, dokunulan yere yönelir.
-  Bu bir WebGL efekti. Yavaş cihazda önce çözünürlüğünü, sonra kare hızını düşürür, gerekirse durur.
-  Grafik kartı yoksa hiç açılmaz, yerine CSS arka planı görünür.
-- **Detective on Duty:** Yağmurlu, noir bir sokak sahnesi. Büyüteç sahnede gezinir ve gizli
-  ipuçlarını (parmak izi, ayak izi) gösterir.
-- **The Ascendants:** Yükselen ışık parçacıklarıyla "Yakında" bölümü.
-- **Oyun sırası:** Kaydırdıkça dolan seviye haritası (Detective on Duty, The Ascendants, kilitli seviye).
-- **Türkçe / İngilizce:** Sağ üstteki TR/EN düğmesi. Seçim hatırlanır. `?lang=en` ile İngilizce açılır.
-- **Erişilebilirlik:** Klavye ile gezinme, ekran okuyucu etiketleri. "Hareketi azalt" ayarı açık olan
-  ziyaretçilere animasyonsuz sürüm gösterilir.
+## Sayfada neler var?
+
+Yukarıdan aşağıya:
+
+1. **Giriş:**
+   - "Detective on Duty" başlığı, kısa tanıtım ve oyunun üç gerçeği: 50 vaka, haftalık sıralama, hesap gerekmez.
+   - Sağda altın dedektif rozeti, ortasında Quup'un Q harfi. Fare ile hafif döner.
+   - Arka planda fener efekti: fener karanlıkta gezinir ve gizli parmak izlerini aydınlatır.
+2. **Olay yeri şeridi:** Kayan sarı şerit ve arkada ilk sekiz vakanın adları.
+3. **Oyun:** Yağmurlu noir sokak sahnesi. Büyüteç sahnede gezinir ve gizli ipuçlarını gösterir. Yanında oyunun dosya kartı (vaka sayısı, tür, platform).
+4. **Özellikler:** Altı kart: olay yeri, sorgu odası, çıkarım panosu, çelişkiler, kariyer, haftalık sıralama.
+   - Kartların küçük animasyonlu çizimleri var.
+   - Masaüstünde aynı anda tek kart oynar: fare hangi kartın üstündeyse o, fare yoksa kartlar sırayla.
+5. **Nasıl oynanır?:** Brifing → Olay yeri → Sorgu → Çıkarım → Karar. Kaydırdıkça dolan seviye haritası.
+6. **Vaka dosyaları:** İlk sekiz vakanın klasörü ve "+42 dosya daha arşivde" kartı.
+7. **Stüdyo:** Quup Games tanıtımı, üç kural, gümüş Q amblemi ve "Gizlilik, kısaca" paneli.
+8. **İletişim ve bağlantılar:** E-posta (kopyala / gönder), Google Play, gizlilik politikası ve "Bu sayfayı paylaş".
+
+Başlıkta ve altbilgide logo olarak sadece **Q** kullanılır. TR/EN düğmesi dili değiştirir ve seçim hatırlanır. `?lang=en` ile sayfa İngilizce açılır.
 
 ## Dosyalar
 
 ```
-index.html              Sayfanın tamamı (Türkçe metinler burada)
+index.html              Ana sayfa (Türkçe metinler burada)
+privacy-policy.html     Gizlilik politikası (İngilizce, metni olduğu gibi korunur)
 404.html                "Sayfa bulunamadı" sayfası
 assets/css/style.css    Tüm stiller (renkler en üstteki :root içinde)
-assets/js/main.js       Etkileşimler, İngilizce metinler (EN sözlüğü), mağaza bağlantıları
-assets/img/             Favicon ve ana ekran simgeleri
+assets/js/main.js       Etkileşimler, İngilizce metinler (EN sözlüğü), mağaza bağlantısı
+assets/img/             Favicon, ana ekran simgeleri, paylaşım görseli (og.jpg)
 site.webmanifest        "Ana ekrana ekle" ayarları
 ```
 
 ## İçerik nasıl değiştirilir?
 
-- **Türkçe metinler:** `index.html` içinde doğrudan düzenle.
-- **İngilizce metinler:** `assets/js/main.js` içindeki `EN` nesnesi.
-  Her metnin `data-i18n="..."` anahtarı iki tarafta aynı olmalı.
-- **Mağaza bağlantıları:** `assets/js/main.js` dosyasının en üstündeki `STORE_LINKS`.
-  Bağlantı girilen düğme (App Store / Google Play) otomatik görünür, boş olan gizli kalır.
-- **E-posta adresi:** `index.html` içinde `merhaba@example.com` geçen iki yeri değiştir
-  (`mailAddr` ve `mailto:` bağlantısı).
-- **Oyun görselleri:** Detective on Duty bölümündeki sahne şimdilik çizimdir
-  (`.case__scene`). Gerçek oyun görseli geldiğinde bu SVG'nin yerine bir `<img>` konabilir.
+- **Google Play bağlantısı:** `assets/js/main.js` dosyasının en üstündeki `STORE_LINKS.googleplay`.
+  Bağlantı girilince her yerdeki "Google Play'den indir" düğmeleri ve bağlantı kartı kendiliğinden görünür.
+  Girişteki ana düğme de "Oyunu keşfet" yerine indirme düğmesi olur. Boş kalırsa hepsi gizli kalır.
+- **Türkçe metinler:** Doğrudan `index.html` içinde düzenlenir.
+- **İngilizce metinler:** `assets/js/main.js` içindeki `EN` nesnesinde. Her metnin `data-i18n="..."` anahtarı iki tarafta aynı olmalı.
+- **E-posta adresi:** `index.html` içinde `quup.support@` geçen iki yeri değiştir (`mailAddr` ve `mailto:`).
+- **Vaka dosyaları:** `index.html` içindeki `.files` listesi.
+  Başlıklar oyun kodundaki vaka adlarından alındı (`Case001_TheMissingMan` ...). Oyundaki adlar farklıysa buradan düzelt.
+- **Gizlilik politikası:** `privacy-policy.html`. Google Play Console'a verilecek adres:
+  `https://zorbzilla.github.io/games/privacy-policy.html`
+- **Oyun görselleri:** Noir sahne ve özellik kartlarındaki çizimler illüstrasyondur, oyun ekran görüntüsü değildir.
+  Gerçek ekran görüntüleri gelince `.case__scene` SVG'sinin yerine bir `<img>` konabilir.
+- **Paylaşım görseli:** `assets/img/og.jpg` (1200×630). Link WhatsApp, X gibi yerlerde paylaşılınca bu görünür.
 - **Renkler ve fontlar:** `assets/css/style.css` dosyasının başındaki değişkenler.
 
 ## Bilgisayarında çalıştırma
@@ -53,18 +64,19 @@ python3 -m http.server 8080
 
 Sonra tarayıcıda `http://localhost:3000` (veya `8080`) adresini aç.
 
-## GitHub Pages ile ücretsiz yayınlama
+## Yayınlama (GitHub Pages)
 
-1. GitHub'da depoya gir: **Settings → Pages**.
-2. **Source:** "Deploy from a branch".
-3. **Branch:** sitenin bulunduğu dalı seç, klasör olarak `/ (root)` bırak, **Save**'e bas.
-4. Bir iki dakika sonra site şu adreste açılır: `https://zorbzilla.github.io/games/`
+Site GitHub Pages ile bu dalın kökünden yayınlanıyor. Bu dala gönderilen her değişiklik bir iki dakika içinde yayına çıkar.
+Ayar: GitHub'da **Settings → Pages**. Oradan dal ve klasör (`/ (root)`) seçilir.
+
+Bu dalın kökündeki her dosya herkese açık olarak indirilebilir. Oyun projesinin dosyaları buraya konmamalı:
+Unity projesi, `firestore.rules`, anahtarlar vb. Keystore dosyaları `.gitignore` ile zaten dışarıda tutulur.
 
 ## Performans notları
 
-- Bir bölüm ekrandan çıkınca oradaki efektler (fener, yağmur, büyüteç, parçacıklar) durur.
-  Sekme gizlenince de durur.
-- Ekranda görünmeyen bölümlerin döngüsel CSS animasyonları duraklatılır.
-- Kaydırma animasyonları, destekleyen tarayıcılarda ana iş parçacığını meşgul etmeyen
-  CSS kaydırma zaman çizelgeleriyle çalışır. Desteklemeyenlerde içerik doğrudan görünür.
-- Tarayıcı konsolunda `ZG.fx` yazarak fener efektinin o anki kalite seviyesini görebilirsin.
+- Bir bölüm ekrandan çıkınca oradaki efektler durur: fener, yağmur, büyüteç, döngüsel animasyonlar. Sekme gizlenince de durur.
+- Fener efekti WebGL ile çalışır. Yavaş cihazda önce çözünürlüğü, sonra kare hızını düşürür, gerekirse durur.
+  Grafik hızlandırması yoksa hiç açılmaz, yerine CSS arka planı görünür.
+  Tarayıcı konsolunda `ZG.fx` yazarak o anki kalite seviyesini görebilirsin.
+- Özellik kartlarında aynı anda tek çizim oynar. Mobilde ekranda görünen kartlar oynar.
+- "Hareketi azalt" ayarı açık olan ziyaretçilere animasyonsuz sürüm gösterilir.

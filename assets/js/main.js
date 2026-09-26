@@ -1,14 +1,13 @@
 /* ==========================================================================
-   QuUp Games: site interactions
+   Detective on Duty by Quup Games: site interactions
    Everything here is progressive: the page is complete without this file.
    ========================================================================== */
 (() => {
   'use strict';
 
-  /* Store links for Detective on Duty. The buttons stay hidden until a link is filled in. */
+  /* Store link for Detective on Duty. Every download button stays hidden until it is filled in. */
   const STORE_LINKS = {
-    appstore: '', // e.g. 'https://apps.apple.com/app/id0000000000'
-    googleplay: '', // e.g. 'https://play.google.com/store/apps/details?id=com.quupgames.detectiveonduty'
+    googleplay: '', // e.g. 'https://play.google.com/store/apps/details?id=...'
   };
 
   const $ = (s, r = document) => r.querySelector(s);
@@ -40,74 +39,131 @@
      1. Language (TR text lives in the HTML, EN lives here)
      ====================================================================== */
   const EN = {
-    'meta.title': 'QuUp Games | Mobile Game Studio',
-    'meta.desc': 'QuUp Games is an independent mobile game studio. Our first game is Detective on Duty, and The Ascendants is next.',
+    'meta.title': 'Detective on Duty | Quup Games',
+    'meta.desc': 'Detective on Duty is the first mobile game from Quup Games. Search the crime scene, question the suspects, catch the contradiction. 50 case files are waiting for you.',
     skip: 'Skip to content',
-    'aria.home': 'QuUp Games home',
+    'aria.home': 'Quup Games home',
     'aria.mainnav': 'Main menu',
     'aria.footnav': 'Footer menu',
     'aria.lang': 'Change language: Turkish or English',
+    'nav.game': 'Game',
+    'nav.features': 'Features',
+    'nav.how': 'How to play',
+    'nav.cases': 'Cases',
     'nav.studio': 'Studio',
     'nav.contact': 'Contact',
     'nav.cta': 'Get in touch',
+    'nav.privacy': 'Privacy policy',
+    'store.gp': 'Get it on Google Play',
 
-    'hero.badge': 'Independent mobile game studio',
-    'hero.t1': 'Your next',
-    'hero.t2': 'adventure',
-    'hero.t3': 'is queued up.',
-    'hero.lead': 'QuUp Games is an independent mobile game studio. Our first game is Detective on Duty, and The Ascendants is next in line.',
-    'hero.cta1': 'See our games',
-    'hero.cta2': 'Coming soon',
-    'hero.hintMouse': 'The flashlight follows your cursor. There are clues hidden in the dark.',
+    'hero.chip': 'The first game from Quup Games',
+    'hero.tagline': 'Pin on your badge. The file is on your desk.',
+    'hero.lead': 'Search the crime scene, question the suspects, catch the contradiction in their statements. You pick the culprit, and you close the file.',
+    'hero.cta1': 'Explore the game',
+    'hero.cta2': 'Meet the studio',
+    'fact.cases': 'case files',
+    'fact.weekly': 'Weekly leaderboard',
+    'fact.noacc': 'No account needed',
+    'hero.hintMouse': 'The flashlight follows your cursor. There are fingerprints hidden in the dark.',
     'hero.hintTouch': 'The flashlight roams the dark. Tap to aim it.',
 
-    'tb.soon': 'COMING SOON',
     'tk.scene': 'CRIME SCENE',
     'tk.cross': 'DO NOT CROSS',
 
-    'games.eyebrow': 'Games',
-    'games.title': 'Every game is a new case.',
-    'games.lead': 'We set off with our first game, Detective on Duty. Our next game, The Ascendants, is coming very soon.',
+    'game.eyebrow': 'The game',
+    'game.title': 'Every file hides a lie.',
+    'game.lead': 'In Detective on Duty, every case is an investigation. You gather evidence, compare statements and find the lie. The final call is yours.',
     'case.tape': 'DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE ◆ DO NOT CROSS ◆ CRIME SCENE',
     'case.hintMouse': 'Move the magnifier over the scene to find the clues.',
     'case.hintTouch': 'Tap anywhere and the magnifier follows.',
     'case.eyebrow': 'Our first game',
-    'case.desc': 'Pin on your badge and grab your flashlight: the case file is open. Detective on Duty is QuUp Games’ first game.',
-    'case.fileLabel': 'File no.',
-    'case.studioLabel': 'Studio',
+    'case.desc': 'The precinct in your pocket: 50 case files, a weekly leaderboard and a rank waiting to climb.',
+    'case.casesLabel': 'Cases',
+    'case.casesVal': '50 files',
     'case.genreLabel': 'Genre',
-    'case.genre': 'Detective',
+    'case.genre': 'Detective, investigation',
     'case.platformLabel': 'Platform',
-    'case.platform': 'Mobile',
+    'case.studioLabel': 'Studio',
     'case.stamp': 'On duty',
     'case.ask': 'Ask us about the game',
 
-    'soon.ghost': 'SOON',
-    'soon.badge': 'Coming soon',
-    'soon.text': 'Our next game is on its way. The ascent begins soon, so stay close and don’t miss the first look.',
-    'soon.cta': 'Keep me posted',
+    'feat.eyebrow': 'Features',
+    'feat.title': 'A real investigation, in the palm of your hand.',
+    'feat.lead': 'Every case gives you the same tools. How you use them is up to you.',
+    'f1.t': 'Crime scene',
+    'f1.d': 'Search every corner. Every clue you find goes into the evidence log; you’ll learn later which ones matter.',
+    'f1.tag': 'Evidence log',
+    'f2.t': 'Interrogation room',
+    'f2.d': 'Confront statements with evidence. Strike the right balance between pressure and trust.',
+    'f2.tag': 'Pressure and trust',
+    'f2.m1': 'PRESSURE',
+    'f2.m2': 'TRUST',
+    'f3.t': 'Deduction board',
+    'f3.d': 'Pin the clues to the board and connect them. The right link leads you to the right suspect.',
+    'f3.tag': 'Connections',
+    'f4.t': 'Contradictions',
+    'f4.d': 'Times, statements and evidence have to line up. If they don’t, someone is lying.',
+    'f4.tag': 'Timeline',
+    'f5.t': 'Career',
+    'f5.d': 'Every file you close raises your rank and grows your reputation.',
+    'f5.tag': 'Rank and reputation',
+    'f6.t': 'Weekly leaderboard',
+    'f6.d': 'A new race every week. Climb past the other detectives with the experience you earn.',
+    'f6.tag': 'Fresh every week',
+    'f6.you': 'YOU',
+
+    'flow.eyebrow': 'How to play',
+    'flow.title': 'One case, five steps.',
+    'flow.lead': 'From the moment you open a file to the moment you close it, every step builds on the last.',
+    's1.t': 'Briefing',
+    's1.d': 'Open the file. Get to know the incident, the place and the people.',
+    's2.t': 'Crime scene',
+    's2.d': 'Gather the evidence. One small detail can change everything.',
+    's3.t': 'Interrogation',
+    's3.d': 'Hear the suspects out and confront their statements with evidence.',
+    's4.t': 'Deduction',
+    's4.d': 'Connect the clues on the board and expose the contradiction.',
+    's5.t': 'Verdict',
+    's5.d': 'Pick the culprit, write your report, close the file.',
+
+    'files.eyebrow': 'Case files',
+    'files.title': '50 files. All of them waiting to be solved.',
+    'files.lead': 'Here are the first eight files on the desk. There are 42 more in the archive.',
+    'files.tab': 'File',
+    'files.stamp': 'Classified',
+    'files.more': 'more files in the archive',
+    'files.moreSub': 'All of them are waiting in the game.',
 
     'stu.eyebrow': 'Studio',
-    'stu.title': 'There’s always a new game in the queue.',
-    'stu.text': 'QuUp Games is an independent mobile game studio. We set off with our first game, Detective on Duty, and The Ascendants is next in line. Every project follows the same three rules.',
+    'stu.title': 'We are Quup Games.',
+    'stu.text': 'Quup Games is an independent mobile game studio. Detective on Duty is our first game. Every game we make follows the same three rules.',
     'stu.v1t': 'Fun comes first',
-    'stu.v1d': 'No mechanic makes it into a game unless it’s fun in the first ten seconds.',
-    'stu.v2t': 'Obsessed with performance',
-    'stu.v2d': 'Smooth, battery-friendly games that open fast, even on older phones.',
+    'stu.v1d': 'No mechanic makes it into a game unless it’s fun in the first minute.',
+    'stu.v2t': 'Smooth on every phone',
+    'stu.v2d': 'Games that open fast and go easy on the battery, even on older phones.',
     'stu.v3t': 'Respect for players',
-    'stu.v3d': 'No dark patterns. Fair economies and honest design.',
-    'queue.title': 'Game queue',
-    'queue.1': 'Our first game. The studio’s first case.',
-    'queue.2': 'Coming soon. The ascent is next.',
-    'queue.3': 'Locked level. It opens when the time comes.',
+    'stu.v3d': 'We don’t ask for an account to play. Your progress stays on your own phone.',
+    'priv.eyebrow': 'Privacy',
+    'priv.title': 'Privacy, in short.',
+    'priv.1': 'No account, email or ID needed.',
+    'priv.2': 'Your save and progress are stored on your phone.',
+    'priv.3': 'The leaderboard only shows your handle, score, rank and avatar.',
+    'priv.4': 'You can delete your account and data from the Settings screen in the game.',
+    'priv.cta': 'Read the full privacy policy',
 
     'ct.eyebrow': 'Contact',
-    'ct.title': 'Got a case for us? Write to us.',
-    'ct.lead': 'Press, partnerships, player feedback or just a hello. We’re open to all of it.',
+    'ct.title': 'Got a lead? Write to us.',
+    'ct.lead': 'Support, feedback, press or partnerships. It all comes to the same address.',
     'ct.copy': 'Copy address',
     'ct.send': 'Send an email',
+    'links.title': 'Links',
+    'link.gp': 'Download Detective on Duty',
+    'link.privT': 'Privacy policy',
+    'link.privD': 'What the game does with data, on one page',
+    'link.shareT': 'Share this page',
+    'link.shareD': 'Send the link to a friend',
 
-    'ft.tag': 'Your next adventure is queued up.',
+    'ft.tag': 'Pin on your badge. The file is on your desk.',
     'ft.rights': 'All rights reserved.',
     'ft.top': 'Back to top',
   };
@@ -119,12 +175,18 @@
       'aria.menuClose': 'Menüyü kapat',
       'ct.copied': 'E-posta adresi kopyalandı',
       'ct.select': 'Adres seçildi, şimdi kopyalayabilirsin',
+      'share.text': 'Detective on Duty: Quup Games’in ilk oyunu.',
+      'share.copied': 'Sayfa bağlantısı kopyalandı',
+      'share.fail': 'Bağlantı: ',
     },
     en: {
       'aria.menuOpen': 'Open menu',
       'aria.menuClose': 'Close menu',
       'ct.copied': 'Email address copied',
       'ct.select': 'Address selected, ready to copy',
+      'share.text': 'Detective on Duty: the first game from Quup Games.',
+      'share.copied': 'Page link copied',
+      'share.fail': 'Link: ',
     },
   };
 
@@ -275,7 +337,7 @@
 
   const shader = (() => {
     const canvas = $('#heroBg');
-    const emblem = $('#emblem');
+    const badge = $('#heroBadge');
     if (!canvas || !hero || !window.WebGLRenderingContext) return null;
     const force = /[?&]gl=force\b/.test(window.location.search);
     let gl = null;
@@ -411,11 +473,11 @@ void main(){
       canvas.width = Math.max(2, Math.round(w * scale));
       canvas.height = Math.max(2, Math.round(h * scale));
       gl.viewport(0, 0, canvas.width, canvas.height);
-      if (emblem) {
+      if (badge) {
         const hr = hero.getBoundingClientRect();
-        const er = emblem.getBoundingClientRect();
-        focus[0] = (er.left + er.width / 2 - hr.left) / hr.width;
-        focus[1] = 1 - (er.top + er.height / 2 - hr.top) / hr.height;
+        const br = badge.getBoundingClientRect();
+        focus[0] = (br.left + br.width / 2 - hr.left) / hr.width;
+        focus[1] = 1 - (br.top + br.height / 2 - hr.top) / hr.height;
       }
       // resizing clears the drawing buffer, so paint right away to avoid a blank frame
       render(performance.now());
@@ -537,11 +599,10 @@ void main(){
   })();
 
   /* ======================================================================
-     5. Hero parallax (mouse) + flashlight aiming (mouse and touch)
+     5. Pointer parallax: the hero badge and props, the studio emblem.
+        Eased in rAF; writes two custom properties and nothing else.
      ====================================================================== */
-  function initHeroPointer() {
-    const stage = $('#heroStage');
-    if (!stage || !hero) return;
+  function parallax(stage) {
     let tx = 0;
     let ty = 0;
     let x = 0;
@@ -555,7 +616,17 @@ void main(){
       stage.style.setProperty('--py', y.toFixed(4));
       if (Math.abs(tx - x) > 0.0005 || Math.abs(ty - y) > 0.0005) raf = requestAnimationFrame(tick);
     };
-    const kick = () => { if (!raf) raf = requestAnimationFrame(tick); };
+    return (nx, ny) => {
+      tx = nx;
+      ty = ny;
+      if (!raf) raf = requestAnimationFrame(tick);
+    };
+  }
+
+  function initHeroPointer() {
+    const stage = $('#heroStage');
+    if (!stage || !hero) return;
+    const aimAt = parallax(stage);
 
     window.addEventListener('pointermove', (e) => {
       if (!heroVisible || e.pointerType !== 'mouse') return;
@@ -565,9 +636,7 @@ void main(){
         else shader.release();
       }
       if (mqReduce.matches) return;
-      tx = (e.clientX / window.innerWidth) * 2 - 1;
-      ty = (e.clientY / window.innerHeight) * 2 - 1;
-      kick();
+      aimAt((e.clientX / window.innerWidth) * 2 - 1, (e.clientY / window.innerHeight) * 2 - 1);
     }, { passive: true });
 
     hero.addEventListener('pointerdown', (e) => {
@@ -575,15 +644,36 @@ void main(){
     }, { passive: true });
 
     document.addEventListener('pointerleave', () => {
-      tx = 0;
-      ty = 0;
+      aimAt(0, 0);
       if (shader) shader.release();
-      kick();
     });
   }
 
+  // The stage box is measured on relayout (page coordinates), so pointer moves never force a layout.
+  const studioTilt = (() => {
+    const stage = $('#studioStage');
+    const zone = $('#studyo');
+    if (!stage || !zone) return null;
+    const aimAt = parallax(stage);
+    const box = { x: 0, y: 0, w: 1, h: 1 };
+    zone.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== 'mouse' || mqReduce.matches) return;
+      aimAt(clamp((e.pageX - box.x) / box.w, -1, 1), clamp((e.pageY - box.y) / box.h, -1, 1));
+    }, { passive: true });
+    zone.addEventListener('pointerleave', () => aimAt(0, 0));
+    return {
+      measure() {
+        const r = stage.getBoundingClientRect();
+        box.x = r.left + window.scrollX + r.width / 2;
+        box.y = r.top + window.scrollY + r.height / 2;
+        box.w = Math.max(1, r.width * 0.9);
+        box.h = Math.max(1, r.height * 0.9);
+      },
+    };
+  })();
+
   /* ======================================================================
-     6. Detective on Duty: rain + a magnifier that reveals hidden clues
+     6. The noir scene: rain + a magnifier that reveals hidden clues
      ====================================================================== */
   function initRain() {
     const canvas = $('#caseRain');
@@ -742,90 +832,7 @@ void main(){
   }
 
   /* ======================================================================
-     7. The Ascendants: embers rising towards the light
-     ====================================================================== */
-  function initEmbers() {
-    const canvas = $('#soonCanvas');
-    const host = canvas && canvas.parentElement;
-    if (!canvas || !host || !canvas.getContext) return;
-    const ctx = canvas.getContext('2d');
-    let W = 0;
-    let H = 0;
-    let dpr = 1;
-    let parts = [];
-    let running = false;
-    let raf = 0;
-    let last = 0;
-
-    const make = (anywhere) => ({
-      x: Math.random() * W,
-      y: anywhere ? Math.random() * H : H + Math.random() * 40,
-      r: 0.6 + Math.random() * 1.9,
-      v: 18 + Math.random() * 46,
-      sway: 6 + Math.random() * 18,
-      ph: Math.random() * Math.PI * 2,
-      c: Math.random(),
-    });
-
-    function draw(dt, time) {
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      ctx.clearRect(0, 0, W, H);
-      ctx.globalCompositeOperation = 'lighter';
-      for (const p of parts) {
-        p.y -= p.v * dt;
-        if (p.y < -10) Object.assign(p, make(false));
-        const x = p.x + Math.sin(time * 0.8 + p.ph) * p.sway;
-        const fade = clamp(p.y / H, 0, 1);
-        const a = (0.25 + 0.55 * fade) * (0.6 + 0.4 * Math.sin(time * 3 + p.ph));
-        const r = Math.round(143 + (90 - 143) * p.c);
-        const g = Math.round(123 + (216 - 123) * p.c);
-        ctx.fillStyle = `rgba(${r},${g},255,${(a * 0.18).toFixed(3)})`;
-        ctx.beginPath();
-        ctx.arc(x, p.y, p.r * 4, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = `rgba(${Math.min(255, r + 60)},${Math.min(255, g + 40)},255,${a.toFixed(3)})`;
-        ctx.beginPath();
-        ctx.arc(x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.globalCompositeOperation = 'source-over';
-    }
-
-    function resize() {
-      W = host.clientWidth;
-      H = host.clientHeight;
-      if (!W || !H) return;
-      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width = Math.round(W * dpr);
-      canvas.height = Math.round(H * dpr);
-      const n = Math.round(Math.min(90, (W * H) / 9000));
-      parts = Array.from({ length: n }, () => make(true));
-      draw(0, 0);
-    }
-
-    function frame(now) {
-      if (!running) return;
-      const dt = Math.min((now - last) / 1000, 1 / 30);
-      last = now;
-      draw(dt, now / 1000);
-      raf = requestAnimationFrame(frame);
-    }
-
-    if ('ResizeObserver' in window) new ResizeObserver(resize).observe(host);
-    resize();
-    whileVisible(host, () => {
-      if (running || mqReduce.matches) return;
-      running = true;
-      last = performance.now();
-      raf = requestAnimationFrame(frame);
-    }, () => {
-      running = false;
-      cancelAnimationFrame(raf);
-    });
-  }
-
-  /* ======================================================================
-     8. Game queue: a winding level-map path that fills as you scroll
+     7. How to play: a winding level-map path that fills as you scroll
      ====================================================================== */
   const map = (() => {
     const el = $('#map');
@@ -932,18 +939,77 @@ void main(){
   })();
 
   /* ======================================================================
-     9. Pause looping CSS animations while their section is off-screen
+     8. Feature cards: one illustration plays at a time on desktop (the
+        hovered card, otherwise each card in turn); touch screens play the
+        one or two cards that are on screen. Everything else stays paused.
+     ====================================================================== */
+  function initFeats() {
+    const cards = $$('.feat');
+    if (!cards.length) return;
+    if (!hasIO) { cards.forEach((c) => c.classList.add('is-live')); return; }
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const seen = new Set();
+    let hovered = null;
+    let auto = null;
+    let timer = 0;
+
+    const apply = () => {
+      const live = new Set();
+      if (!document.hidden && !mqReduce.matches) {
+        if (!fine.matches) seen.forEach((c) => live.add(c));
+        else if (hovered) live.add(hovered);
+        else if (auto) live.add(auto);
+      }
+      cards.forEach((c) => c.classList.toggle('is-live', live.has(c)));
+    };
+    const step = () => {
+      const vis = cards.filter((c) => seen.has(c));
+      auto = vis.length ? vis[(vis.indexOf(auto) + 1) % vis.length] : null;
+      apply();
+    };
+    const sync = () => {
+      const cycle = fine.matches && seen.size > 0 && !document.hidden && !mqReduce.matches;
+      if (cycle && !timer) timer = setInterval(() => { if (!hovered) step(); }, 5200);
+      if (!cycle && timer) { clearInterval(timer); timer = 0; }
+      if (cycle && (!auto || !seen.has(auto))) step();
+      else apply();
+    };
+
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => { if (en.isIntersecting) seen.add(en.target); else seen.delete(en.target); });
+      sync();
+    }, { threshold: 0.35 });
+    cards.forEach((c) => {
+      io.observe(c);
+      c.addEventListener('pointerenter', (e) => {
+        if (e.pointerType !== 'mouse') return;
+        hovered = c;
+        apply();
+      });
+      c.addEventListener('pointerleave', () => {
+        if (hovered !== c) return;
+        hovered = null;
+        auto = c; // carry on from here
+        apply();
+      });
+    });
+    document.addEventListener('visibilitychange', sync);
+    if (fine.addEventListener) fine.addEventListener('change', sync);
+  }
+
+  /* ======================================================================
+     9. Pause looping CSS animations while their part of the page is off-screen
      ====================================================================== */
   function initPausing() {
     if (!hasIO) return;
     const io = new IntersectionObserver((entries) => {
       entries.forEach((en) => en.target.classList.toggle('fx-paused', !en.isIntersecting));
     }, { rootMargin: '120px 0px' });
-    [$('.hero'), $('.ticker'), $('.soon')].filter(Boolean).forEach((el) => io.observe(el));
+    [$('.hero'), $('.ticker'), $('#studioStage')].filter(Boolean).forEach((el) => io.observe(el));
   }
 
   /* ======================================================================
-     10. Small things: store links, copy e-mail, footer year
+     10. Small things: store links, copy e-mail, share, footer year
      ====================================================================== */
   const toastEl = $('#toast');
   let toastTimer = 0;
@@ -953,6 +1019,11 @@ void main(){
     toastEl.classList.add('is-show');
     clearTimeout(toastTimer);
     toastTimer = setTimeout(() => toastEl.classList.remove('is-show'), 2400);
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    return Promise.reject(new Error('no clipboard'));
   }
 
   function initCopy() {
@@ -968,23 +1039,37 @@ void main(){
       toast(t('ct.select'));
     };
     btn.addEventListener('click', () => {
-      const text = addr.textContent.trim();
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text).then(() => toast(t('ct.copied')), selectAddr);
-      } else {
-        selectAddr();
+      copyText(addr.textContent.trim()).then(() => toast(t('ct.copied')), selectAddr);
+    });
+  }
+
+  function initShare() {
+    const btn = $('#shareBtn');
+    if (!btn) return;
+    const canonical = $('link[rel="canonical"]');
+    btn.addEventListener('click', () => {
+      const url = canonical ? canonical.href : window.location.href.split('#')[0];
+      const data = { title: document.title, text: t('share.text'), url };
+      if (navigator.share) {
+        navigator.share(data).catch(() => { /* closed by the visitor */ });
+        return;
       }
+      copyText(url).then(() => toast(t('share.copied')), () => toast(t('share.fail') + url));
     });
   }
 
   function initStoreLinks() {
-    $$('.store-btn').forEach((a) => {
+    let any = false;
+    $$('[data-store]').forEach((a) => {
       const url = STORE_LINKS[a.dataset.store];
-      if (url) {
-        a.href = url;
-        a.hidden = false;
-      }
+      if (!url) return;
+      any = true;
+      a.href = url;
+      a.hidden = false;
+      const wrap = a.closest('[data-store-wrap]');
+      if (wrap) wrap.hidden = false;
     });
+    root.classList.toggle('has-store', any);
   }
 
   /* ======================================================================
@@ -1005,8 +1090,9 @@ void main(){
   initHeroPointer();
   initRain();
   initLens();
-  initEmbers();
   initCopy();
+  initShare();
+  initFeats();
   initPausing();
 
   if (hasIO && hero) {
@@ -1029,6 +1115,7 @@ void main(){
   const relayout = () => {
     if (hero) heroBottom = hero.getBoundingClientRect().bottom + window.scrollY;
     if (shader) shader.measure();
+    if (studioTilt) studioTilt.measure();
     if (map) map.layout();
     scrollFrame();
   };
