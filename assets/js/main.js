@@ -1078,7 +1078,10 @@ void main(){
   const params = new URLSearchParams(window.location.search);
   const wanted = params.get('lang') || store.get('qg-lang');
   if (wanted === 'en') setLang('en', false);
-  else syncBurgerLabel();
+  else {
+    root.lang = 'tr'; // Turkish casing (i → İ) and the TR/EN switch both key off this
+    syncBurgerLabel();
+  }
 
   const langBtn = $('#langToggle');
   if (langBtn) langBtn.addEventListener('click', () => setLang(lang === 'tr' ? 'en' : 'tr', true));
