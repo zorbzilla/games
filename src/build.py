@@ -169,7 +169,7 @@ def header(active, page_id):
       </nav>
       <div class="hud__actions">
         <button class="lang" id="langToggle" type="button" aria-label="Dili değiştir: Türkçe veya İngilizce" data-i18n-aria="aria.lang"><span data-lang="tr">TR</span><span data-lang="en">EN</span></button>
-        <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Menüyü aç"><span></span><span></span></button>
+        <button class="burger" id="burger" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Menüyü aç"><span></span><span></span><span></span></button>
       </div>
     </div>
   </header>
