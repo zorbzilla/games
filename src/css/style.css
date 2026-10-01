@@ -1658,7 +1658,7 @@ html[lang="en"] .lang [data-lang="en"] { color: #fff; }
   position: relative;
   margin-bottom: clamp(6px, 1.6vh, 16px);
   color: #fff;
-  font: 600 clamp(6.4rem, 3.6rem + 13vw, 12rem) / 1 var(--f-logo);
+  font: 600 clamp(6.4rem, min(3.6rem + 13vw, 26vh), 12rem) / 1 var(--f-logo);
   letter-spacing: -0.02em;
   -webkit-user-select: none;
   user-select: none;
