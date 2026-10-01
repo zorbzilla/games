@@ -47,6 +47,7 @@
 
   --wrap: 1240px;
   --gutter: clamp(16px, 4vw, 40px);
+  --gutter-x: max(var(--gutter), env(safe-area-inset-left, 0px), env(safe-area-inset-right, 0px));
   --hud-h: 76px;
   --r-panel: 24px;
 
@@ -157,7 +158,7 @@ h1, h2, h3, p, ul, ol, dl, dd { margin: 0; }
 .skip:focus { transform: none; }
 
 .wrap {
-  width: min(100% - 2 * var(--gutter), var(--wrap));
+  width: min(100% - 2 * var(--gutter-x), var(--wrap));
   margin-inline: auto;
 }
 
@@ -255,6 +256,9 @@ h1, h2, h3, p, ul, ol, dl, dd { margin: 0; }
   letter-spacing: -0.02em;
   text-decoration: none;
   white-space: nowrap;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 .logo__q {
   width: 0.763em;
@@ -650,7 +654,7 @@ html[lang="en"] .lang [data-lang="en"] { color: #fff; }
   display: flex;
   flex-direction: column;
   gap: 22px;
-  padding: 16px var(--gutter) calc(24px + env(safe-area-inset-bottom, 0px));
+  padding: 16px var(--gutter-x) calc(24px + env(safe-area-inset-bottom, 0px));
   overflow-y: auto;
   overscroll-behavior: contain;
   background:
@@ -1442,7 +1446,6 @@ html[lang="en"] .lang [data-lang="en"] { color: #fff; }
   position: relative;
   display: grid;
   place-items: center;
-  gap: 26px;
   min-height: clamp(300px, 52vh, 520px);
 }
 .about__glow {
@@ -1458,7 +1461,7 @@ html[lang="en"] .lang [data-lang="en"] { color: #fff; }
 }
 .emblem-float { position: relative; }
 .emblem {
-  --size: clamp(190px, min(24vw, 38vh), 330px);
+  --size: clamp(190px, min(24vw, 42vh), 340px);
   position: relative;
   width: var(--size);
   aspect-ratio: 638 / 619;
@@ -1510,25 +1513,6 @@ html[lang="en"] .lang [data-lang="en"] { color: #fff; }
   background: var(--accent);
   box-shadow: 0 0 0 5px rgb(var(--accent-rgb) / 0.2), 0 0 18px rgb(var(--accent-rgb) / 0.9);
 }
-.game-card {
-  display: grid;
-  grid-template-columns: 52px minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 14px;
-  width: min(100%, 360px);
-  padding: 12px 14px;
-  border: 1px solid var(--line-strong);
-  border-radius: 16px;
-  background: rgb(var(--panel-rgb) / 0.88);
-  color: var(--ink);
-  text-decoration: none;
-  transition: border-color 0.25s, transform 0.25s var(--ease-out);
-}
-.game-card:hover { border-color: rgb(var(--accent-hi-rgb) / 0.55); transform: translateY(-2px); }
-.game-card__icon { width: 52px; height: 52px; border-radius: 13px; }
-.game-card b { display: block; font: 800 1.25rem / 1 var(--f-display); text-transform: uppercase; }
-.game-card span { color: var(--muted); font-size: 0.86rem; }
-.game-card__go { width: 20px; height: 20px; color: var(--accent-hi); }
 
 /* ==========================================================================
    Contact
@@ -1661,6 +1645,86 @@ html[lang="en"] .lang [data-lang="en"] { color: #fff; }
   .table td[data-label]::before { content: attr(data-label); display: block; color: var(--muted); font: 700 0.74rem / 1.5 var(--f-display); letter-spacing: 0.14em; text-transform: uppercase; }
 }
 
+/* ==========================================================================
+   404: the studio's own page for an address that does not exist.
+   The zero is the Q from the logo.
+   ========================================================================== */
+.nf {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+}
+.nf__code {
+  position: relative;
+  margin-bottom: clamp(6px, 1.6vh, 16px);
+  color: #fff;
+  font: 600 clamp(6.4rem, 3.6rem + 13vw, 12rem) / 1 var(--f-logo);
+  letter-spacing: -0.02em;
+  -webkit-user-select: none;
+  user-select: none;
+}
+.nf__code::before {
+  /* a soft light behind the Q */
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  z-index: -1;
+  width: 1.9em;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgb(var(--accent-rgb) / 0.34), rgb(var(--violet-rgb) / 0.1) 45%, transparent 70%);
+  translate: -50% -50%;
+}
+.nf__glyphs {
+  display: inline-flex;
+  align-items: baseline;
+  text-shadow: 0 0.035em 0 rgba(0, 0, 0, 0.55);
+}
+.nf__q {
+  width: 0.763em;
+  height: 0.74em;
+  margin-inline: 0.05em;
+  overflow: visible;
+  fill: var(--accent);
+  filter: drop-shadow(0 0 0.14em rgb(var(--accent-rgb) / 0.55));
+}
+.nf__title { max-width: 16ch; }
+.nf__lead { margin-top: 14px; text-wrap: balance; }
+.nf__path {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  margin-top: 18px;
+  padding: 7px 8px 7px 12px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.035);
+  color: var(--muted);
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+.nf__path span { flex: none; }
+.nf__path code {
+  min-width: 0;
+  overflow: hidden;
+  padding: 3px 8px;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.35);
+  color: var(--ink);
+  font: 600 0.84rem / 1.3 ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.nf__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 14px;
+  margin-top: clamp(22px, 4vh, 34px);
+}
+
 /* ---------- Toast ---------- */
 .toast {
   position: fixed;
@@ -1752,6 +1816,7 @@ html[lang="en"] .lang [data-lang="en"] { color: #fff; }
 
   .about__grid { grid-template-columns: minmax(0, 1fr); }
   .about__stage { padding-block: 12px 4px; }
+  .about__cta .btn { flex: 1 1 auto; } /* side by side they share the row, stacked each takes a full row */
   .files { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 12px; }
   .file--more { grid-column: 1 / -1; aspect-ratio: auto; min-height: 130px; }
   .file__cover::after { display: none; }
@@ -1817,7 +1882,6 @@ html[lang="en"] .lang [data-lang="en"] { color: #fff; }
   .values { gap: 10px; margin-top: 16px; }
   .value p { font-size: 0.9rem; }
   .about__cta { margin-top: 18px; }
-  .about__stage { gap: 18px; }
   .about__glow { width: min(500px, 110%); }
 
   .game__side { gap: 12px; }
@@ -1886,6 +1950,98 @@ html[lang="en"] .lang [data-lang="en"] { color: #fff; }
   .new-pill { margin-bottom: 8px; }
 }
 
+/* 404 on phones: the two buttons stack */
+@media (max-width: 480px) {
+  .nf__actions { flex-direction: column; align-self: stretch; width: min(100%, 340px); margin-inline: auto; }
+  .nf__actions .btn { width: 100%; }
+}
+@media (max-width: 360px) {
+  .nf__path span { display: none; }
+}
+@media (max-width: 760px) and (max-height: 680px) {
+  .nf__code { font-size: clamp(4.6rem, 27vw, 6.4rem); margin-bottom: 2px; }
+  .nf__lead { margin-top: 10px; font-size: 0.98rem; }
+  .nf__path { margin-top: 12px; }
+  .nf__actions { margin-top: 18px; gap: 10px; }
+  .nf__actions .btn { min-height: 48px; }
+}
+
+/* ==========================================================================
+   Phones held sideways: far too short for a fixed frame. The page scrolls
+   as a whole, the header stays on top, the footer follows the content.
+   ========================================================================== */
+@media (orientation: landscape) and (max-height: 500px) {
+  :root { --hud-h: 56px; }
+  body { height: auto; min-height: 100%; overflow: visible; }
+  .menu-open body { overflow: hidden; } /* the page stays put behind the open menu */
+  .hud {
+    position: sticky;
+    top: 0;
+    background: rgb(var(--bg-rgb) / 0.96);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+  .mnav { gap: 12px; padding-top: 8px; }
+  .mnav__link { padding-block: 10px; font-size: 1.75rem; }
+  .page { flex: 1 0 auto; overflow-x: hidden; overflow-y: visible; }
+  @supports (overflow-x: clip) {
+    .page { overflow-x: clip; }
+  }
+  .page__inner { padding-block: 20px 28px; }
+  .hud .logo { --logo-size: 1.42rem; }
+  .lang span { padding: 7px 8px; }
+  .burger { width: 42px; height: 42px; }
+
+  /* Home: the game on the left, the phone on the right, filling the first screen */
+  .page__inner.home { padding-block: 0; }
+  .hero {
+    grid-template-columns: minmax(0, 1.12fr) minmax(0, 0.88fr);
+    grid-template-areas: "intro stage" "cta stage";
+    align-content: center;
+    column-gap: clamp(16px, 3vw, 40px);
+    row-gap: 0;
+    min-height: calc(100vh - var(--hud-h) - env(safe-area-inset-top, 0px));
+    padding-block: 14px 18px;
+  }
+  @supports (height: 100svh) {
+    .hero { min-height: calc(100svh - var(--hud-h) - env(safe-area-inset-top, 0px)); }
+  }
+  .new-pill { margin-bottom: 10px; padding-block: 5px; font-size: 0.84rem; }
+  .hero__title { font-size: clamp(2.4rem, 14vh, 3.7rem); }
+  .hero__tagline { margin-top: 12px; font-size: clamp(1.05rem, 5.4vh, 1.4rem); }
+  .hero__lead,
+  .facts { display: none; }
+  .hero__cta { align-self: start; padding-top: 16px; }
+  .cta-row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; width: min(100%, 440px); }
+  .cta-row .btn { width: 100%; min-height: 48px; font-size: 1.05rem; }
+  .cta-row .stores { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .cta-row .store { width: 100%; min-height: 48px; padding: 6px 12px; gap: 9px; }
+  .cta-row .store__logo { width: 23px; height: 23px; }
+  .cta-row .store__text b { font-size: 1.04rem; }
+  .cta-row .store__text small { font-size: 0.66rem; }
+  .hero__stage { --ph: clamp(190px, calc(100vh - var(--hud-h) - 46px), 380px); align-self: center; min-height: 0; }
+  @supports (height: 100svh) {
+    .hero__stage { --ph: clamp(190px, calc(100svh - var(--hud-h) - 46px), 380px); }
+  }
+  .floater:not(.floater--phone),
+  .floater--marker { display: block; width: calc(var(--s) * 0.72); height: calc(var(--s) * 0.72); }
+  .floater--phone { width: calc(var(--s) * 0.72); height: calc(var(--s) * 0.72); }
+
+  /* the other pages simply flow */
+  .about__grid { grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); }
+  .about__stage { min-height: 0; padding-block: 0; }
+  .emblem { --size: clamp(150px, 24vw, 220px); }
+  .contact__grid { grid-template-columns: minmax(0, 1fr); }
+  .nf__code { font-size: clamp(4.2rem, 25vh, 6.4rem); }
+  .nf__title { font-size: clamp(2rem, 11vh, 3rem); }
+  .nf__lead { margin-top: 8px; }
+  .nf__path { margin-top: 12px; }
+  .nf__actions { margin-top: 16px; }
+}
+@media (orientation: landscape) and (max-height: 400px) {
+  .hero__tagline { display: none; }
+}
+
 /* Page-to-page: a soft cross-fade where the browser supports it */
 @view-transition { navigation: auto; }
 .hud { view-transition-name: hud; }
@@ -1897,7 +2053,14 @@ html[lang="en"] .lang [data-lang="en"] { color: #fff; }
   .page__inner > *,
   .hero__intro > *,
   .hero__cta { animation: rise 0.7s var(--ease-out) backwards; }
-  .page--home .page__inner > * { animation: none; }
+  .page--home .page__inner > *,
+  .page--404 .page__inner > * { animation: none; }
+  .nf > * { animation: rise 0.7s var(--ease-out) backwards; }
+  .nf > :nth-child(2) { animation-delay: 0.08s; }
+  .nf > :nth-child(3) { animation-delay: 0.14s; }
+  .nf > :nth-child(4) { animation-delay: 0.2s; }
+  .nf > :nth-child(5) { animation-delay: 0.26s; }
+  .nf__q { animation: q-float 5.5s ease-in-out 0.8s infinite; }
   .hero__intro > :nth-child(2) { animation-delay: 0.06s; }
   .hero__intro > :nth-child(3) { animation-delay: 0.14s; }
   .hero__intro > :nth-child(4) { animation-delay: 0.2s; }
@@ -1933,6 +2096,7 @@ html[lang="en"] .lang [data-lang="en"] { color: #fff; }
 }
 @keyframes stage-in { from { opacity: 0; transform: translateY(44px) scale(0.94); } }
 @keyframes float { 50% { transform: translateY(-14px); } }
+@keyframes q-float { 50% { transform: translateY(-0.045em); } }
 @keyframes bob {
   0%, 100% { transform: translateY(0) rotate(var(--r0, -8deg)); }
   50% { transform: translateY(-16px) rotate(var(--r1, 8deg)); }

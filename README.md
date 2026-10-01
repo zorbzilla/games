@@ -1,6 +1,6 @@
 # QuUp Games: web sitesi
 
-QuUp Games'in sitesi. İlk oyun **Detective on Duty**'yi tanıtır; ileride gelecek oyunlar için de hazırdır.
+QuUp Games'in resmî sitesi. Sayfalar stüdyoyu anlatır; yalnızca ana sayfa en yeni oyunu (şu an **Detective on Duty**) "Yeni çıktı" olarak tanıtır. Site ileride gelecek oyunlar için de hazırdır.
 
 Yayındaki adres: https://zorbzilla.github.io/games/
 
@@ -10,7 +10,7 @@ Depoda sitenin iki hali var:
 
 | Nerede | Ne | Yayında mı? |
 |---|---|---|
-| `src/` | **Okunabilir kaynak:** sayfa üretici (`build.py`), stiller (`css/style.css`), betik (`js/main.js`), 404 sayfası, gizlilik metni | Hayır. `_config.yml` bu klasörü GitHub Pages'in dışında tutar. |
+| `src/` | **Okunabilir kaynak:** sayfa üretici (`build.py`), stiller (`css/style.css`), betik (`js/main.js`), gizlilik metni | Hayır. `_config.yml` bu klasörü GitHub Pages'in dışında tutar. |
 | Kök klasör | **Derlenmiş site:** sıkıştırılmış HTML, CSS ve karartılmış JavaScript | Evet. Ziyaretçiler yalnızca bunu görür. |
 
 **Kural:** Her değişiklik `src/` içinde yapılır, sonra site yeniden derlenir. Kökteki dosyalar elle düzenlenmez; bir sonraki derlemede üzerlerine yazılır.
@@ -26,7 +26,7 @@ npm run build    # sayfaları üretir, sıkıştırır, karartır
 
 `npm run build` şunları yapar:
 
-1. `src/build.py`, sayfaları (`index.html`, `games.html`, `detective-on-duty.html`, `about.html`, `contact.html`, `privacy-policy.html`) kök klasöre yazar.
+1. `src/build.py`, sayfaları (`index.html`, `games.html`, `detective-on-duty.html`, `about.html`, `contact.html`, `privacy-policy.html`, `404.html`) kök klasöre yazar.
 2. `src/tools/minify.mjs` sırayla:
    - HTML'i sıkıştırır.
    - Sayfa gövdesini şifreli bir blok olarak yazar. Tarayıcı açarken çözer.
@@ -52,6 +52,7 @@ Bilinmesi gerekenler:
 
 Her sayfa ayrı bir dosya ve tek ekrana sığar. Üst menü ve alt bilgi sabit durur.
 İçerik küçük bir ekrana sığmazsa sadece aradaki alan kayar.
+Telefon yan çevrildiğinde ekran çok kısa kalır: o zaman sayfa bütün olarak kayar, üst menü yukarıda kalır.
 
 | Dosya | Menüde | İçerik |
 |---|---|---|
@@ -59,9 +60,9 @@ Her sayfa ayrı bir dosya ve tek ekrana sığar. Üst menü ve alt bilgi sabit d
 | `games.html` | OYUNLAR | **Oyunlar:** her oyun için bir kart. Tek oyun varken kart geniş durur, oyun sayısı artınca kartlar yan yana dizilir. |
 | `detective-on-duty.html` | OYUNLAR altında | **Detective on Duty:** ikonun mor tonlarıyla. Sekmeler: Oynanış, Vakalar, Gizlilik.<br>Adresin sonuna `#cases` ya da `#privacy` eklenirse o sekme açılır. |
 | `privacy-policy.html` | Oyun sayfasının içinde | **Detective on Duty gizlilik politikası** (İngilizce). Google Play Console'a verilen adres bu olduğu için adı değişmedi. |
-| `about.html` | BİZ KİMİZ? | QuUp Games tanıtımı ve üç kural. |
+| `about.html` | BİZ KİMİZ? | Yalnızca stüdyo: QuUp Games tanıtımı, üç kural ve Q amblemi. Oyun kartı yok. |
 | `contact.html` | İLETİŞİM | E-posta adresleri (kopyala / e-posta yaz) ve siteyi paylaşma düğmesi. |
-| `404.html` | Yok | Bulunamayan adreslerde açılan sayfa. |
+| `404.html` | Yok | Bulunamayan adreslerde açılan stüdyo sayfası: sıfırın yerinde logodaki Q, aranan adres ve "Ana sayfaya dön" / "Oyunlarımız" düğmeleri.<br>Her derinlikteki adreste açılabildiği için bağlantıları sitenin kökünden başlar (`BASE` adresinden). |
 
 - TR/EN düğmesi dili değiştirir ve seçim hatırlanır. Adresin sonuna `?lang=en` eklenirse sayfa İngilizce açılır.
 - Tarayıcı sekmesinde ana sayfa için sadece "QuUp Games" yazar.
@@ -83,7 +84,7 @@ Her sayfa ayrı bir dosya ve tek ekrana sığar. Üst menü ve alt bilgi sabit d
 
 ## İçerik nasıl değiştirilir?
 
-- **Türkçe metinler:** `src/build.py` içinde. 404 sayfası için `src/404.html`.
+- **Türkçe metinler:** `src/build.py` içinde (404 sayfası da).
 - **İngilizce metinler:** `src/js/main.js` içindeki `EN` nesnesinde. Her metnin `data-i18n="..."` anahtarı iki tarafta aynı olmalı.
 - **Oyun listesi:** `src/build.py` içindeki `GAMES` listesi. Üst menü, telefon menüsü ve Oyunlar sayfası bu listeden üretilir.
 - **Vaka adları:**
@@ -94,17 +95,24 @@ Her sayfa ayrı bir dosya ve tek ekrana sığar. Üst menü ve alt bilgi sabit d
 - **Logo:**
   - Q harfinin çizimi `src/q.txt` dosyasında.
   - "uUp Games" yazısı Outfit yazı tipinin 600 kalınlığıyla. Q bu kalınlığa göre çizildi.
+  - Logo bir resim gibi davranır: sayfada metin seçilirken Q'lu yazı hiç seçilmez (yarım seçim olmaz).
 - **Renkler:** `src/css/style.css` dosyasının başı.
   - Stüdyonun ana rengi polis mavisi: `--accent`.
   - Detective on Duty sayfaları `[data-theme="dod"]` bloğundaki mor tonları kullanır.
-- **Paylaşım görseli:** `assets/img/og.jpg` (1200×630).
+- **Paylaşım görselleri (1200×630):**
+  - `assets/img/og.jpg`: stüdyonun kartı. Biz kimiz?, Oyunlar, İletişim ve 404 sayfaları bunu kullanır.
+  - `assets/img/og-dod.jpg`: Detective on Duty kartı. Ana sayfa, oyun sayfası ve gizlilik sayfası bunu kullanır.
+  - Hangi sayfanın hangisini kullandığı `src/build.py` içinde `og=` ile seçilir.
 
 ## Yeni bir oyun eklemek
+
+Ana sayfa her zaman en yeni oyunu "Yeni çıktı" olarak tanıtır; diğer sayfalar stüdyoya aittir.
 
 1. İkonu ve ekranları `assets/img/games/<oyun-adi>/` klasörüne koy.
 2. `src/build.py` içindeki `GAMES` listesine bir kayıt ekle. Menüler ve Oyunlar sayfası kendiliğinden güncellenir. İki kart olunca sayfa iki sütuna geçer.
 3. Oyunun kendi sayfasını `game()` fonksiyonunu örnek alarak yaz. İsterse kendi renk teması olur: `[data-theme]`.
-4. `sitemap.xml` dosyasına adresini ekle, sonra `npm run build`.
+4. Ana sayfadaki tanıtımı (`src/build.py` içindeki `home()`) yeni oyunla değiştir. Eski oyunun "Yeni" etiketi `GAMES` listesinde `'new': False` yapılarak kaldırılır.
+5. `sitemap.xml` dosyasına adresini ekle, sonra `npm run build`.
 
 ## Bilgisayarında çalıştırma
 

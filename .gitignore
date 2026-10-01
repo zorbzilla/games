@@ -10,3 +10,6 @@ keystore.properties
 
 # Build tools
 node_modules/
+
+# Python cache (from running src/build.py as a module)
+__pycache__/

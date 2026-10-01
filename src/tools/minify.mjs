@@ -60,12 +60,10 @@ function seal(html) {
 }
 
 async function pages() {
+  // every page, the 404 page included, is written to the root by src/build.py
   const names = (await readdir(ROOT)).filter((f) => f.endsWith('.html'));
-  // the 404 page is written by hand in src/
-  const sources = names.filter((f) => f !== '404.html').map((f) => [path.join(ROOT, f), f]);
-  sources.push([path.join(SRC, '404.html'), '404.html']);
-  for (const [from, name] of sources) {
-    const html = await readFile(from, 'utf8');
+  for (const name of names) {
+    const html = await readFile(path.join(ROOT, name), 'utf8');
     const out = seal(await minifyHtml(html, HTML_OPTIONS));
     await writeFile(path.join(ROOT, name), out);
     console.log(`${name.padEnd(24)} ${html.length.toLocaleString()} → ${out.length.toLocaleString()} bytes`);

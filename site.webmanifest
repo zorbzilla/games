@@ -1,7 +1,7 @@
 {
   "name": "QuUp Games",
   "short_name": "QuUp Games",
-  "description": "QuUp Games'in ilk oyunu Detective on Duty çıktı: olay yerini incele, şüphelileri sorgula, çelişkiyi yakala.",
+  "description": "QuUp Games: telefonda oynanan, akılda kalan oyunlar yapan bağımsız mobil oyun stüdyosu.",
   "lang": "tr",
   "start_url": "./",
   "scope": "./",

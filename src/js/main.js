@@ -155,7 +155,7 @@
     // about
     'about.eyebrow': 'About us',
     'about.kicker': 'Independent mobile game studio',
-    'about.lead': 'We make games for your phone that stay with you. Our first game, Detective on Duty, is out now. Every game we make follows the same three rules.',
+    'about.lead': 'We make games for your phone that stay with you: quick to learn, hard to put down. Every game we make follows the same three rules.',
     'v1.t': 'Fun comes first',
     'v1.d': 'No mechanic makes it into a game unless it’s fun in the first minute.',
     'v2.t': 'Smooth on every phone',
@@ -164,7 +164,6 @@
     'v3.d': 'We don’t ask for an account to play. Your progress stays on your own phone.',
     'about.games': 'Our games',
     'about.write': 'Get in touch',
-    'about.cardSub': 'Out now · Detective',
 
     // contact
     'ct.eyebrow': 'Contact',
@@ -188,15 +187,23 @@
     'priv.4': 'You can delete your account and data from the Settings screen in the game.',
     'priv.note': 'The full, official policy is written in English.',
     'priv.back': 'Back to the game',
+
+    // 404
+    'nf.title': 'Page not found',
+    'nf.lead': 'The page you’re looking for may have moved, changed its name or never existed.',
+    'nf.path': 'You asked for',
+    'nf.home': 'Back to home',
+    'nf.games': 'Our games',
   };
 
   const META_EN = {
-    home: ['QuUp Games', 'Detective on Duty, the first game from QuUp Games, is out. Search the crime scene, question the suspects, catch the contradiction.'],
-    games: ['Games | QuUp Games', 'The games from QuUp Games. Our first game, Detective on Duty, is out now.'],
+    home: ['QuUp Games', 'QuUp Games is an independent mobile game studio making games for your phone that stay with you. Our new game, Detective on Duty, is out now.'],
+    games: ['Games | QuUp Games', 'The games from QuUp Games: games for your phone that stay with you.'],
     game: ['Detective on Duty | QuUp Games', 'Detective on Duty: crime scenes, interrogations, a deduction board and your final call. The new detective game from QuUp Games.'],
-    about: ['About us | QuUp Games', 'QuUp Games is an independent mobile game studio. Our first game is Detective on Duty.'],
+    about: ['About us | QuUp Games', 'QuUp Games is an independent mobile game studio making games for your phone that stay with you.'],
     contact: ['Contact | QuUp Games', 'Write to QuUp Games: support@quupgames.com for support, hello@quupgames.com for everything else.'],
     privacy: ['Detective on Duty Privacy Policy | QuUp Games', 'What Detective on Duty by QuUp Games does with data: no account needed, your save stays on your device.'],
+    404: ['Page not found | QuUp Games', 'This page could not be found. Head to the QuUp Games home page or see our games.'],
   };
 
   // Strings that only exist at runtime.
@@ -938,11 +945,26 @@ void main(){
     measure();
     window.addEventListener('resize', measure);
     $('.page').addEventListener('scroll', measure, { passive: true });
+    window.addEventListener('scroll', measure, { passive: true });
     zone.addEventListener('pointermove', (e) => {
       if (e.pointerType !== 'mouse' || mqReduce.matches) return;
       aimAt(clamp((e.clientX - box.x) / box.w, -1, 1), clamp((e.clientY - box.y) / box.h, -1, 1));
     }, { passive: true });
     zone.addEventListener('pointerleave', () => aimAt(0, 0));
+  }
+
+  /* ======================================================================
+     8. 404: the address that was asked for
+     ====================================================================== */
+  function initNotFound() {
+    const out = $('#nfPath');
+    if (!out) return;
+    let path = window.location.pathname;
+    try { path = decodeURIComponent(path); } catch (e) { /* keep it encoded */ }
+    if (!path || path === '/') return;
+    out.textContent = path;
+    out.title = path;
+    out.parentElement.hidden = false;
   }
 
   /* ======================================================================
@@ -968,6 +990,7 @@ void main(){
   if (page === 'home') initHome();
   if (page === 'game') initGame();
   if (page === 'about') initAbout();
+  if (page === '404') initNotFound();
 
   if (shader) {
     let pending = false;

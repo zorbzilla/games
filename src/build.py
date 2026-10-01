@@ -6,11 +6,14 @@ the root; src/tools/minify.mjs then compresses them (and the CSS and JS) in plac
 """
 import json
 import os
+import re
 import sys
+from urllib.parse import urlparse
 
 SRC = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(SRC)
 BASE = 'https://zorbzilla.github.io/games/'
+BASE_PATH = urlparse(BASE).path   # '/games/' on GitHub Pages, '/' on a domain of its own
 Q = open(os.path.join(SRC, 'q.txt')).read().strip()
 
 # ---------------------------------------------------------------- icons
@@ -30,6 +33,7 @@ SPRITE = f'''<svg class="sprite" aria-hidden="true" focusable="false" xmlns="htt
     <symbol id="i-help" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.6"/><path d="m5.9 5.9 3.6 3.6M14.5 14.5l3.6 3.6M18.1 5.9l-3.6 3.6M9.5 14.5l-3.6 3.6"/></g></symbol>
     <symbol id="i-hello" viewBox="0 0 24 24"><path d="M4.5 5h15A1.5 1.5 0 0 1 21 6.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 3.5V17h-1A1.5 1.5 0 0 1 3 15.5v-9A1.5 1.5 0 0 1 4.5 5z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/><circle cx="8.5" cy="11" r="1.25" fill="currentColor"/><circle cx="12" cy="11" r="1.25" fill="currentColor"/><circle cx="15.5" cy="11" r="1.25" fill="currentColor"/></symbol>
     <symbol id="i-share" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="m8.2 10.8 7.6-4.1M8.2 13.2l7.6 4.1"/></g></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.4 12 4l8 6.4v8.6a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H5.5A1.5 1.5 0 0 1 4 19z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-trophy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v1.5A3.5 3.5 0 0 0 7.5 11M17 6h3v1.5a3.5 3.5 0 0 1-3.5 3.5M12 14v3.5M8 20.5h8M9.5 17.5h5"/></g></symbol>
     <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 19.5 6v5.5c0 4.6-3.2 8.4-7.5 9.5-4.3-1.1-7.5-4.9-7.5-9.5V6zM8.8 12.2l2.2 2.2 4.2-4.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -196,13 +200,21 @@ FOOTER = '''<footer class="foot">
   </footer>'''
 
 BACKDROP_PAGE = '<div class="backdrop" aria-hidden="true"><svg class="backdrop__q"><use href="#q-mark"/></svg></div>'
+BACKDROP_PLAIN = '<div class="backdrop" aria-hidden="true"></div>'
 BACKDROP_HOME = '<div class="backdrop" aria-hidden="true"><canvas class="backdrop__bg" id="heroBg"></canvas><div class="backdrop__siren"></div></div>'
 
 THEME_COLOR = {None: '#07080c', 'dod': '#0c0913'}
 
 
-def document(page_id, path, title, desc, active, content, backdrop=BACKDROP_PAGE, ld=None, theme=None):
+# Share images: the studio's own card, and the Detective on Duty card for the pages that show the game.
+OG_IMAGE = {'studio': 'assets/img/og.jpg', 'dod': 'assets/img/og-dod.jpg'}
+
+
+def document(page_id, path, title, desc, active, content, backdrop=BACKDROP_PAGE, ld=None, theme=None, og='studio', index=True):
     url = BASE + path
+    # a page that is not meant for search engines (the 404 page) gets no address of its own
+    where = (f'<link rel="canonical" href="{url}">' if index else '<meta name="robots" content="noindex">')
+    og_url = f'\n  <meta property="og:url" content="{url}">' if index else ''
     ld_block = ''
     if ld:
         ld_block = '\n  <script type="application/ld+json">\n' + json.dumps(ld, ensure_ascii=False, separators=(',', ':')) + '\n  </script>'
@@ -216,16 +228,15 @@ def document(page_id, path, title, desc, active, content, backdrop=BACKDROP_PAGE
   <meta name="description" content="{desc}">
   <meta name="theme-color" content="{THEME_COLOR[theme]}">
   <meta name="color-scheme" content="dark">
-  <link rel="canonical" href="{url}">
+  {where}
   <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="assets/img/icon-180.png">
   <link rel="manifest" href="site.webmanifest">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="QuUp Games">
   <meta property="og:title" content="{title}">
-  <meta property="og:description" content="{desc}">
-  <meta property="og:url" content="{url}">
-  <meta property="og:image" content="{BASE}assets/img/og.jpg">
+  <meta property="og:description" content="{desc}">{og_url}
+  <meta property="og:image" content="{BASE}{OG_IMAGE[og]}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:locale" content="tr_TR">
@@ -234,7 +245,7 @@ def document(page_id, path, title, desc, active, content, backdrop=BACKDROP_PAGE
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&amp;family=Saira+Condensed:wght@600;700;800&amp;display=swap">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600&amp;text=uUp%20Games&amp;display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600&amp;text=uUp%20Games4&amp;display=swap">
   <link rel="stylesheet" href="assets/css/style.css">
   <script defer src="assets/js/main.js"></script>{ld_block}
 </head>
@@ -383,8 +394,8 @@ def home():
         'contactPoint': [{'@type': 'ContactPoint', 'contactType': 'customer support', 'email': 'support@quupgames.com'}],
     }
     return document('home', '', 'QuUp Games',
-                    "QuUp Games'in ilk oyunu Detective on Duty çıktı. Olay yerini incele, şüphelileri sorgula, ifadelerdeki çelişkiyi yakala.",
-                    'home', content, BACKDROP_HOME, ld)
+                    'QuUp Games, telefonda oynanan, akılda kalan oyunlar yapan bağımsız bir mobil oyun stüdyosu. Yeni oyunumuz Detective on Duty çıktı.',
+                    'home', content, BACKDROP_HOME, ld, og='dod')
 
 
 # ---------------------------------------------------------------- games list
@@ -421,7 +432,7 @@ def games_page():
       </div>
     </div>'''
     return document('games', 'games.html', 'Oyunlar | QuUp Games',
-                    "QuUp Games'in oyunları. İlk oyunumuz Detective on Duty yeni çıktı.",
+                    "QuUp Games'in oyunları: telefonda oynanan, akılda kalan oyunlar.",
                     'games', content)
 
 
@@ -532,19 +543,18 @@ def game():
     }
     return document('game', 'detective-on-duty.html', 'Detective on Duty | QuUp Games',
                     "Detective on Duty: olay yeri, sorgu, çıkarım panosu ve karar. QuUp Games'in yeni dedektif oyunu.",
-                    'games', content, BACKDROP_PAGE, ld, theme='dod')
+                    'games', content, BACKDROP_PAGE, ld, theme='dod', og='dod')
 
 
 # ---------------------------------------------------------------- about
 def about():
-    g = GAMES[0]
     content = f'''    <div class="page__inner">
       <div class="about__grid wrap">
         <div class="about__copy">
           <p class="eyebrow" data-i18n="about.eyebrow">Biz kimiz?</p>
           <h1 class="about__logo"><span class="sr-only">QuUp Games</span><span class="logo logo--xl" aria-hidden="true">{LOGO_INNER}</span></h1>
           <p class="about__kicker" data-i18n="about.kicker">Bağımsız mobil oyun stüdyosu</p>
-          <p class="lead" data-i18n="about.lead">Telefonda oynanan, akılda kalan oyunlar yapıyoruz. İlk oyunumuz Detective on Duty yeni çıktı. Her oyunda aynı üç kurala bağlı kalıyoruz.</p>
+          <p class="lead" data-i18n="about.lead">Telefonda oynanan, akılda kalan oyunlar yapıyoruz: kısa sürede öğrenilen, uzun süre bırakılamayan. Her oyunda aynı üç kurala bağlı kalıyoruz.</p>
           <ul class="values">
             <li class="value"><span class="value__icon" aria-hidden="true"><svg><use href="#i-smile"/></svg></span><h2 data-i18n="v1.t">Önce eğlence</h2><p data-i18n="v1.d">İlk dakikada keyif vermeyen hiçbir mekanik oyuna giremez.</p></li>
             <li class="value"><span class="value__icon" aria-hidden="true"><svg><use href="#i-gauge"/></svg></span><h2 data-i18n="v2.t">Her telefonda akıcı</h2><p data-i18n="v2.d">Eski telefonlarda bile hızlı açılan, pil dostu oyunlar.</p></li>
@@ -588,16 +598,11 @@ def about():
               <div class="emblem__shine" aria-hidden="true"></div>
             </div>
           </div>
-          <a class="game-card" href="{g['page']}" data-theme="{g['id']}">
-            {game_icon(g, 'game-card__icon', 'icon_s', 52)}
-            <span><b lang="en">{g['name']}</b><span data-i18n="about.cardSub">Yeni çıktı · Dedektif</span></span>
-            <svg class="game-card__go" aria-hidden="true"><use href="#i-arrow"/></svg>
-          </a>
         </div>
       </div>
     </div>'''
     return document('about', 'about.html', 'Biz kimiz? | QuUp Games',
-                    "QuUp Games bağımsız bir mobil oyun stüdyosu. İlk oyunumuz Detective on Duty yeni çıktı.",
+                    'QuUp Games, telefonda oynanan, akılda kalan oyunlar yapan bağımsız bir mobil oyun stüdyosu.',
                     'about', content)
 
 
@@ -673,7 +678,37 @@ def privacy():
     </div>'''
     return document('privacy', 'privacy-policy.html', 'Detective on Duty Gizlilik Politikası | QuUp Games',
                     'Detective on Duty gizlilik politikası: hesap gerekmez, kaydın telefonunda kalır, haftalık sıralamaya haftada tek satır gider.',
-                    'games', content, BACKDROP_PAGE, theme='dod')
+                    'games', content, BACKDROP_PAGE, theme='dod', og='dod')
+
+
+# ---------------------------------------------------------------- 404 (the studio's page for a missing address)
+def absolutize(html):
+    """GitHub Pages serves 404.html for any missing address, however deep (/games/a/b/c),
+    so its links and files cannot be relative: they all start from the site's root."""
+    def fix(m):
+        attr, url = m.group(1), m.group(2)
+        if re.match(r'(?:[a-z][a-z0-9+.-]*:|//|/|#)', url):
+            return m.group(0)
+        return f'{attr}="{BASE_PATH}{"" if url == "./" else url}"'
+    return re.sub(r'(?<![\w-])(href|src)="([^"]*)"', fix, html)
+
+
+def not_found():
+    content = '''    <div class="page__inner">
+      <section class="nf wrap" aria-labelledby="nf-title">
+        <p class="nf__code"><span class="nf__glyphs" aria-hidden="true"><span>4</span><svg class="nf__q" viewBox="0 0 638 619"><use href="#q-path"/></svg><span>4</span></span><span class="sr-only">404</span></p>
+        <h1 class="h1 nf__title" id="nf-title" data-i18n="nf.title">Sayfa bulunamadı</h1>
+        <p class="lead nf__lead" data-i18n="nf.lead">Aradığın sayfa taşınmış, adı değişmiş ya da hiç var olmamış olabilir.</p>
+        <p class="nf__path" hidden><span data-i18n="nf.path">Aranan adres</span><code id="nfPath"></code></p>
+        <div class="nf__actions">
+          <a class="btn" href="./"><svg class="btn__icon" aria-hidden="true"><use href="#i-home"/></svg><span data-i18n="nf.home">Ana sayfaya dön</span></a>
+          <a class="btn btn--ghost" href="games.html"><span data-i18n="nf.games">Oyunlarımız</span><svg class="btn__icon btn__icon--go" aria-hidden="true"><use href="#i-arrow"/></svg></a>
+        </div>
+      </section>
+    </div>'''
+    return absolutize(document('404', '404.html', 'Sayfa bulunamadı | QuUp Games',
+                               'Aradığın sayfa bulunamadı. QuUp Games ana sayfasına ya da oyunlarımıza göz at.',
+                               None, content, BACKDROP_PLAIN, index=False))
 
 
 PAGES = {
@@ -683,6 +718,7 @@ PAGES = {
     'about.html': about,
     'contact.html': contact,
     'privacy-policy.html': privacy,
+    '404.html': not_found,
 }
 
 if __name__ == '__main__':
