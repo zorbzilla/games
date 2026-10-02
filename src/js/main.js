@@ -182,8 +182,11 @@
     'ap.f4': 'Sound and music',
     'ap.f5': 'Marketing and community',
     'ap.f6': 'Other',
-    'ap.link': 'Portfolio or CV link',
-    'ap.linkPh': 'LinkedIn, GitHub, ArtStation, Drive',
+    'ap.cv': 'CV',
+    'ap.cvPick': 'Choose your CV or drop it here',
+    'ap.cvPickTouch': 'Choose your CV',
+    'ap.cvHint': 'PDF or Word · up to 5 MB',
+    'ap.cvClear': 'Remove the CV',
     'ap.way': 'How would you like to work?',
     'ap.w1': 'Full-time',
     'ap.w2': 'Part-time',
@@ -193,8 +196,9 @@
     'ap.msgPh': 'What have you made, what would you like to make? Which games do you love?',
     'ap.consent': 'I agree that my details are used only for my application.',
     'ap.send': 'Send application',
-    'ap.note': 'Pressing send opens your application, ready to go, in your email app. You can attach your CV there.',
-    'ap.noteSend': 'Your application comes straight to us.',
+    'ap.note': 'Pressing send opens your application, ready to go, in your email app. Don’t forget to attach your CV there.',
+    'ap.noteSend': 'Your application and CV come straight to us.',
+    'ap.attach': 'Before sending, attach your CV to the email:',
     'ap.doneMail': 'Almost there!',
     'ap.doneMailD': 'Your application is ready in your email app. Don’t forget to send it.',
     'ap.doneSent': 'Application received',
@@ -260,6 +264,11 @@
       'err.email': 'Geçerli bir e-posta adresi yaz.',
       'err.pick': 'Bir alan seç.',
       'err.consent': 'Devam etmek için onay ver.',
+      'err.cv': 'CV’ni ekle.',
+      'err.cvType': 'PDF ya da Word dosyası seç.',
+      'err.cvSize': 'Dosya en fazla 5 MB olabilir.',
+      'ap.lineCv': 'CV (ekte)',
+      'ap.cvPickTouch': 'CV’ni seç',
       'ap.subject': 'Kariyer başvurusu',
       'ap.lineField': 'İlgi alanı',
       'ap.lineWay': 'Çalışma şekli',
@@ -286,6 +295,10 @@
       'err.email': 'Please enter a valid email address.',
       'err.pick': 'Please pick a field.',
       'err.consent': 'Please tick this to continue.',
+      'err.cv': 'Please add your CV.',
+      'err.cvType': 'Please choose a PDF or Word file.',
+      'err.cvSize': 'The file can be up to 5 MB.',
+      'ap.lineCv': 'CV (attached)',
       'ap.subject': 'Job application',
       'ap.lineField': 'Field',
       'ap.lineWay': 'How I would like to work',
@@ -1049,9 +1062,67 @@ void main(){
     msg.addEventListener('input', countUp);
     countUp();
 
+    // the CV: a click opens the file picker, a file can also be dropped on the field
+    const cv = f.cv;
+    const cvBox = $('#apCvBox');
+    const cvName = $('#apCvName');
+    const cvMeta = $('#apCvMeta');
+    const cvClear = $('#apCvClear');
+    const CV_MAX = 5 * 1024 * 1024;
+    const CV_TYPES = /\.(pdf|docx?)$/i;
+    const cvFile = () => (cv.files && cv.files[0]) || null;
+    // phones and tablets have nothing to drop a file from: just "choose your CV" there
+    const pickKey = window.matchMedia('(hover: none)').matches ? 'ap.cvPickTouch' : 'ap.cvPick';
+    const size = (n) => (n >= 1048576 ? `${(n / 1048576).toFixed(1)} MB` : `${Math.max(1, Math.round(n / 1024))} KB`);
+    const showCv = () => {
+      const file = cvFile();
+      cvBox.classList.toggle('has-file', !!file);
+      cvClear.hidden = !file;
+      // while a file is chosen its name is not a translated text
+      if (file) {
+        cvName.removeAttribute('data-i18n');
+        cvMeta.removeAttribute('data-i18n');
+        cvName.textContent = file.name;
+        cvMeta.textContent = `${(file.name.split('.').pop() || '').toUpperCase()} · ${size(file.size)}`;
+      } else {
+        cvName.dataset.i18n = pickKey;
+        cvMeta.dataset.i18n = 'ap.cvHint';
+        cvName.textContent = t(pickKey);
+        cvMeta.textContent = t('ap.cvHint');
+      }
+    };
+    cv.addEventListener('change', () => { showCv(); show(cv); });
+    showCv();
+    cvClear.addEventListener('click', () => {
+      cv.value = '';
+      showCv();
+      if (tried) show(cv);
+      cv.focus();
+    });
+    ['dragenter', 'dragover'].forEach((type) => cvBox.addEventListener(type, (e) => {
+      e.preventDefault();
+      cvBox.classList.add('is-over');
+    }));
+    ['dragleave', 'dragend', 'drop'].forEach((type) => cvBox.addEventListener(type, () => cvBox.classList.remove('is-over')));
+    cvBox.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (!e.dataTransfer || !e.dataTransfer.files.length) return;
+      const pick = new DataTransfer();
+      pick.items.add(e.dataTransfer.files[0]);
+      cv.files = pick.files;
+      showCv();
+      show(cv);
+    });
+
     // a field's problem, as a dictionary key ('' when it is fine)
     const problem = (el) => {
       if (el.type === 'checkbox') return el.checked ? '' : 'err.consent';
+      if (el.type === 'file') {
+        const file = cvFile();
+        if (!file) return 'err.cv';
+        if (!CV_TYPES.test(file.name)) return 'err.cvType';
+        return file.size > CV_MAX ? 'err.cvSize' : '';
+      }
       if (el.tagName === 'SELECT') return el.value ? '' : 'err.pick';
       if (!el.value.trim()) return 'err.required';
       if (el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(el.value.trim())) return 'err.email';
@@ -1067,8 +1138,11 @@ void main(){
       out.textContent = key ? t(key) : '';
       return !key;
     };
-    // after a first try, a field clears its message as soon as it is right
-    checked.forEach((el) => el.addEventListener(el.type === 'checkbox' || el.tagName === 'SELECT' ? 'change' : 'input', () => { if (tried) show(el); }));
+    // after a first try, a field clears its message as soon as it is right (the CV is checked as soon as it is picked)
+    checked.forEach((el) => {
+      if (el.type === 'file') return;
+      el.addEventListener(el.type === 'checkbox' || el.tagName === 'SELECT' ? 'change' : 'input', () => { if (tried) show(el); });
+    });
     onLang.push(() => $$('.field__error[data-err]', form).forEach((out) => { out.textContent = out.dataset.err ? t(out.dataset.err) : ''; }));
 
     const optionText = (sel) => (sel.selectedIndex > 0 ? sel.options[sel.selectedIndex].textContent.trim() : '');
@@ -1080,7 +1154,7 @@ void main(){
         `${t('ap.lineField')}: ${optionText(f.field)}`,
       ];
       if (way) lines.push(`${t('ap.lineWay')}: ${way.nextElementSibling.textContent.trim()}`);
-      if (f.link.value.trim()) lines.push(`${t('ap.link')}: ${f.link.value.trim()}`);
+      if (cvFile()) lines.push(`${t('ap.lineCv')}: ${cvFile().name}`);
       lines.push('', t('ap.intro'), f.message.value.trim(), '', '---', t('ap.sign'));
       return {
         subject: `${t('ap.subject')}: ${f.fullname.value.trim()} · ${optionText(f.field)}`,
@@ -1094,6 +1168,8 @@ void main(){
       $('#applyDoneText').textContent = t($('#applyDoneText').dataset.i18n);
       $('#applyFallback').hidden = sent;
       $('#applyCopy').hidden = sent;
+      $('#applyAttach').hidden = sent || !cvFile();
+      $('#applyAttachName').textContent = cvFile() ? cvFile().name : '';
       form.hidden = true;
       done.hidden = false;
       done.focus({ preventScroll: true });

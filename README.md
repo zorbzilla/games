@@ -61,7 +61,7 @@ Telefon yan çevrildiğinde ekran çok kısa kalır: o zaman sayfa bütün olara
 | `detective-on-duty.html` | OYUNLAR altında | **Detective on Duty:** ikonun mor tonlarıyla. Sekmeler: Oynanış, Vakalar, Gizlilik.<br>Adresin sonuna `#cases` ya da `#privacy` eklenirse o sekme açılır. |
 | `privacy-policy.html` | Oyun sayfasının içinde | **Detective on Duty gizlilik politikası** (İngilizce). Google Play Console'a verilen adres bu olduğu için adı değişmedi. |
 | `about.html` | BİZ KİMİZ? | Yalnızca stüdyo: QuUp Games tanıtımı, üç kural ve Q amblemi. Oyun kartı yok. |
-| `careers.html` | KARİYER | **Açık başvuru:** solda kısa tanıtım ve üç adım, sağda başvuru formu (ad soyad, e-posta, ilgi alanı, çalışma şekli, portfolyo/CV bağlantısı, kendinden bahset, onay). Aşağıdaki "Kariyer formu" bölümüne bak. |
+| `careers.html` | KARİYER | **Açık başvuru:** solda kısa tanıtım ve üç adım, sağda başvuru formu (ad soyad, e-posta, ilgi alanı, CV dosyası, çalışma şekli, kendinden bahset, onay). Aşağıdaki "Kariyer formu" bölümüne bak. |
 | `contact.html` | İLETİŞİM | E-posta adresleri (kopyala / e-posta yaz) ve siteyi paylaşma düğmesi. |
 | `404.html` | Yok | Bulunamayan adreslerde açılan stüdyo sayfası: sıfırın yerinde logodaki Q, aranan adres ve "Ana sayfaya dön" / "Oyunlarımız" düğmeleri.<br>Her derinlikteki adreste açılabildiği için bağlantıları sitenin kökünden başlar (`BASE` adresinden). |
 
@@ -86,10 +86,11 @@ Telefon yan çevrildiğinde ekran çok kısa kalır: o zaman sayfa bütün olara
 
 ## Kariyer formu
 
-- Sitenin bir sunucusu yok. Bu yüzden form, varsayılan olarak başvuruyu ziyaretçinin e-posta uygulamasında hazır bir e-posta olarak açar. Ziyaretçi CV'sini o e-postaya ekleyip gönderir.
+- Sitenin bir sunucusu yok. Bu yüzden form, varsayılan olarak başvuruyu ziyaretçinin e-posta uygulamasında hazır bir e-posta olarak açar.
+- CV alanı PDF ya da Word dosyası alır (en fazla 5 MB; tıklayarak seçilir ya da sürükleyip bırakılır). E-posta yolunda tarayıcı dosyayı e-postaya kendisi ekleyemez: e-postada dosyanın adı yazar ve sayfa "Göndermeden önce CV'ni e-postaya ekle" diye hatırlatır.
 - Başvurular `src/build.py` içindeki `CAREERS_MAIL` adresine gider (şu an `hello@quupgames.com`). Ayrı bir adres istenirse (ör. `kariyer@quupgames.com`) orası değiştirilir, sonra `npm run build`.
 - E-posta uygulaması açılmazsa sayfa, başvuruyu kopyalama düğmesini ve adresi gösterir.
-- **Doğrudan gönderim (isteğe bağlı):** Formspree gibi bir form hizmetinde ücretsiz bir form açılır ve verdiği adres `src/build.py` içindeki `CAREERS_FORM_ENDPOINT` alanına yazılır (ör. `https://formspree.io/f/xxxxxxx`), sonra `npm run build`. Bundan sonra form başvuruyu e-posta uygulaması açmadan gönderir; hizmet ulaşmazsa yine e-postaya döner.
+- **Doğrudan gönderim (isteğe bağlı):** Dosya yüklemeyi destekleyen bir form hizmetinde (Formspree vb.) bir form açılır ve verdiği adres `src/build.py` içindeki `CAREERS_FORM_ENDPOINT` alanına yazılır (ör. `https://formspree.io/f/xxxxxxx`), sonra `npm run build`. Bundan sonra form başvuruyu CV dosyasıyla birlikte, e-posta uygulaması açmadan gönderir; hizmet ulaşmazsa yine e-postaya döner.
 
 ## İçerik nasıl değiştirilir?
 

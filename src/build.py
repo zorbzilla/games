@@ -33,6 +33,8 @@ SPRITE = f'''<svg class="sprite" aria-hidden="true" focusable="false" xmlns="htt
     <symbol id="i-help" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.6"/><path d="m5.9 5.9 3.6 3.6M14.5 14.5l3.6 3.6M18.1 5.9l-3.6 3.6M9.5 14.5l-3.6 3.6"/></g></symbol>
     <symbol id="i-hello" viewBox="0 0 24 24"><path d="M4.5 5h15A1.5 1.5 0 0 1 21 6.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 3.5V17h-1A1.5 1.5 0 0 1 3 15.5v-9A1.5 1.5 0 0 1 4.5 5z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/><circle cx="8.5" cy="11" r="1.25" fill="currentColor"/><circle cx="12" cy="11" r="1.25" fill="currentColor"/><circle cx="15.5" cy="11" r="1.25" fill="currentColor"/></symbol>
     <symbol id="i-share" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="m8.2 10.8 7.6-4.1M8.2 13.2l7.6 4.1"/></g></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M17.5 6.5l-11 11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></symbol>
+    <symbol id="i-clip" viewBox="0 0 24 24"><path d="m20.5 11.2-8.4 8.4a5.4 5.4 0 0 1-7.7-7.7l8.6-8.6a3.6 3.6 0 0 1 5.1 5.1l-8.6 8.6a1.8 1.8 0 0 1-2.6-2.6l7.9-7.9" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10.5 13.5M21 3l-6.5 18-4-7.5L3 9.5z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.4 12 4l8 6.4v8.6a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H5.5A1.5 1.5 0 0 1 4 19z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
@@ -662,8 +664,8 @@ def careers():
     options = '\n'.join(f'                    <option value="{v}" data-i18n="{k}">{label}</option>' for v, k, label in CAREER_FIELDS)
     ways = '\n'.join(f'                  <label class="chip"><input type="radio" name="way" value="{v}"><span data-i18n="{k}">{label}</span></label>' for v, k, label in CAREER_WAYS)
     endpoint = f' data-endpoint="{CAREERS_FORM_ENDPOINT}"' if CAREERS_FORM_ENDPOINT else ''
-    note_key, note = ('ap.noteSend', 'Başvurun doğrudan bize ulaşır.') if CAREERS_FORM_ENDPOINT else \
-        ('ap.note', 'Gönder’e basınca başvurun e-posta uygulamanda hazır olarak açılır. CV’ni o e-postaya ekleyebilirsin.')
+    note_key, note = ('ap.noteSend', 'Başvurun ve CV’n doğrudan bize ulaşır.') if CAREERS_FORM_ENDPOINT else \
+        ('ap.note', 'Gönder’e basınca başvurun e-posta uygulamanda hazır açılır. CV’ni o e-postaya eklemeyi unutma.')
     content = f'''    <div class="page__inner">
       <div class="careers__grid wrap">
         <div class="careers__copy">
@@ -678,7 +680,7 @@ def careers():
         </div>
 
         <section class="apply" aria-labelledby="apply-title">
-          <form class="apply__form" id="applyForm" novalidate data-mail="{CAREERS_MAIL}"{endpoint}>
+          <form class="apply__form" id="applyForm" novalidate enctype="multipart/form-data" data-mail="{CAREERS_MAIL}"{endpoint}>
             <div class="apply__head">
               <h2 class="apply__title" id="apply-title" data-i18n="ap.title">Açık başvuru</h2>
               <p class="apply__req" data-i18n="ap.req">* zorunlu alanlar</p>
@@ -703,8 +705,16 @@ def careers():
                 <p class="field__error" id="apFieldErr"></p>
               </div>
               <div class="field">
-                <label class="field__label" for="apLink"><span data-i18n="ap.link">Portfolyo ya da CV bağlantısı</span></label>
-                <input class="input" id="apLink" name="link" type="text" inputmode="url" autocomplete="url" maxlength="300" placeholder="LinkedIn, GitHub, ArtStation, Drive" data-i18n-ph="ap.linkPh">
+                <label class="field__label" for="apCv"><span data-i18n="ap.cv">CV</span> *</label>
+                <div class="upload" id="apCvBox">
+                  <input class="upload__input" id="apCv" name="cv" type="file" accept=".pdf,.doc,.docx,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document" required aria-describedby="apCvErr" data-check>
+                  <label class="upload__face" for="apCv">
+                    <svg class="upload__icon" aria-hidden="true"><use href="#i-clip"/></svg>
+                    <span class="upload__text"><b id="apCvName" data-i18n="ap.cvPick">CV’ni seç ya da buraya bırak</b><small id="apCvMeta" data-i18n="ap.cvHint">PDF ya da Word · en fazla 5 MB</small></span>
+                  </label>
+                  <button class="upload__clear" id="apCvClear" type="button" hidden aria-label="CV’yi kaldır" data-i18n-aria="ap.cvClear"><svg aria-hidden="true"><use href="#i-close"/></svg></button>
+                </div>
+                <p class="field__error" id="apCvErr"></p>
               </div>
               <fieldset class="field field--wide chips">
                 <legend class="field__label" data-i18n="ap.way">Nasıl çalışmak istersin?</legend>
@@ -713,9 +723,9 @@ def careers():
                 </div>
               </fieldset>
               <div class="field field--wide">
-                <label class="field__label" for="apMsg"><span data-i18n="ap.msg">Kendinden bahset</span> *</label>
+                <div class="field__top"><label class="field__label" for="apMsg"><span data-i18n="ap.msg">Kendinden bahset</span> *</label><span class="field__count" id="apMsgCount" aria-live="off">0 / 1200</span></div>
                 <textarea class="input" id="apMsg" name="message" required maxlength="1200" rows="4" placeholder="Neler yaptın, neler yapmak istiyorsun? Hangi oyunları seviyorsun?" data-i18n-ph="ap.msgPh" aria-describedby="apMsgErr apMsgCount" data-check></textarea>
-                <div class="field__foot"><p class="field__error" id="apMsgErr"></p><span class="field__count" id="apMsgCount" aria-live="off">0 / 1200</span></div>
+                <p class="field__error" id="apMsgErr"></p>
               </div>
               <div class="field field--wide">
                 <label class="consent"><input type="checkbox" name="consent" id="apOk" required aria-describedby="apOkErr" data-check><span data-i18n="ap.consent">Bilgilerimin yalnızca başvurum için kullanılmasını kabul ediyorum.</span></label>
@@ -733,6 +743,7 @@ def careers():
             <span class="apply__done-icon" aria-hidden="true"><svg><use href="#i-check"/></svg></span>
             <h2 class="apply__title" id="applyDoneTitle" data-i18n="ap.doneMail">Neredeyse tamam!</h2>
             <p class="apply__done-text" id="applyDoneText" data-i18n="ap.doneMailD">E-posta uygulamanda başvurun hazır. Göndermeyi unutma.</p>
+            <p class="apply__attach" id="applyAttach"><svg aria-hidden="true"><use href="#i-clip"/></svg><span><span data-i18n="ap.attach">Göndermeden önce CV’ni e-postaya ekle:</span> <b id="applyAttachName"></b></span></p>
             <p class="apply__fallback" id="applyFallback"><span data-i18n="ap.fallback">E-posta uygulaman açılmadıysa başvurunu kopyalayıp şu adrese gönderebilirsin:</span> <a href="mailto:{CAREERS_MAIL}">{CAREERS_MAIL}</a></p>
             <div class="apply__done-actions">
               <button class="btn" type="button" id="applyCopy"><svg class="btn__icon" aria-hidden="true"><use href="#i-copy"/></svg><span data-i18n="ap.copy">Başvuruyu kopyala</span></button>

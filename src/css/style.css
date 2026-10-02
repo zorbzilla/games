@@ -1584,13 +1584,57 @@ select.input {
 }
 select.input:invalid { color: var(--dim); } /* the "pick a field" line */
 select.input option { background: #10131c; color: var(--ink); }
-textarea.input { height: clamp(88px, 15vh, 136px); min-height: 72px; resize: vertical; line-height: 1.45; }
-.field__foot { display: flex; align-items: flex-start; gap: 10px; }
+textarea.input { height: clamp(88px, 15vh, 136px); min-height: 72px; resize: none; line-height: 1.45; }
+.field__top { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
 .field__error { color: #ff8a9c; font-size: 0.78rem; font-weight: 700; line-height: 1.15; }
 .field__error:empty { display: none; } /* a message only takes room when there is one */
-.field__count { flex: none; margin-left: auto; color: var(--dim); font-size: 0.76rem; font-variant-numeric: tabular-nums; }
+.field__count { flex: none; color: var(--dim); font-size: 0.76rem; font-variant-numeric: tabular-nums; }
 .field.is-bad .input { border-color: var(--red); box-shadow: 0 0 0 3px rgb(255 74 100 / 0.2); }
 .field.is-bad .consent input { border-color: var(--red); }
+
+.upload { position: relative; }
+.upload__input { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); }
+.upload__face {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  min-height: 46px;
+  padding: 6px 44px 6px 13px;
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  border-radius: 12px;
+  background: rgb(var(--bg-rgb) / 0.72);
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+.upload__face:hover,
+.upload.is-over .upload__face { border-color: var(--accent); background: rgb(var(--accent-rgb) / 0.1); }
+.upload__input:focus-visible + .upload__face { border-color: var(--accent); box-shadow: 0 0 0 3px rgb(var(--accent-rgb) / 0.3); }
+.upload__icon { width: 20px; height: 20px; flex: none; color: var(--accent-hi); }
+.upload__text { display: grid; min-width: 0; line-height: 1.15; }
+.upload__text b,
+.upload__text small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.upload__text b { color: var(--ink); font-size: 0.9rem; font-weight: 700; }
+.upload__text small { color: var(--dim); font-size: 0.74rem; font-weight: 600; }
+.upload.has-file .upload__face { border-style: solid; border-color: rgb(var(--accent-hi-rgb) / 0.45); background: rgb(var(--accent-rgb) / 0.12); }
+.upload__clear {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 9px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--ink);
+  cursor: pointer;
+  translate: 0 -50%;
+}
+.upload__clear:hover { background: rgba(255, 255, 255, 0.16); }
+.upload__clear svg { width: 16px; height: 16px; }
+.field.is-bad .upload__face { border-color: var(--red); box-shadow: 0 0 0 3px rgb(255 74 100 / 0.2); }
 
 .chips { margin-bottom: 2px; }
 .chips__row { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -1635,7 +1679,7 @@ textarea.input { height: clamp(88px, 15vh, 136px); min-height: 72px; resize: ver
 }
 .consent input:focus-visible { outline: 3px solid var(--accent-hi); outline-offset: 2px; }
 .hp { position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; border: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); }
-.apply__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: 4px; }
+.apply__foot { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; margin-top: clamp(14px, 2.2vh, 20px); }
 .apply__note { flex: 1 1 220px; color: var(--dim); font-size: 0.8rem; line-height: 1.4; }
 
 /* after the application is on its way */
@@ -1654,6 +1698,21 @@ textarea.input { height: clamp(88px, 15vh, 136px); min-height: 72px; resize: ver
 }
 .apply__done-icon svg { width: 30px; height: 30px; }
 .apply__done-text { max-width: 44ch; color: var(--ink); font-size: var(--fs-lead); line-height: 1.5; }
+.apply__attach {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 100%;
+  padding: 10px 14px;
+  border: 1px solid rgb(var(--accent-hi-rgb) / 0.35);
+  border-radius: 12px;
+  background: rgb(var(--accent-rgb) / 0.12);
+  color: var(--ink);
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+.apply__attach svg { width: 20px; height: 20px; flex: none; color: var(--accent-hi); }
+.apply__attach b { overflow-wrap: anywhere; }
 .apply__fallback { max-width: 52ch; color: var(--muted); font-size: 0.9rem; line-height: 1.5; }
 .apply__fallback a { color: var(--accent-hi); font-weight: 700; text-underline-offset: 3px; }
 .apply__done-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
@@ -2063,6 +2122,7 @@ textarea.input { height: clamp(88px, 15vh, 136px); min-height: 72px; resize: ver
   .apply { padding-block: 18px; }
   .apply__head { margin-bottom: 10px; }
   .input { min-height: 42px; padding-block: 9px; }
+  .upload__face { min-height: 42px; padding-block: 4px; }
   .chip span { min-height: 34px; padding-block: 6px; }
   textarea.input { height: clamp(64px, 11vh, 92px); min-height: 60px; }
 }
