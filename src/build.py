@@ -370,12 +370,13 @@ def home():
 
         <div class="hero__stage" id="heroStage" aria-hidden="true">
           <div class="stage__glow"></div>
+          <!-- --x/--y place a prop on big screens, --mx/--my on phones (there the props sit on the phone's corners) -->
           <div class="floaters">
-            <span class="floater" style="--x:-2%;--y:8%;--s:62px;--d:1.6;--dur:7s;--delay:-1s;--r0:-10deg;--r1:4deg"><svg><use href="#f-magnifier"/></svg></span>
-            <span class="floater floater--phone" style="--x:82%;--y:4%;--s:66px;--d:2.4;--dur:8s;--delay:-3s;--r0:9deg;--r1:-4deg"><svg><use href="#f-badge"/></svg></span>
-            <span class="floater" style="--x:88%;--y:54%;--s:56px;--d:2;--dur:7.6s;--delay:-5s;--r0:10deg;--r1:-3deg"><svg><use href="#f-print"/></svg></span>
-            <span class="floater" style="--x:-6%;--y:42%;--s:70px;--d:1.2;--dur:8.4s;--delay:-2.5s;--r0:-9deg;--r1:-2deg"><svg><use href="#f-photo"/></svg></span>
-            <span class="floater floater--phone floater--marker" style="--x:8%;--y:76%;--s:52px;--d:1.3;--dur:6.6s;--delay:-2s;--r0:-6deg;--r1:6deg"><svg><use href="#f-marker"/></svg></span>
+            <span class="floater" style="--x:-2%;--y:8%;--mx:-5%;--my:68%;--s:62px;--d:1.6;--dur:7s;--delay:-1s;--r0:-10deg;--r1:4deg"><svg><use href="#f-magnifier"/></svg></span>
+            <span class="floater" style="--x:82%;--y:4%;--mx:72%;--my:-5%;--s:66px;--d:2.4;--dur:8s;--delay:-3s;--r0:9deg;--r1:-4deg"><svg><use href="#f-badge"/></svg></span>
+            <span class="floater" style="--x:88%;--y:54%;--mx:82%;--my:42%;--s:56px;--d:2;--dur:7.6s;--delay:-5s;--r0:10deg;--r1:-3deg"><svg><use href="#f-print"/></svg></span>
+            <span class="floater" style="--x:-6%;--y:42%;--mx:-4%;--my:10%;--s:70px;--d:1.2;--dur:8.4s;--delay:-2.5s;--r0:-9deg;--r1:-2deg"><svg><use href="#f-photo"/></svg></span>
+            <span class="floater" style="--x:8%;--y:76%;--mx:76%;--my:84%;--s:52px;--d:1.3;--dur:6.6s;--delay:-2s;--r0:-6deg;--r1:6deg"><svg><use href="#f-marker"/></svg></span>
           </div>
           <div class="phone-float">
               {phone('phone', shot_imgs(HOME_SHOTS), 'phone--hero')}

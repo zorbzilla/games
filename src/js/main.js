@@ -83,8 +83,8 @@
     // home
     'home.new': 'Out now',
     'home.newText': 'Our first game is live',
-    'home.tagline': 'Pin on your badge. The file is on your desk.',
-    'home.lead': 'Search the crime scene, question the suspects, catch the contradiction in their statements. The final call is yours.',
+    'home.tagline': 'Badge on. The file is on your desk.',
+    'home.lead': 'Search the crime scene, question the suspects, catch the contradictions. The final call is yours.',
     'home.explore': 'Explore the game',
     'fact.weekly': 'Weekly leaderboard',
     'fact.rank': 'Climb the ranks',
