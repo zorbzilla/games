@@ -33,6 +33,7 @@ SPRITE = f'''<svg class="sprite" aria-hidden="true" focusable="false" xmlns="htt
     <symbol id="i-help" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.6"/><path d="m5.9 5.9 3.6 3.6M14.5 14.5l3.6 3.6M18.1 5.9l-3.6 3.6M9.5 14.5l-3.6 3.6"/></g></symbol>
     <symbol id="i-hello" viewBox="0 0 24 24"><path d="M4.5 5h15A1.5 1.5 0 0 1 21 6.5v9a1.5 1.5 0 0 1-1.5 1.5H10l-4.5 3.5V17h-1A1.5 1.5 0 0 1 3 15.5v-9A1.5 1.5 0 0 1 4.5 5z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/><circle cx="8.5" cy="11" r="1.25" fill="currentColor"/><circle cx="12" cy="11" r="1.25" fill="currentColor"/><circle cx="15.5" cy="11" r="1.25" fill="currentColor"/></symbol>
     <symbol id="i-share" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="m8.2 10.8 7.6-4.1M8.2 13.2l7.6 4.1"/></g></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M21 3 10.5 13.5M21 3l-6.5 18-4-7.5L3 9.5z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 10.4 12 4l8 6.4v8.6a1.5 1.5 0 0 1-1.5 1.5H15v-6H9v6H5.5A1.5 1.5 0 0 1 4 19z" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round"/></symbol>
     <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
     <symbol id="i-trophy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4h10v5a5 5 0 0 1-10 0z"/><path d="M7 6H4v1.5A3.5 3.5 0 0 0 7.5 11M17 6h3v1.5a3.5 3.5 0 0 1-3.5 3.5M12 14v3.5M8 20.5h8M9.5 17.5h5"/></g></symbol>
@@ -176,6 +177,7 @@ def header(active, page_id):
       <nav class="nav" aria-label="Ana menü" data-i18n-aria="aria.mainnav">
         <ul class="nav__list">
           <li><a class="nav__link" href="about.html"{cur(active, 'about')} data-i18n="nav.about">Biz kimiz?</a></li>
+          <li><a class="nav__link" href="careers.html"{cur(active, 'careers')} data-i18n="nav.careers">Kariyer</a></li>
           <li class="has-menu">
             <a class="nav__link" href="games.html"{cur(active, 'games')} data-i18n="nav.games">Oyunlar</a>
             <button class="nav__caret" type="button" aria-expanded="false" aria-controls="gamesMenu" aria-label="Oyunlar menüsü" data-i18n-aria="aria.gamesMenu"><svg aria-hidden="true"><use href="#i-chevron"/></svg></button>
@@ -200,13 +202,14 @@ def header(active, page_id):
     <ul class="mnav__list">
       <li style="--i:0"><a class="mnav__link" href="./"{cur(active, 'home')}><span data-i18n="nav.home">Ana sayfa</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
       <li style="--i:1"><a class="mnav__link" href="about.html"{cur(active, 'about')}><span data-i18n="nav.about">Biz kimiz?</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
-      <li style="--i:2">
+      <li style="--i:2"><a class="mnav__link" href="careers.html"{cur(active, 'careers')}><span data-i18n="nav.careers">Kariyer</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      <li style="--i:3">
         <a class="mnav__link" href="games.html"{' aria-current="page"' if page_id == 'games' else ''}><span data-i18n="nav.games">Oyunlar</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         <ul class="mnav__games">
 {mrows}
         </ul>
       </li>
-      <li style="--i:3"><a class="mnav__link" href="contact.html"{cur(active, 'contact')}><span data-i18n="nav.contact">İletişim</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      <li style="--i:4"><a class="mnav__link" href="contact.html"{cur(active, 'contact')}><span data-i18n="nav.contact">İletişim</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
     </ul>
   </div>'''
 
@@ -632,6 +635,118 @@ def about():
                     'about', content)
 
 
+# ---------------------------------------------------------------- careers
+# Applications go to this address. The site has no server, so by default the form opens the
+# visitor's email app with the application written out. With a form service endpoint here
+# (e.g. Formspree: 'https://formspree.io/f/xxxxxxx') the form sends it directly instead.
+CAREERS_MAIL = 'hello@quupgames.com'
+CAREERS_FORM_ENDPOINT = ''
+
+CAREER_FIELDS = [
+    ('dev', 'ap.f1', 'Oyun geliştirme (Unity / C#)'),
+    ('design', 'ap.f2', 'Oyun tasarımı'),
+    ('art', 'ap.f3', 'Görsel tasarım ve animasyon'),
+    ('sound', 'ap.f4', 'Ses ve müzik'),
+    ('marketing', 'ap.f5', 'Pazarlama ve topluluk'),
+    ('other', 'ap.f6', 'Diğer'),
+]
+CAREER_WAYS = [
+    ('full', 'ap.w1', 'Tam zamanlı'),
+    ('part', 'ap.w2', 'Yarı zamanlı'),
+    ('intern', 'ap.w3', 'Staj'),
+    ('freelance', 'ap.w4', 'Serbest'),
+]
+
+
+def careers():
+    options = '\n'.join(f'                    <option value="{v}" data-i18n="{k}">{label}</option>' for v, k, label in CAREER_FIELDS)
+    ways = '\n'.join(f'                  <label class="chip"><input type="radio" name="way" value="{v}"><span data-i18n="{k}">{label}</span></label>' for v, k, label in CAREER_WAYS)
+    endpoint = f' data-endpoint="{CAREERS_FORM_ENDPOINT}"' if CAREERS_FORM_ENDPOINT else ''
+    note_key, note = ('ap.noteSend', 'Başvurun doğrudan bize ulaşır.') if CAREERS_FORM_ENDPOINT else \
+        ('ap.note', 'Gönder’e basınca başvurun e-posta uygulamanda hazır olarak açılır. CV’ni o e-postaya ekleyebilirsin.')
+    content = f'''    <div class="page__inner">
+      <div class="careers__grid wrap">
+        <div class="careers__copy">
+          <p class="eyebrow" data-i18n="cr.eyebrow">Kariyer</p>
+          <h1 class="h1" data-i18n="cr.title">Ekibe katıl</h1>
+          <p class="lead" data-i18n="cr.lead">Telefonda oynanan, akılda kalan oyunlar yapıyoruz. Oyun geliştirme, tasarım, görsel sanat ya da ses: bu işi bizim kadar seviyorsan seni tanımak isteriz.</p>
+          <ol class="steps">
+            <li class="step"><span class="step__no" aria-hidden="true">01</span><h2 data-i18n="cr.s1t">Formu doldur</h2><p data-i18n="cr.s1d">Kendini, yaptığın işleri ve ilgi alanını anlat.</p></li>
+            <li class="step"><span class="step__no" aria-hidden="true">02</span><h2 data-i18n="cr.s2t">Başvurun bize ulaşsın</h2><p data-i18n="cr.s2d">Başvurun doğrudan ekibimize gelir.</p></li>
+            <li class="step"><span class="step__no" aria-hidden="true">03</span><h2 data-i18n="cr.s3t">Sana dönelim</h2><p data-i18n="cr.s3d">Uygun bir rol olduğunda seninle iletişime geçeriz.</p></li>
+          </ol>
+        </div>
+
+        <section class="apply" aria-labelledby="apply-title">
+          <form class="apply__form" id="applyForm" novalidate data-mail="{CAREERS_MAIL}"{endpoint}>
+            <div class="apply__head">
+              <h2 class="apply__title" id="apply-title" data-i18n="ap.title">Açık başvuru</h2>
+              <p class="apply__req" data-i18n="ap.req">* zorunlu alanlar</p>
+            </div>
+            <div class="apply__grid">
+              <div class="field">
+                <label class="field__label" for="apName"><span data-i18n="ap.name">Ad soyad</span> *</label>
+                <input class="input" id="apName" name="fullname" type="text" autocomplete="name" required maxlength="80" placeholder="Adın ve soyadın" data-i18n-ph="ap.namePh" aria-describedby="apNameErr" data-check>
+                <p class="field__error" id="apNameErr"></p>
+              </div>
+              <div class="field">
+                <label class="field__label" for="apMail"><span data-i18n="ap.mail">E-posta</span> *</label>
+                <input class="input" id="apMail" name="email" type="email" autocomplete="email" inputmode="email" required maxlength="120" placeholder="ornek@eposta.com" data-i18n-ph="ap.mailPh" aria-describedby="apMailErr" data-check>
+                <p class="field__error" id="apMailErr"></p>
+              </div>
+              <div class="field">
+                <label class="field__label" for="apField"><span data-i18n="ap.field">İlgi alanın</span> *</label>
+                <select class="input" id="apField" name="field" required aria-describedby="apFieldErr" data-check>
+                    <option value="" disabled selected data-i18n="ap.pick">Bir alan seç</option>
+{options}
+                </select>
+                <p class="field__error" id="apFieldErr"></p>
+              </div>
+              <div class="field">
+                <label class="field__label" for="apLink"><span data-i18n="ap.link">Portfolyo ya da CV bağlantısı</span></label>
+                <input class="input" id="apLink" name="link" type="text" inputmode="url" autocomplete="url" maxlength="300" placeholder="LinkedIn, GitHub, ArtStation, Drive" data-i18n-ph="ap.linkPh">
+              </div>
+              <fieldset class="field field--wide chips">
+                <legend class="field__label" data-i18n="ap.way">Nasıl çalışmak istersin?</legend>
+                <div class="chips__row">
+{ways}
+                </div>
+              </fieldset>
+              <div class="field field--wide">
+                <label class="field__label" for="apMsg"><span data-i18n="ap.msg">Kendinden bahset</span> *</label>
+                <textarea class="input" id="apMsg" name="message" required maxlength="1200" rows="4" placeholder="Neler yaptın, neler yapmak istiyorsun? Hangi oyunları seviyorsun?" data-i18n-ph="ap.msgPh" aria-describedby="apMsgErr apMsgCount" data-check></textarea>
+                <div class="field__foot"><p class="field__error" id="apMsgErr"></p><span class="field__count" id="apMsgCount" aria-live="off">0 / 1200</span></div>
+              </div>
+              <div class="field field--wide">
+                <label class="consent"><input type="checkbox" name="consent" id="apOk" required aria-describedby="apOkErr" data-check><span data-i18n="ap.consent">Bilgilerimin yalnızca başvurum için kullanılmasını kabul ediyorum.</span></label>
+                <p class="field__error" id="apOkErr"></p>
+              </div>
+              <input class="hp" type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true">
+            </div>
+            <div class="apply__foot">
+              <button class="btn" type="submit"><svg class="btn__icon" aria-hidden="true"><use href="#i-send"/></svg><span data-i18n="ap.send">Başvuruyu gönder</span></button>
+              <p class="apply__note" data-i18n="{note_key}">{note}</p>
+            </div>
+          </form>
+
+          <div class="apply__done" id="applyDone" hidden tabindex="-1">
+            <span class="apply__done-icon" aria-hidden="true"><svg><use href="#i-check"/></svg></span>
+            <h2 class="apply__title" id="applyDoneTitle" data-i18n="ap.doneMail">Neredeyse tamam!</h2>
+            <p class="apply__done-text" id="applyDoneText" data-i18n="ap.doneMailD">E-posta uygulamanda başvurun hazır. Göndermeyi unutma.</p>
+            <p class="apply__fallback" id="applyFallback"><span data-i18n="ap.fallback">E-posta uygulaman açılmadıysa başvurunu kopyalayıp şu adrese gönderebilirsin:</span> <a href="mailto:{CAREERS_MAIL}">{CAREERS_MAIL}</a></p>
+            <div class="apply__done-actions">
+              <button class="btn" type="button" id="applyCopy"><svg class="btn__icon" aria-hidden="true"><use href="#i-copy"/></svg><span data-i18n="ap.copy">Başvuruyu kopyala</span></button>
+              <button class="btn btn--ghost" type="button" id="applyEdit"><span data-i18n="ap.edit">Formu düzenle</span></button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>'''
+    return document('careers', 'careers.html', 'Kariyer | QuUp Games',
+                    'QuUp Games ekibine katıl: oyun geliştirme, tasarım, görsel sanat ve ses için açık başvuru.',
+                    'careers', content)
+
+
 # ---------------------------------------------------------------- contact
 def mail_card(icon, key, title, desc, addr):
     return f'''            <li class="mail-card">
@@ -742,6 +857,7 @@ PAGES = {
     'games.html': games_page,
     'detective-on-duty.html': game,
     'about.html': about,
+    'careers.html': careers,
     'contact.html': contact,
     'privacy-policy.html': privacy,
     '404.html': not_found,

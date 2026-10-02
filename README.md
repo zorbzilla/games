@@ -26,7 +26,7 @@ npm run build    # sayfaları üretir, sıkıştırır, karartır
 
 `npm run build` şunları yapar:
 
-1. `src/build.py`, sayfaları (`index.html`, `games.html`, `detective-on-duty.html`, `about.html`, `contact.html`, `privacy-policy.html`, `404.html`) kök klasöre yazar.
+1. `src/build.py`, sayfaları (`index.html`, `games.html`, `detective-on-duty.html`, `about.html`, `careers.html`, `contact.html`, `privacy-policy.html`, `404.html`) kök klasöre yazar.
 2. `src/tools/minify.mjs` sırayla:
    - HTML'i sıkıştırır.
    - Sayfa gövdesini şifreli bir blok olarak yazar. Tarayıcı açarken çözer.
@@ -61,6 +61,7 @@ Telefon yan çevrildiğinde ekran çok kısa kalır: o zaman sayfa bütün olara
 | `detective-on-duty.html` | OYUNLAR altında | **Detective on Duty:** ikonun mor tonlarıyla. Sekmeler: Oynanış, Vakalar, Gizlilik.<br>Adresin sonuna `#cases` ya da `#privacy` eklenirse o sekme açılır. |
 | `privacy-policy.html` | Oyun sayfasının içinde | **Detective on Duty gizlilik politikası** (İngilizce). Google Play Console'a verilen adres bu olduğu için adı değişmedi. |
 | `about.html` | BİZ KİMİZ? | Yalnızca stüdyo: QuUp Games tanıtımı, üç kural ve Q amblemi. Oyun kartı yok. |
+| `careers.html` | KARİYER | **Açık başvuru:** solda kısa tanıtım ve üç adım, sağda başvuru formu (ad soyad, e-posta, ilgi alanı, çalışma şekli, portfolyo/CV bağlantısı, kendinden bahset, onay). Aşağıdaki "Kariyer formu" bölümüne bak. |
 | `contact.html` | İLETİŞİM | E-posta adresleri (kopyala / e-posta yaz) ve siteyi paylaşma düğmesi. |
 | `404.html` | Yok | Bulunamayan adreslerde açılan stüdyo sayfası: sıfırın yerinde logodaki Q, aranan adres ve "Ana sayfaya dön" / "Oyunlarımız" düğmeleri.<br>Her derinlikteki adreste açılabildiği için bağlantıları sitenin kökünden başlar (`BASE` adresinden). |
 
@@ -77,11 +78,18 @@ Telefon yan çevrildiğinde ekran çok kısa kalır: o zaman sayfa bütün olara
    - Şimdilik soluk görünür, üstüne gelince "Yakında" yazar.
    - iPhone sürümü çıkınca aynı yerdeki `STORE_LINKS['appstore']` alanına bağlantı yazılır, sonra `npm run build`. Soluk düğme kendiliğinden gerçek bağlantıya dönüşür.
 3. **quupgames.com:**
-   - `support@quupgames.com` ve `hello@quupgames.com` için posta kutusu ya da yönlendirme kurulmalı.
+   - `support@quupgames.com` ve `hello@quupgames.com` için posta kutusu ya da yönlendirme kurulmalı. Kariyer başvuruları da `hello@quupgames.com` adresine gelir.
    - Gizlilik politikasındaki iletişim adresi de `support@quupgames.com`.
 4. **Siteyi quupgames.com'a taşımak (isteğe bağlı):**
    - GitHub'da **Settings → Pages → Custom domain** alanına alan adı yazılır.
    - `src/build.py` içindeki `BASE` adresi, `sitemap.xml` ve `robots.txt` güncellenir, sonra `npm run build`.
+
+## Kariyer formu
+
+- Sitenin bir sunucusu yok. Bu yüzden form, varsayılan olarak başvuruyu ziyaretçinin e-posta uygulamasında hazır bir e-posta olarak açar. Ziyaretçi CV'sini o e-postaya ekleyip gönderir.
+- Başvurular `src/build.py` içindeki `CAREERS_MAIL` adresine gider (şu an `hello@quupgames.com`). Ayrı bir adres istenirse (ör. `kariyer@quupgames.com`) orası değiştirilir, sonra `npm run build`.
+- E-posta uygulaması açılmazsa sayfa, başvuruyu kopyalama düğmesini ve adresi gösterir.
+- **Doğrudan gönderim (isteğe bağlı):** Formspree gibi bir form hizmetinde ücretsiz bir form açılır ve verdiği adres `src/build.py` içindeki `CAREERS_FORM_ENDPOINT` alanına yazılır (ör. `https://formspree.io/f/xxxxxxx`), sonra `npm run build`. Bundan sonra form başvuruyu e-posta uygulaması açmadan gönderir; hizmet ulaşmazsa yine e-postaya döner.
 
 ## İçerik nasıl değiştirilir?
 

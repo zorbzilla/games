@@ -61,6 +61,7 @@
     'aria.crumbs': 'You are here',
     'nav.home': 'Home',
     'nav.about': 'About us',
+    'nav.careers': 'Careers',
     'nav.games': 'Games',
     'nav.contact': 'Contact',
     'menu.new': 'New',
@@ -157,6 +158,51 @@
     'about.games': 'Our games',
     'about.write': 'Get in touch',
 
+    // careers
+    'cr.eyebrow': 'Careers',
+    'cr.title': 'Join the team',
+    'cr.lead': 'We make games for your phone that stay with you. Development, design, art or sound: if you love this work as much as we do, we would like to meet you.',
+    'cr.s1t': 'Fill in the form',
+    'cr.s1d': 'Tell us about yourself, your work and the field you love.',
+    'cr.s2t': 'It reaches us',
+    'cr.s2d': 'Your application comes straight to our team.',
+    'cr.s3t': 'We get back to you',
+    'cr.s3d': 'When there is a role that fits, we will get in touch.',
+    'ap.title': 'Open application',
+    'ap.req': '* required',
+    'ap.name': 'Full name',
+    'ap.namePh': 'Your first and last name',
+    'ap.mail': 'Email',
+    'ap.mailPh': 'you@example.com',
+    'ap.field': 'Your field',
+    'ap.pick': 'Pick a field',
+    'ap.f1': 'Game development (Unity / C#)',
+    'ap.f2': 'Game design',
+    'ap.f3': 'Art and animation',
+    'ap.f4': 'Sound and music',
+    'ap.f5': 'Marketing and community',
+    'ap.f6': 'Other',
+    'ap.link': 'Portfolio or CV link',
+    'ap.linkPh': 'LinkedIn, GitHub, ArtStation, Drive',
+    'ap.way': 'How would you like to work?',
+    'ap.w1': 'Full-time',
+    'ap.w2': 'Part-time',
+    'ap.w3': 'Internship',
+    'ap.w4': 'Freelance',
+    'ap.msg': 'Tell us about yourself',
+    'ap.msgPh': 'What have you made, what would you like to make? Which games do you love?',
+    'ap.consent': 'I agree that my details are used only for my application.',
+    'ap.send': 'Send application',
+    'ap.note': 'Pressing send opens your application, ready to go, in your email app. You can attach your CV there.',
+    'ap.noteSend': 'Your application comes straight to us.',
+    'ap.doneMail': 'Almost there!',
+    'ap.doneMailD': 'Your application is ready in your email app. Don’t forget to send it.',
+    'ap.doneSent': 'Application received',
+    'ap.doneSentD': 'Thank you! We will read it and get in touch when there is a role that fits.',
+    'ap.fallback': 'If your email app didn’t open, copy your application and send it to:',
+    'ap.copy': 'Copy application',
+    'ap.edit': 'Edit the form',
+
     // contact
     'ct.eyebrow': 'Contact',
     'ct.title': 'Write to us',
@@ -193,6 +239,7 @@
     games: ['Games | QuUp Games', 'The games from QuUp Games: games for your phone that stay with you.'],
     game: ['Detective on Duty | QuUp Games', 'Detective on Duty: crime scenes, interrogations, a deduction board and your final call. The new detective game from QuUp Games.'],
     about: ['About us | QuUp Games', 'QuUp Games is an independent mobile game studio making games for your phone that stay with you.'],
+    careers: ['Careers | QuUp Games', 'Join the QuUp Games team: an open application for game development, design, art and sound.'],
     contact: ['Contact | QuUp Games', 'Write to QuUp Games: support@quupgames.com for support, hello@quupgames.com for everything else.'],
     privacy: ['Detective on Duty Privacy Policy | QuUp Games', 'What Detective on Duty by QuUp Games does with data: no account needed, your save stays on your device.'],
     404: ['Page not found | QuUp Games', 'This page could not be found. Head to the QuUp Games home page or see our games.'],
@@ -209,6 +256,22 @@
       'share.text': 'QuUp Games: telefonda oynanan, akılda kalan oyunlar.',
       'share.copied': 'Bağlantı kopyalandı',
       'share.fail': 'Bağlantı: ',
+      'err.required': 'Bu alanı doldur.',
+      'err.email': 'Geçerli bir e-posta adresi yaz.',
+      'err.pick': 'Bir alan seç.',
+      'err.consent': 'Devam etmek için onay ver.',
+      'ap.subject': 'Kariyer başvurusu',
+      'ap.lineField': 'İlgi alanı',
+      'ap.lineWay': 'Çalışma şekli',
+      'ap.doneSent': 'Başvurun bize ulaştı',
+      'ap.doneSentD': 'Teşekkürler! Okuyacağız ve uygun bir rol olduğunda seninle iletişime geçeceğiz.',
+      'ap.intro': 'Kendimden bahsedeyim:',
+      'ap.sign': 'QuUp Games kariyer formundan gönderildi.',
+      'ap.copied': 'Başvuru kopyalandı',
+      'ap.copyFail': 'Kopyalanamadı.',
+      'ap.to': 'Kime',
+      'ap.subj': 'Konu',
+      'ap.sendFail': 'Gönderilemedi. E-posta ile deneyelim.',
     },
     en: {
       'aria.menuOpen': 'Open menu',
@@ -219,6 +282,20 @@
       'share.text': 'QuUp Games: games for your phone that stay with you.',
       'share.copied': 'Link copied',
       'share.fail': 'Link: ',
+      'err.required': 'Please fill this in.',
+      'err.email': 'Please enter a valid email address.',
+      'err.pick': 'Please pick a field.',
+      'err.consent': 'Please tick this to continue.',
+      'ap.subject': 'Job application',
+      'ap.lineField': 'Field',
+      'ap.lineWay': 'How I would like to work',
+      'ap.intro': 'About me:',
+      'ap.sign': 'Sent from the QuUp Games careers form.',
+      'ap.copied': 'Application copied',
+      'ap.copyFail': 'Couldn’t copy it.',
+      'ap.to': 'To',
+      'ap.subj': 'Subject',
+      'ap.sendFail': 'It didn’t go through. Let’s use email instead.',
     },
   };
 
@@ -238,6 +315,10 @@
   $$('[data-i18n-alt]').forEach((el) => {
     const k = el.dataset.i18nAlt;
     if (!(k in TR)) TR[k] = el.getAttribute('alt') || '';
+  });
+  $$('[data-i18n-ph]').forEach((el) => {
+    const k = el.dataset.i18nPh;
+    if (!(k in TR)) TR[k] = el.getAttribute('placeholder') || '';
   });
   const metaDesc = $('meta[name="description"]');
   const META_TR = [document.title, metaDesc ? metaDesc.content : ''];
@@ -275,6 +356,10 @@
     $$('[data-i18n-alt]').forEach((el) => {
       const v = d[el.dataset.i18nAlt];
       if (typeof v === 'string') el.setAttribute('alt', v);
+    });
+    $$('[data-i18n-ph]').forEach((el) => {
+      const v = d[el.dataset.i18nPh];
+      if (typeof v === 'string') el.setAttribute('placeholder', v);
     });
     const meta = lang === 'en' ? META_EN[page] || META_TR : META_TR;
     document.title = meta[0];
@@ -943,6 +1028,131 @@ void main(){
   }
 
   /* ======================================================================
+     9. Careers: the application form
+     The site has no server: by default the form writes the application into
+     an email (mailto). With data-endpoint (a form service) it posts it instead.
+     ====================================================================== */
+  function initCareers() {
+    const form = $('#applyForm');
+    const done = $('#applyDone');
+    if (!form || !done) return;
+    const mail = form.dataset.mail;
+    const endpoint = form.dataset.endpoint || '';
+    const msg = $('#apMsg');
+    const count = $('#apMsgCount');
+    const f = form.elements;
+    const checked = $$('[data-check]', form);
+    let tried = false;
+    let lastText = '';
+
+    const countUp = () => { count.textContent = `${msg.value.length} / ${msg.maxLength}`; };
+    msg.addEventListener('input', countUp);
+    countUp();
+
+    // a field's problem, as a dictionary key ('' when it is fine)
+    const problem = (el) => {
+      if (el.type === 'checkbox') return el.checked ? '' : 'err.consent';
+      if (el.tagName === 'SELECT') return el.value ? '' : 'err.pick';
+      if (!el.value.trim()) return 'err.required';
+      if (el.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(el.value.trim())) return 'err.email';
+      return '';
+    };
+    const show = (el) => {
+      const key = problem(el);
+      const box = el.closest('.field');
+      const out = $('.field__error', box);
+      box.classList.toggle('is-bad', !!key);
+      el.setAttribute('aria-invalid', key ? 'true' : 'false');
+      out.dataset.err = key;
+      out.textContent = key ? t(key) : '';
+      return !key;
+    };
+    // after a first try, a field clears its message as soon as it is right
+    checked.forEach((el) => el.addEventListener(el.type === 'checkbox' || el.tagName === 'SELECT' ? 'change' : 'input', () => { if (tried) show(el); }));
+    onLang.push(() => $$('.field__error[data-err]', form).forEach((out) => { out.textContent = out.dataset.err ? t(out.dataset.err) : ''; }));
+
+    const optionText = (sel) => (sel.selectedIndex > 0 ? sel.options[sel.selectedIndex].textContent.trim() : '');
+    const compose = () => {
+      const way = $('input[name="way"]:checked', form);
+      const lines = [
+        `${t('ap.name')}: ${f.fullname.value.trim()}`,
+        `${t('ap.mail')}: ${f.email.value.trim()}`,
+        `${t('ap.lineField')}: ${optionText(f.field)}`,
+      ];
+      if (way) lines.push(`${t('ap.lineWay')}: ${way.nextElementSibling.textContent.trim()}`);
+      if (f.link.value.trim()) lines.push(`${t('ap.link')}: ${f.link.value.trim()}`);
+      lines.push('', t('ap.intro'), f.message.value.trim(), '', '---', t('ap.sign'));
+      return {
+        subject: `${t('ap.subject')}: ${f.fullname.value.trim()} · ${optionText(f.field)}`,
+        body: lines.join('\r\n'),
+      };
+    };
+    const finish = (sent) => {
+      $('#applyDoneTitle').dataset.i18n = sent ? 'ap.doneSent' : 'ap.doneMail';
+      $('#applyDoneText').dataset.i18n = sent ? 'ap.doneSentD' : 'ap.doneMailD';
+      $('#applyDoneTitle').textContent = t($('#applyDoneTitle').dataset.i18n);
+      $('#applyDoneText').textContent = t($('#applyDoneText').dataset.i18n);
+      $('#applyFallback').hidden = sent;
+      $('#applyCopy').hidden = sent;
+      form.hidden = true;
+      done.hidden = false;
+      done.focus({ preventScroll: true });
+      const scroller = $('.page');
+      if (scroller) scroller.scrollTop = 0;
+    };
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      tried = true;
+      const bad = checked.filter((el) => !show(el));
+      if (bad.length) {
+        bad[0].focus();
+        return;
+      }
+      if (f._gotcha && f._gotcha.value) return; // a bot filled the hidden field
+      const { subject, body } = compose();
+      lastText = `${t('ap.to')}: ${mail}\n${t('ap.subj')}: ${subject}\n\n${body.replace(/\r\n/g, '\n')}`;
+      if (endpoint) {
+        try {
+          const res = await fetch(endpoint, { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) });
+          if (res.ok) {
+            finish(true);
+            return;
+          }
+        } catch (err) { /* falls back to email below */ }
+        toast(t('ap.sendFail'));
+      }
+      // opens the visitor's email app with the application written out
+      const link = document.createElement('a');
+      link.href = `mailto:${mail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      document.body.append(link);
+      link.click();
+      link.remove();
+      finish(false);
+    });
+
+    $('#applyCopy').addEventListener('click', () => {
+      copyText(lastText).catch(() => {
+        // no clipboard access: copy through a hidden text box instead
+        const box = document.createElement('textarea');
+        box.value = lastText;
+        box.setAttribute('readonly', '');
+        box.style.cssText = 'position:fixed;top:0;left:-9999px;opacity:0';
+        document.body.append(box);
+        box.select();
+        const ok = document.execCommand && document.execCommand('copy');
+        box.remove();
+        if (!ok) throw new Error('copy failed');
+      }).then(() => toast(t('ap.copied')), () => toast(t('ap.copyFail')));
+    });
+    $('#applyEdit').addEventListener('click', () => {
+      done.hidden = true;
+      form.hidden = false;
+      f.fullname.focus();
+    });
+  }
+
+  /* ======================================================================
      Boot
      ====================================================================== */
   const params = new URLSearchParams(window.location.search);
@@ -965,6 +1175,7 @@ void main(){
   if (page === 'home') initHome();
   if (page === 'game') initGame();
   if (page === 'about') initAbout();
+  if (page === 'careers') initCareers();
   if (page === '404') initNotFound();
 
   if (shader) {
