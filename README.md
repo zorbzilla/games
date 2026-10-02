@@ -67,14 +67,15 @@ Telefon yan çevrildiğinde ekran çok kısa kalır: o zaman sayfa bütün olara
 - TR/EN düğmesi dili değiştirir ve seçim hatırlanır. Adresin sonuna `?lang=en` eklenirse sayfa İngilizce açılır.
 - Tarayıcı sekmesinde ana sayfa için sadece "QuUp Games" yazar.
 
-## Yayından önce yapılacaklar
+## Mağaza bağlantıları ve yapılacaklar
 
-1. **Google Play bağlantısı:**
-   - `src/js/main.js` dosyasının başındaki `STORE_LINKS.googleplay` alanına yazılır, sonra `npm run build`.
-   - Boşken düğme görünür ve tıklanınca "çok yakında" der.
+1. **Google Play (yayında):**
+   - Bağlantı `src/build.py` içindeki `STORE_LINKS` alanında: https://play.google.com/store/apps/details?id=com.quupgames.detectiveonduty
+   - Sitedeki bütün Google Play düğmeleri bu adrese gider ve mağazayı yeni sekmede açar.
+   - Oyun sayfasının arama motorları için yapılandırılmış verisinde de bu adres yer alır.
 2. **App Store:**
    - Şimdilik soluk görünür, üstüne gelince "Yakında" yazar.
-   - iPhone sürümü çıkınca aynı yerdeki `STORE_LINKS.appstore` alanına bağlantı yazılır.
+   - iPhone sürümü çıkınca aynı yerdeki `STORE_LINKS['appstore']` alanına bağlantı yazılır, sonra `npm run build`. Soluk düğme kendiliğinden gerçek bağlantıya dönüşür.
 3. **quupgames.com:**
    - `support@quupgames.com` ve `hello@quupgames.com` için posta kutusu ya da yönlendirme kurulmalı.
    - Gizlilik politikasındaki iletişim adresi de `support@quupgames.com`.

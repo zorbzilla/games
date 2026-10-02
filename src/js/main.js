@@ -5,14 +5,6 @@
 (() => {
   'use strict';
 
-  /* Store links for Detective on Duty; every store button on every page reads them.
-     Google Play: until it is filled in, the button stays visible and says "coming soon" when clicked.
-     App Store: until it is filled in, the button stays greyed out with a "Coming soon" tip. */
-  const STORE_LINKS = {
-    googleplay: '', // e.g. 'https://play.google.com/store/apps/details?id=...'
-    appstore: '', // e.g. 'https://apps.apple.com/app/id...'
-  };
-
   const $ = (s, r = document) => r.querySelector(s);
   const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
   const root = document.documentElement;
@@ -377,34 +369,17 @@
     return Promise.reject(new Error('no clipboard'));
   }
 
+  /* The store links are written into the pages by src/build.py (STORE_LINKS there).
+     A store that has no link yet only explains itself. */
   function initStores() {
     $$('[data-store="googleplay"]').forEach((a) => {
-      if (STORE_LINKS.googleplay) {
-        a.href = STORE_LINKS.googleplay;
-        a.target = '_blank';
-        a.rel = 'noopener';
-      } else {
-        a.addEventListener('click', (e) => {
-          e.preventDefault();
-          toast(t('toast.gpSoon'));
-        });
-      }
+      if (a.getAttribute('href') !== '#') return;
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        toast(t('toast.gpSoon'));
+      });
     });
     $$('.store--soon').forEach((b) => {
-      // once the iPhone version is out, the greyed-out button becomes a real link
-      if (STORE_LINKS.appstore) {
-        const a = document.createElement('a');
-        a.className = 'store';
-        a.dataset.store = 'appstore';
-        a.href = STORE_LINKS.appstore;
-        a.target = '_blank';
-        a.rel = 'noopener';
-        $$('.sr-only', b).forEach((el) => el.remove());
-        a.append(...b.childNodes);
-        b.replaceWith(a);
-        return;
-      }
-      // not out yet: the button only explains itself
       let timer = 0;
       b.addEventListener('click', (e) => {
         e.preventDefault();

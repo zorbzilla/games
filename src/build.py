@@ -106,17 +106,35 @@ def logo(extra_cls=''):
     return f'<a class="{cls}" href="./" aria-label="QuUp Games ana sayfa" data-i18n-aria="aria.home">{LOGO_INNER}</a>'
 
 
+# Detective on Duty in the stores. Every store button on every page is written from these.
+# An empty link keeps the button: Google Play then says "coming soon" when clicked,
+# App Store stays greyed out with a "Coming soon" tip.
+STORE_LINKS = {
+    'googleplay': 'https://play.google.com/store/apps/details?id=com.quupgames.detectiveonduty',
+    'appstore': '',  # e.g. 'https://apps.apple.com/app/id...'
+}
+
+
 def stores(extra=''):
+    gp = STORE_LINKS['googleplay']
+    gp_href = f'href="{gp}" target="_blank" rel="noopener"' if gp else 'href="#"'
+    apple_inner = '''<svg class="store__logo" aria-hidden="true"><use href="#logo-apple"/></svg>
+                <span class="store__text"><small data-i18n="store.asSmall">iPhone için</small><b>App Store</b></span>'''
+    if STORE_LINKS['appstore']:
+        apple = f'''<a class="store" data-store="appstore" href="{STORE_LINKS['appstore']}" target="_blank" rel="noopener">
+                {apple_inner}
+              </a>'''
+    else:
+        apple = f'''<button class="store store--soon" type="button" aria-disabled="true" data-tip="Yakında" data-i18n-tip="store.soon">
+                {apple_inner}
+                <span class="sr-only" data-i18n="store.soon">Yakında</span>
+              </button>'''
     return f'''<div class="stores{(' ' + extra) if extra else ''}">
-              <a class="store" data-store="googleplay" href="#">
+              <a class="store" data-store="googleplay" {gp_href}>
                 <svg class="store__logo" aria-hidden="true"><use href="#logo-gplay"/></svg>
                 <span class="store__text"><small data-i18n="store.gpSmall">Android için</small><b>Google Play</b></span>
               </a>
-              <button class="store store--soon" type="button" aria-disabled="true" data-tip="Yakında" data-i18n-tip="store.soon">
-                <svg class="store__logo" aria-hidden="true"><use href="#logo-apple"/></svg>
-                <span class="store__text"><small data-i18n="store.asSmall">iPhone için</small><b>App Store</b></span>
-                <span class="sr-only" data-i18n="store.soon">Yakında</span>
-              </button>
+              {apple}
             </div>'''
 
 
@@ -542,6 +560,13 @@ def game():
         'url': BASE + 'detective-on-duty.html',
         'publisher': {'@type': 'Organization', 'name': 'QuUp Games', 'url': BASE},
     }
+    store_pages = [link for link in STORE_LINKS.values() if link]
+    if store_pages:
+        ld['gamePlatform'] = ['Android', 'iOS'] if STORE_LINKS['appstore'] else 'Android'
+        ld['operatingSystem'] = ld['gamePlatform']
+        ld['applicationCategory'] = 'GameApplication'
+        ld['installUrl'] = store_pages[0]
+        ld['sameAs'] = store_pages
     return document('game', 'detective-on-duty.html', 'Detective on Duty | QuUp Games',
                     "Detective on Duty: olay yeri, sorgu, çıkarım panosu ve karar. QuUp Games'in yeni dedektif oyunu.",
                     'games', content, BACKDROP_PAGE, ld, theme='dod', og='dod')
