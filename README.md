@@ -61,7 +61,7 @@ Telefon yan çevrildiğinde ekran çok kısa kalır: o zaman sayfa bütün olara
 | `detective-on-duty.html` | OYUNLAR altında | **Detective on Duty:** ikonun mor tonlarıyla. Sekmeler: Oynanış, Vakalar, Gizlilik.<br>Adresin sonuna `#cases` ya da `#privacy` eklenirse o sekme açılır. |
 | `privacy-policy.html` | Oyun sayfasının içinde | **Detective on Duty gizlilik politikası** (İngilizce). Google Play Console'a verilen adres bu olduğu için adı değişmedi. |
 | `about.html` | BİZ KİMİZ? | Yalnızca stüdyo: QuUp Games tanıtımı, üç kural ve Q amblemi. Oyun kartı yok. |
-| `careers.html` | KARİYER | **Açık başvuru:** solda kısa tanıtım ve üç adım, sağda başvuru formu (ad soyad, e-posta, ilgi alanı, CV dosyası, çalışma şekli, kendinden bahset, onay). Aşağıdaki "Kariyer formu" bölümüne bak. |
+| `careers.html` | KARİYER (şimdilik kapalı) | **Açık başvuru:** solda kısa tanıtım ve üç adım, sağda başvuru formu (ad soyad, e-posta, ilgi alanı, CV dosyası, çalışma şekli, kendinden bahset, onay). Aşağıdaki "Kariyer formu" bölümüne bak. |
 | `contact.html` | İLETİŞİM | E-posta adresleri (kopyala / e-posta yaz) ve siteyi paylaşma düğmesi. |
 | `404.html` | Yok | Bulunamayan adreslerde açılan stüdyo sayfası: sıfırın yerinde logodaki Q, aranan adres ve "Ana sayfaya dön" / "Oyunlarımız" düğmeleri.<br>Her derinlikteki adreste açılabildiği için bağlantıları sitenin kökünden başlar (`BASE` adresinden). |
 
@@ -85,6 +85,9 @@ Telefon yan çevrildiğinde ekran çok kısa kalır: o zaman sayfa bütün olara
    - `src/build.py` içindeki `BASE` adresi, `sitemap.xml` ve `robots.txt` güncellenir, sonra `npm run build`.
 
 ## Kariyer formu
+
+- **Şu an kapalı:** Menülerde "Kariyer" yazısı soluk durur ve tıklanmaz. Üzerine gelince (telefonda dokununca) "Yakında açılacak" yazar; telefon menüsünde yanında "Yakında" etiketi vardır. Sayfa adresini bilen yine açabilir ama arama motorlarına kapalıdır ve site haritasında yoktur.
+- **Açmak için:** `src/build.py` içinde `CAREERS_OPEN = True` yapılır, `sitemap.xml` dosyasına `careers.html` satırı geri eklenir, sonra `npm run build`.
 
 - Sitenin bir sunucusu yok. Bu yüzden form, varsayılan olarak başvuruyu ziyaretçinin e-posta uygulamasında hazır bir e-posta olarak açar.
 - CV alanı PDF ya da Word dosyası alır (en fazla 5 MB; tıklayarak seçilir ya da sürükleyip bırakılır). E-posta yolunda tarayıcı dosyayı e-postaya kendisi ekleyemez: e-postada dosyanın adı yazar ve sayfa "Göndermeden önce CV'ni e-postaya ekle" diye hatırlatır.

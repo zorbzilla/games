@@ -502,6 +502,44 @@ h1, h2, h3, p, ul, ol, dl, dd { margin: 0; }
 }
 .has-menu > .nav__link { padding-right: 6px; }
 .has-menu > .nav__link[aria-current="page"]::after { right: 6px; }
+/* A menu item that is not open yet (Careers): dimmed, not a link, "opening soon" on hover or tap */
+.nav__link--soon,
+.nav__link--soon:hover { color: var(--dim); background: none; cursor: default; }
+.nav__link--soon::before,
+.nav__link--soon::after {
+  position: absolute;
+  left: 50%;
+  z-index: 60;
+  opacity: 0;
+  pointer-events: none;
+  translate: -50% -5px;
+  transition: opacity 0.18s, translate 0.2s var(--ease-out);
+}
+.nav__link--soon::after {
+  content: attr(data-tip);
+  top: calc(100% + 11px);
+  padding: 7px 13px 6px;
+  border-radius: 9px;
+  background: var(--accent);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font: 800 0.86rem / 1 var(--f-display);
+  letter-spacing: 0.16em;
+  white-space: nowrap;
+}
+.nav__link--soon::before {
+  content: "";
+  top: calc(100% + 5px);
+  border: 6px solid transparent;
+  border-top: 0;
+  border-bottom-color: var(--accent);
+}
+.nav__link--soon:hover::before,
+.nav__link--soon:hover::after,
+.nav__link--soon:focus-visible::before,
+.nav__link--soon:focus-visible::after,
+.nav__link--soon.is-tip::before,
+.nav__link--soon.is-tip::after { opacity: 1; translate: -50% 0; }
 .nav__caret {
   display: grid;
   place-items: center;
@@ -678,6 +716,16 @@ html[lang="en"] .lang [data-lang="en"] { color: #fff; }
 }
 .mnav__link[aria-current="page"] { color: var(--accent-hi); }
 .mnav__link svg { width: 26px; height: 26px; flex: none; color: var(--accent-hi); }
+.mnav__link--soon { color: var(--dim); cursor: default; }
+.soon-tag {
+  flex: none;
+  padding: 6px 10px 5px;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  color: var(--muted);
+  font: 800 0.78rem / 1 var(--f-display);
+  letter-spacing: 0.16em;
+}
 .mnav__games { display: grid; gap: 8px; margin: -2px 0 0; padding: 0 0 16px; list-style: none; }
 .mnav__game {
   display: grid;

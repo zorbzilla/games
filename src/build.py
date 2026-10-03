@@ -167,6 +167,27 @@ def cur(active, name):
     return ' aria-current="page"' if active == name else ''
 
 
+# Careers is in the menus but closed for now: the item stays, dimmed, and says "opening soon".
+# Set to True to open it (then also add careers.html back to sitemap.xml).
+CAREERS_OPEN = False
+
+
+def careers_nav(active):
+    if CAREERS_OPEN:
+        return f'''<li><a class="nav__link" href="careers.html"{cur(active, 'careers')} data-i18n="nav.careers">Kariyer</a></li>'''
+    return ('<li><span class="nav__link nav__link--soon" tabindex="0" role="link" aria-disabled="true" '
+            'data-tip="Yakında açılacak" data-i18n-tip="nav.soonTip" data-soon>'
+            '<span data-i18n="nav.careers">Kariyer</span>'
+            '<span class="sr-only">: <span data-i18n="nav.soonTip">Yakında açılacak</span></span></span></li>')
+
+
+def careers_mnav(active):
+    if CAREERS_OPEN:
+        return f'''<li style="--i:2"><a class="mnav__link" href="careers.html"{cur(active, 'careers')}><span data-i18n="nav.careers">Kariyer</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>'''
+    return ('<li style="--i:2"><span class="mnav__link mnav__link--soon" role="link" aria-disabled="true">'
+            '<span data-i18n="nav.careers">Kariyer</span><span class="soon-tag" data-i18n="nav.soon">Yakında</span></span></li>')
+
+
 def header(active, page_id):
     def is_here(g):
         return ' aria-current="page"' if page_id in GAME_PAGES and g['id'] == 'dod' else ''
@@ -179,7 +200,7 @@ def header(active, page_id):
       <nav class="nav" aria-label="Ana menü" data-i18n-aria="aria.mainnav">
         <ul class="nav__list">
           <li><a class="nav__link" href="about.html"{cur(active, 'about')} data-i18n="nav.about">Biz kimiz?</a></li>
-          <li><a class="nav__link" href="careers.html"{cur(active, 'careers')} data-i18n="nav.careers">Kariyer</a></li>
+          {careers_nav(active)}
           <li class="has-menu">
             <a class="nav__link" href="games.html"{cur(active, 'games')} data-i18n="nav.games">Oyunlar</a>
             <button class="nav__caret" type="button" aria-expanded="false" aria-controls="gamesMenu" aria-label="Oyunlar menüsü" data-i18n-aria="aria.gamesMenu"><svg aria-hidden="true"><use href="#i-chevron"/></svg></button>
@@ -204,7 +225,7 @@ def header(active, page_id):
     <ul class="mnav__list">
       <li style="--i:0"><a class="mnav__link" href="./"{cur(active, 'home')}><span data-i18n="nav.home">Ana sayfa</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
       <li style="--i:1"><a class="mnav__link" href="about.html"{cur(active, 'about')}><span data-i18n="nav.about">Biz kimiz?</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
-      <li style="--i:2"><a class="mnav__link" href="careers.html"{cur(active, 'careers')}><span data-i18n="nav.careers">Kariyer</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></li>
+      {careers_mnav(active)}
       <li style="--i:3">
         <a class="mnav__link" href="games.html"{' aria-current="page"' if page_id == 'games' else ''}><span data-i18n="nav.games">Oyunlar</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
         <ul class="mnav__games">
@@ -755,7 +776,7 @@ def careers():
     </div>'''
     return document('careers', 'careers.html', 'Kariyer | QuUp Games',
                     'QuUp Games ekibine katıl: oyun geliştirme, tasarım, görsel sanat ve ses için açık başvuru.',
-                    'careers', content)
+                    'careers', content, index=CAREERS_OPEN)
 
 
 # ---------------------------------------------------------------- contact

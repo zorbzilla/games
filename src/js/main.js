@@ -62,6 +62,8 @@
     'nav.home': 'Home',
     'nav.about': 'About us',
     'nav.careers': 'Careers',
+    'nav.soon': 'Soon',
+    'nav.soonTip': 'Opening soon',
     'nav.games': 'Games',
     'nav.contact': 'Contact',
     'menu.new': 'New',
@@ -469,6 +471,24 @@
 
   /* The store links are written into the pages by src/build.py (STORE_LINKS there).
      A store that has no link yet only explains itself. */
+  function initSoon() {
+    $$('[data-soon]').forEach((el) => {
+      let timer = 0;
+      const tip = () => {
+        el.classList.add('is-tip');
+        clearTimeout(timer);
+        timer = setTimeout(() => el.classList.remove('is-tip'), 1800);
+      };
+      el.addEventListener('click', tip);
+      el.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          tip();
+        }
+      });
+    });
+  }
+
   function initStores() {
     $$('[data-store="googleplay"]').forEach((a) => {
       if (a.getAttribute('href') !== '#') return;
@@ -1245,6 +1265,7 @@ void main(){
   $$('[data-year]').forEach((el) => { el.textContent = String(new Date().getFullYear()); });
 
   initGamesMenu();
+  initSoon();
   initStores();
   initCopy();
   initShare();
