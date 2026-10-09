@@ -96,6 +96,7 @@
 
     // game page
     'game.new': 'Out now',
+    'game.cta': 'Download and play now',
     'game.tagline': 'Every file hides a lie.',
     'game.desc': 'Open files are piling up. Search the scene, question the suspects, connect the evidence on the board and make the final call.',
     'game.genreL': 'Genre',

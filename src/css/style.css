@@ -1080,7 +1080,10 @@ html[lang="en"] .lang [data-lang="en"] { color: #fff; }
 .game__side { display: flex; flex-direction: column; justify-content: center; gap: clamp(12px, 2vh, 20px); }
 .game__top { display: flex; align-items: center; gap: 16px; }
 .game__head { display: flex; flex-direction: column; align-items: flex-start; gap: 9px; }
-.game__studio { color: var(--muted); font-size: 0.95rem; font-weight: 600; letter-spacing: 0.01em; user-select: none; }
+.game__cta { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; color: var(--ink); font-size: 0.95rem; font-weight: 600; text-decoration: none; transition: color 0.2s; }
+.game__cta svg { width: 15px; height: 15px; color: var(--accent-hi); transition: transform 0.25s var(--ease-out); }
+.game__cta:hover { color: var(--accent-hi); }
+.game__cta:hover svg { transform: translateX(3px); }
 .game__icon {
   width: clamp(64px, 10vh, 104px);
   height: auto;

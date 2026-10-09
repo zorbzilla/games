@@ -505,7 +505,7 @@ def game():
     content = f'''    <div class="page__inner game">
       <div class="game__grid wrap">
         <div class="game__side">
-          <div class="game__top">{game_icon(g, 'game__icon', 'icon_m', 112)}<div class="game__head"><span class="new-tag" data-i18n="game.new">Yeni çıktı</span><span class="game__studio" translate="no">QuUp Games</span></div></div>
+          <div class="game__top">{game_icon(g, 'game__icon', 'icon_m', 112)}<div class="game__head"><span class="new-tag" data-i18n="game.new">Yeni çıktı</span><a class="game__cta" href="{STORE_LINKS['googleplay']}" target="_blank" rel="noopener"><span data-i18n="game.cta">Hemen indir, göreve başla</span><svg aria-hidden="true"><use href="#i-arrow"/></svg></a></div></div>
           <h1 class="game__title" lang="en">Detective<span>on Duty</span></h1>
           <p class="game__tagline" data-i18n="game.tagline">Her dosyanın içinde bir yalan var.</p>
           <p class="game__desc" data-i18n="game.desc">Açık dosyalar birikiyor. Olay yerini ara, şüphelileri sorgula, delilleri panoda bağla ve son kararı ver.</p>
