@@ -247,7 +247,7 @@ BACKDROP_PAGE = '<div class="backdrop" aria-hidden="true"><svg class="backdrop__
 BACKDROP_PLAIN = '<div class="backdrop" aria-hidden="true"></div>'
 BACKDROP_HOME = '<div class="backdrop" aria-hidden="true"><canvas class="backdrop__bg" id="heroBg"></canvas><div class="backdrop__siren"></div></div>'
 
-THEME_COLOR = {None: '#07080c', 'dod': '#0c0913'}
+THEME_COLOR = {None: '#07080c', 'dod': '#0d0c1a'}
 
 
 # Share images: the studio's own card, and the Detective on Duty card for the pages that show the game.
@@ -329,16 +329,16 @@ CASES = [
 
 # The eight in-game screens, in the order a case is played: (file, i18n key, title, text, alt)
 SHOTS = [
-    ('01-precinct', 'p1', 'Karakol', 'Açık dosyalar seni bekliyor. Birini seç, teslim süresi dolmadan kapat.', 'Vaka listesi'),
-    ('02-briefing', 'p2', 'Brifing', 'Dosyayı aç ve olayı öğren: şüpheliler, tanıklar, lokasyonlar.', 'Vaka brifingi'),
+    ('01-cases', 'p1', 'Vakalar', 'Açık dosyalar seni bekliyor. Birini seç ve dosyayı aç.', 'Vaka listesi'),
+    ('02-briefing', 'p2', 'Brifing', 'Kurbanı, şüphelileri ve teslim süresini öğren. Dosyayı al ya da bırak.', 'Vaka brifingi'),
     ('03-crime-scene', 'p3', 'Olay yeri', 'Aranacak noktaları tek tek ara. Bulduğun deliller dosyaya girer.', 'Olay yeri araması'),
-    ('04-people', 'p4', 'Kişiler', 'Şüpheliler ve tanıklar burada. Kiminle konuşacağını sen seçersin.', 'Şüpheli ve tanık listesi'),
-    ('05-interrogation', 'p5', 'Sorgu', 'Baskı ile güveni dengede tut. Doğrudan, empatik ya da sert sor; zamanı gelince kanıtı sun.', 'Sorgu ekranı'),
-    ('06-board', 'p6', 'Pano', 'Delilleri ve olayları panoya diz. İki kart seç; aralarında bağ varsa dosyaya yazılır.', 'Çıkarım panosu'),
-    ('07-decision', 'p7', 'Karar', 'Tutukla, takibe al ya da soruşturmayı genişlet. Delilin zayıfsa savcılık da öyle görür.', 'Karar ekranı'),
-    ('08-career', 'p8', 'Kariyer', 'Çözdüğün dosyalar rütbeni yükseltir: Aday Dedektif’ten Özel Birim Amiri’ne.', 'Kariyer ekranı'),
+    ('04-board', 'p4', 'Pano', 'Delilleri ve olayları panoya diz. İki kart seç; aralarında bağ varsa dosyaya yazılır.', 'Çıkarım panosu'),
+    ('05-verdict', 'p5', 'Karar', 'Suçlamanı yap. Yanlış kişiyi suçlarsan deneyim ve itibar kaybedersin.', 'Karar ekranı'),
+    ('06-career', 'p6', 'Kariyer', 'Çözdüğün dosyalar rütbeni yükseltir: Aday Dedektif’ten Özel Birim Amiri’ne.', 'Kariyer ekranı'),
+    ('07-score', 'p7', 'Skor', 'Her hafta yeni bir tablo. O hafta kazandığın deneyim seni üst sıralara taşır.', 'Haftalık skor tablosu'),
+    ('08-id-card', 'p8', 'Kimlik', 'Dedektif kimliğini oluştur. Takma adın sıralamada ve dosyalarda görünür.', 'Dedektif kimlik kartı'),
 ]
-HOME_SHOTS = ['01-precinct', '03-crime-scene', '05-interrogation', '06-board', '07-decision']
+HOME_SHOTS = ['01-cases', '02-briefing', '03-crime-scene', '04-board', '05-verdict']
 
 
 def shot_imgs(names, alt=False):
@@ -508,7 +508,7 @@ def game():
           <div class="game__top">{game_icon(g, 'game__icon', 'icon_m', 112)}<span class="new-tag" data-i18n="game.new">Yeni çıktı</span></div>
           <h1 class="game__title" lang="en">Detective<span>on Duty</span></h1>
           <p class="game__tagline" data-i18n="game.tagline">Her dosyanın içinde bir yalan var.</p>
-          <p class="game__desc" data-i18n="game.desc">Karakolda dosyalar birikiyor. Olay yerini ara, şüphelileri sorgula, delilleri panoda bağla ve son kararı ver.</p>
+          <p class="game__desc" data-i18n="game.desc">Açık dosyalar birikiyor. Olay yerini ara, şüphelileri sorgula, delilleri panoda bağla ve son kararı ver.</p>
           <dl class="meta">
             <div><dt data-i18n="game.genreL">Tür</dt><dd data-i18n="game.genre">Dedektif, soruşturma</dd></div>
             <div><dt data-i18n="game.boardL">Sıralama</dt><dd data-i18n="game.board">Haftalık</dd></div>

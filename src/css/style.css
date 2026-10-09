@@ -58,25 +58,25 @@
   --qmask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 638 619'%3E%3Cpath d='M442.14 585.25A308 308 0 1 1 561.31 483.2L638 559.89V619H535.89L277.89 361H439.11L478.56 400.45A194 194 0 1 0 353.48 496.59Z'/%3E%3C/svg%3E");
 }
 
-/* Detective on Duty: colours from the game's icon and screens (violet noir, lavender buttons) */
+/* Detective on Duty: colours from the game's screens (indigo night, violet-blue buttons) */
 [data-theme="dod"] {
-  --bg: #0c0913;
-  --bg-rgb: 12 9 19;
-  --bg-deep: #08060d;
-  --panel: #130e1c;
-  --panel-hi: #1b1428;
-  --panel-rgb: 19 14 28;
-  --muted: #a9a2bb;
-  --dim: #6f6882;
-  --accent: #8e7cc4;
-  --accent-rgb: 142 124 196;
-  --accent-hi: #c4b6f4;
-  --accent-hi-rgb: 196 182 244;
-  --accent-lite: #a898e0;
-  --accent-deep: #7461b3;
-  --accent-edge: #43377a;
-  --violet: #9b4fe0;
-  --violet-rgb: 155 79 224;
+  --bg: #0d0c1a;
+  --bg-rgb: 13 12 26;
+  --bg-deep: #08080f;
+  --panel: #141428;
+  --panel-hi: #1c1d36;
+  --panel-rgb: 20 20 40;
+  --muted: #a3a6c2;
+  --dim: #686b88;
+  --accent: #7263e0;
+  --accent-rgb: 114 99 224;
+  --accent-hi: #b3aaff;
+  --accent-hi-rgb: 179 170 255;
+  --accent-lite: #8f82f0;
+  --accent-deep: #5a4cc8;
+  --accent-edge: #362b8a;
+  --violet: #6f5cff;
+  --violet-rgb: 111 92 255;
 }
 
 /* ---------- Base: a fixed frame ---------- */
