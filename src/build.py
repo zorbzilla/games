@@ -329,16 +329,16 @@ CASES = [
 
 # The eight in-game screens, in the order a case is played: (file, i18n key, title, text, alt)
 SHOTS = [
-    ('01-cases', 'p1', 'Vakalar', 'Açık dosyalar seni bekliyor. Birini seç ve dosyayı aç.', 'Vaka listesi'),
-    ('02-briefing', 'p2', 'Brifing', 'Kurbanı, şüphelileri ve teslim süresini öğren. Dosyayı al ya da bırak.', 'Vaka brifingi'),
-    ('03-crime-scene', 'p3', 'Olay yeri', 'Aranacak noktaları tek tek ara. Bulduğun deliller dosyaya girer.', 'Olay yeri araması'),
-    ('04-board', 'p4', 'Pano', 'Delilleri ve olayları panoya diz. İki kart seç; aralarında bağ varsa dosyaya yazılır.', 'Çıkarım panosu'),
-    ('05-verdict', 'p5', 'Karar', 'Suçlamanı yap. Yanlış kişiyi suçlarsan deneyim ve itibar kaybedersin.', 'Karar ekranı'),
-    ('06-career', 'p6', 'Kariyer', 'Çözdüğün dosyalar rütbeni yükseltir: Aday Dedektif’ten Özel Birim Amiri’ne.', 'Kariyer ekranı'),
-    ('07-score', 'p7', 'Skor', 'Her hafta yeni bir tablo. O hafta kazandığın deneyim seni üst sıralara taşır.', 'Haftalık skor tablosu'),
-    ('08-id-card', 'p8', 'Kimlik', 'Dedektif kimliğini oluştur. Takma adın sıralamada ve dosyalarda görünür.', 'Dedektif kimlik kartı'),
+    ('01-id-card', 'p1', 'Kimlik', 'Kendine bir ad seç ve göreve başla. Adın sıralamada ve kapattığın dosyalarda görünür.', 'Dedektif kimlik kartı'),
+    ('02-cases', 'p2', 'Vakalar', 'Açık dosyalar seni bekliyor. Birini seç ve dosyayı aç.', 'Vaka listesi'),
+    ('03-briefing', 'p3', 'Brifing', 'Kurbanı, şüphelileri ve teslim süresini öğren. Dosyayı al ya da bırak.', 'Vaka brifingi'),
+    ('04-crime-scene', 'p4', 'Olay yeri', 'Aranacak noktaları tek tek ara. Bulduğun deliller dosyaya girer.', 'Olay yeri araması'),
+    ('05-board', 'p5', 'Pano', 'Delilleri ve olayları panoya diz. İki kart seç; aralarında bağ varsa dosyaya yazılır.', 'Çıkarım panosu'),
+    ('06-verdict', 'p6', 'Karar', 'Suçlamanı yap. Yanlış kişiyi suçlarsan deneyim ve itibar kaybedersin.', 'Karar ekranı'),
+    ('07-career', 'p7', 'Kariyer', 'Çözdüğün dosyalar rütbeni yükseltir: Aday Dedektif’ten Özel Birim Amiri’ne.', 'Kariyer ekranı'),
+    ('08-score', 'p8', 'Skor', 'Her hafta yeni bir tablo. O hafta kazandığın deneyim seni üst sıralara taşır.', 'Haftalık skor tablosu'),
 ]
-HOME_SHOTS = ['01-cases', '02-briefing', '03-crime-scene', '04-board', '05-verdict']
+HOME_SHOTS = ['01-id-card', '02-cases', '03-briefing', '04-crime-scene', '05-board', '06-verdict']
 
 
 def shot_imgs(names, alt=False):
@@ -529,7 +529,7 @@ def game():
             <div class="panel" role="tabpanel" id="gameplay" aria-labelledby="tab-gameplay" tabindex="0">
               <div class="play" id="play">
                 <div class="play__list">
-                  <p class="play__kicker" data-i18n="play.kicker">Bir vaka nasıl çözülür?</p>
+                  <p class="play__kicker" data-i18n="play.kicker">Oyun nasıl oynanır?</p>
                   <ol class="play__steps">
 {steps}
                   </ol>

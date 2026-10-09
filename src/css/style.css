@@ -419,14 +419,26 @@ h1, h2, h3, p, ul, ol, dl, dd { margin: 0; }
 .new-tag {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 5px 9px 4px;
-  border-radius: 7px;
-  background: var(--red);
-  color: #fff;
-  font: 800 0.74rem / 1 var(--f-display);
+  gap: 8px;
+  padding: 6px 12px 5px 10px;
+  border: 1px solid rgb(var(--accent-hi-rgb) / 0.32);
+  border-radius: 999px;
+  background: rgb(var(--accent-rgb) / 0.14);
+  color: var(--accent-hi);
+  font: 700 0.74rem / 1 var(--f-display);
   letter-spacing: 0.16em;
   text-transform: uppercase;
+  white-space: nowrap;
+}
+.new-tag::before {
+  content: "";
+  flex: none;
+  width: 7px;
+  height: 7px;
+  margin-top: -1px;
+  border-radius: 50%;
+  background: #3ddc84;
+  box-shadow: 0 0 0 3px rgb(61 220 132 / 0.18);
 }
 
 .eyebrow {
