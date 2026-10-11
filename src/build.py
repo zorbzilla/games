@@ -4,6 +4,7 @@
 Run `npm run build` in the repository root. This script writes readable pages to
 the root; src/tools/minify.mjs then compresses them (and the CSS and JS) in place.
 """
+import hashlib
 import json
 import os
 import re
@@ -254,6 +255,16 @@ THEME_COLOR = {None: '#07080c', 'dod': '#0d0c1a'}
 OG_IMAGE = {'studio': 'assets/img/og.jpg', 'dod': 'assets/img/og-dod.jpg'}
 
 
+def asset_version(rel):
+    # short content hash, so browsers fetch the new file after every change
+    with open(os.path.join(SRC, rel), 'rb') as f:
+        return hashlib.sha1(f.read()).hexdigest()[:10]
+
+
+CSS_V = asset_version('css/style.css')
+JS_V = asset_version('js/main.js')
+
+
 def document(page_id, path, title, desc, active, content, backdrop=BACKDROP_PAGE, ld=None, theme=None, og='studio', index=True):
     url = BASE + path
     # a page that is not meant for search engines (the 404 page) gets no address of its own
@@ -290,8 +301,8 @@ def document(page_id, path, title, desc, active, content, backdrop=BACKDROP_PAGE
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400..800&amp;family=Saira+Condensed:wght@600;700;800&amp;display=swap">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@600&amp;text=uUp%20Games4&amp;display=swap">
-  <link rel="stylesheet" href="assets/css/style.css">
-  <script defer src="assets/js/main.js"></script>{ld_block}
+  <link rel="stylesheet" href="assets/css/style.css?v={CSS_V}">
+  <script defer src="assets/js/main.js?v={JS_V}"></script>{ld_block}
 </head>
 <body data-page="{page_id}">
   {backdrop}
