@@ -482,8 +482,9 @@ def games_page():
 
 
 # ---------------------------------------------------------------- game page
-# Case types as the game's case list shows them; files not shown there yet stay classified
-CASE_TYPES = {'001': ('cat.missing', 'Kayıp kişi'), '002': ('cat.fraud', 'Dolandırıcılık'), '003': ('cat.theft', 'Hırsızlık')}
+TILTS = ['-1.2deg', '.8deg', '-.6deg', '1.1deg', '-1deg', '.6deg', '-.8deg', '1deg']
+# "Gizli" stamps: scattered, never two in the same row or column of the three-column grid
+STAMPS = {1: '--sx:14px;--sy:12px;--sr:-8deg', 5: '--sx:22%;--sy:30%;--sr:6deg', 6: '--sx:34%;--sy:10px;--sr:-13deg'}
 
 
 def game():
@@ -493,16 +494,12 @@ def game():
         for i, (_, k, t, d, _alt) in enumerate(SHOTS))
     files = []
     for i, (no, key, title) in enumerate(CASES):
-        cat_key, cat = CASE_TYPES.get(no, ('files.classified', 'Gizli dosya'))
-        stamp = '<span class="file__stamp" aria-hidden="true" data-i18n="files.open">Açık</span>' if no in CASE_TYPES else ''
+        stamp = f'<span class="file__stamp" style="{STAMPS[i]}" aria-hidden="true" data-i18n="files.stamp">Gizli</span>' if i in STAMPS else ''
         i18n = f' data-i18n="{key}"' if key else ''
-        files.append(f'''                <li class="file{'' if no in CASE_TYPES else ' file--sealed'}">
-                  <span class="file__tab" data-i18n="{cat_key}">{cat}</span>
-                  <div class="file__card">
-                    <p class="file__no"><span data-i18n="files.no">Dosya no</span> · {no}</p>
-                    <h3 class="file__title"{i18n}>{title}</h3>{stamp}
-                    <p class="file__foot" aria-hidden="true"><span data-i18n="files.bureau">Dedektif Bürosu</span><span data-i18n="files.conf">Gizli</span></p>
-                  </div>
+        files.append(f'''                <li class="file" style="--t:{TILTS[i]}">
+                  <span class="file__tab"><span data-i18n="files.tab">Dosya</span> {no}</span>
+                  <span class="file__paper" aria-hidden="true"><i></i><i></i><i></i></span>
+                  <div class="file__cover"><span class="file__no" aria-hidden="true">{no}</span><h3 class="file__title"{i18n}>{title}</h3>{stamp}</div>
                 </li>''')
     files = '\n'.join(files)
     content = f'''    <div class="page__inner game">
